@@ -1,0 +1,25 @@
+{
+  "name": "hps-ai-hub",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "The HPS AI Operating System — unified workflow hub for 8 professional domains",
+  "author": "Hamilton Posada <hamilton@hps-solutions.nl>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^6.1.4",
+    "@astrojs/react": "^4.2.1",
+    "@tailwindcss/vite": "^4.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0"
+  }
+}

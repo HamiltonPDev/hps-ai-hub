@@ -1,0 +1,134 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="HPS AI Hub — The AI Operating System">
+  <Nav />
+  
+  <main>
+    <!-- Hero -->
+    <section class="min-h-screen flex flex-col justify-end pb-18 relative border-b border-[var(--color-border)] overflow-hidden">
+      <!-- Background gradient -->
+      <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 900px 600px at 100% 0%, rgba(249,115,22,0.07) 0%, transparent 60%), radial-gradient(ellipse 600px 500px at 0% 100%, rgba(96,165,250,0.05) 0%, transparent 60%), radial-gradient(ellipse 400px 400px at 50% 40%, rgba(192,132,252,0.04) 0%, transparent 60%);"></div>
+      <!-- Grid lines -->
+      <div class="absolute inset-0 pointer-events-none opacity-30" style="background-image: linear-gradient(var(--color-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-border) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, black 20%, transparent 100%);"></div>
+      
+      <div class="max-w-5xl mx-auto px-7 relative">
+        <p class="sec-label flex items-center gap-3 mb-5">
+          <span class="w-8 h-px bg-[var(--color-muted)]"></span>
+          HPS Proptech & Solutions B.V. · Amsterdam · April 2026
+        </p>
+        
+        <h1 class="mb-7">
+          The HPS<br />
+          <em class="italic text-[var(--color-proptech)]">AI Operating</em><br />
+          System
+        </h1>
+        
+        <p class="text-base text-[var(--color-muted)] max-w-xl font-light mb-12">
+          One unified workflow for eight professional domains — built on OpenCode, OmO, gentle-ai, Engram, and agency-agents. Paid and free AI models, each routed to its strength. 100+ specialist agents. 75+ providers. One terminal. €68/month.
+        </p>
+
+        <!-- Domain pills -->
+        <div class="flex flex-wrap gap-2 mb-14">
+          <span class="pill border-[var(--color-proptech)] text-[var(--color-proptech)] bg-[rgba(249,115,22,0.08)]">Proptech</span>
+          <span class="pill border-[var(--color-iot)] text-[var(--color-iot)] bg-[rgba(45,212,191,0.08)]">IoT</span>
+          <span class="pill border-[var(--color-analytics)] text-[var(--color-analytics)] bg-[rgba(250,204,21,0.08)]">Analytics</span>
+          <span class="pill border-[var(--color-ml)] text-[var(--color-ml)] bg-[rgba(192,132,252,0.08)]">ML / DL</span>
+          <span class="pill border-[var(--color-fullstack)] text-[var(--color-fullstack)] bg-[rgba(96,165,250,0.08)]">Full-Stack</span>
+          <span class="pill border-[var(--color-cyber)] text-[var(--color-cyber)] bg-[rgba(248,113,113,0.08)]">Cybersecurity</span>
+          <span class="pill border-[var(--color-marketing)] text-[var(--color-marketing)] bg-[rgba(232,121,249,0.08)]">Marketing</span>
+          <span class="pill border-[var(--color-business)] text-[var(--color-business)] bg-[rgba(116,170,156,0.08)]">Business Ops</span>
+        </div>
+
+        <!-- Model badges -->
+        <div class="flex flex-wrap gap-3">
+          <div class="flex items-center gap-2 border border-[var(--color-border2)] rounded-lg px-4 py-2 bg-[var(--color-bg2)]">
+            <span class="w-2 h-2 rounded-full bg-[var(--color-claude)]"></span>
+            <span class="font-mono text-[11px] text-[var(--color-text)]">Claude — reasoning core</span>
+          </div>
+          <div class="flex items-center gap-2 border border-[var(--color-border2)] rounded-lg px-4 py-2 bg-[var(--color-bg2)]">
+            <span class="w-2 h-2 rounded-full bg-[var(--color-gpt)]"></span>
+            <span class="font-mono text-[11px] text-[var(--color-text)]">GPT-5.4 — deep executor</span>
+          </div>
+          <div class="flex items-center gap-2 border border-[var(--color-border2)] rounded-lg px-4 py-2 bg-[var(--color-bg2)]">
+            <span class="w-2 h-2 rounded-full bg-[var(--color-gemini)]"></span>
+            <span class="font-mono text-[11px] text-[var(--color-text)]">Gemini — research & UI</span>
+          </div>
+          <div class="flex items-center gap-2 border border-[var(--color-border2)] rounded-lg px-4 py-2 bg-[var(--color-bg2)]">
+            <span class="w-2 h-2 rounded-full bg-[var(--color-codex)]"></span>
+            <span class="font-mono text-[11px] text-[var(--color-text)]">Groq + Qwen — FREE tier</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick stats -->
+    <section class="max-w-5xl mx-auto px-7 py-18 border-b border-[var(--color-border)]">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="card text-center">
+          <p class="font-mono text-3xl font-bold text-[var(--color-iot)]">9</p>
+          <p class="text-xs text-[var(--color-muted)] mt-1">Architecture Layers</p>
+        </div>
+        <div class="card text-center">
+          <p class="font-mono text-3xl font-bold text-[var(--color-proptech)]">20+</p>
+          <p class="text-xs text-[var(--color-muted)] mt-1">AI Agents</p>
+        </div>
+        <div class="card text-center">
+          <p class="font-mono text-3xl font-bold text-[var(--color-ml)]">66</p>
+          <p class="text-xs text-[var(--color-muted)] mt-1">Skills Installed</p>
+        </div>
+        <div class="card text-center">
+          <p class="font-mono text-3xl font-bold text-[var(--color-analytics)]">€68</p>
+          <p class="text-xs text-[var(--color-muted)] mt-1">Monthly Cost</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Placeholder sections -->
+    <section class="max-w-5xl mx-auto px-7 py-18">
+      <p class="sec-label">Coming Soon</p>
+      <h2 class="mb-8">Full Architecture Deep-Dive</h2>
+      <p class="text-[var(--color-muted)]">
+        This site is being built from the 3,851-line <code>hpsAiOperationSystem.html</code> master reference document. Each section becomes its own page with interactive components, filterable tables, and an AI-powered chat assistant.
+      </p>
+      
+      <div class="grid md:grid-cols-3 gap-4 mt-8">
+        <a href="/architecture" class="card hover:border-[var(--color-proptech)] transition-colors">
+          <p class="font-mono text-[10px] tracking-widest uppercase text-[var(--color-muted)] mb-2">01</p>
+          <h3 class="text-base mb-2">Architecture</h3>
+          <p class="text-xs text-[var(--color-muted)]">9-layer stack, unified workflow, domain sessions</p>
+        </a>
+        <a href="/agents" class="card hover:border-[var(--color-fullstack)] transition-colors">
+          <p class="font-mono text-[10px] tracking-widest uppercase text-[var(--color-muted)] mb-2">02</p>
+          <h3 class="text-base mb-2">Agent Roster</h3>
+          <p class="text-xs text-[var(--color-muted)]">20 agents with category routing and model assignment</p>
+        </a>
+        <a href="/models" class="card hover:border-[var(--color-gemini)] transition-colors">
+          <p class="font-mono text-[10px] tracking-widest uppercase text-[var(--color-muted)] mb-2">03</p>
+          <h3 class="text-base mb-2">Model Routing</h3>
+          <p class="text-xs text-[var(--color-muted)]">Multi-model engine with paid + free tier optimization</p>
+        </a>
+        <a href="/explore" class="card hover:border-[var(--color-ml)] transition-colors">
+          <p class="font-mono text-[10px] tracking-widest uppercase text-[var(--color-muted)] mb-2">04</p>
+          <h3 class="text-base mb-2">Explore</h3>
+          <p class="text-xs text-[var(--color-muted)]">Interactive graph: agents ↔ models ↔ tools ↔ domains</p>
+        </a>
+        <a href="/news" class="card hover:border-[var(--color-cyber)] transition-colors">
+          <p class="font-mono text-[10px] tracking-widest uppercase text-[var(--color-muted)] mb-2">05</p>
+          <h3 class="text-base mb-2">News</h3>
+          <p class="text-xs text-[var(--color-muted)]">Tech + cybersecurity news with AI summaries</p>
+        </a>
+        <div class="card border-dashed border-[var(--color-dim)]">
+          <p class="font-mono text-[10px] tracking-widest uppercase text-[var(--color-dim)] mb-2">06</p>
+          <h3 class="text-base text-[var(--color-dim)] mb-2">Ask AI</h3>
+          <p class="text-xs text-[var(--color-dim)]">RAG-powered chat over the entire HPS OS knowledge base</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

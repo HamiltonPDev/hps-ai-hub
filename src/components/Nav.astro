@@ -1,0 +1,33 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/architecture', label: 'Architecture' },
+  { href: '/agents', label: 'Agents' },
+  { href: '/models', label: 'Models' },
+  { href: '/explore', label: 'Explore' },
+  { href: '/news', label: 'News' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="sticky top-0 z-50 backdrop-blur-xl border-b border-[var(--color-border)]" style="background: rgba(7, 9, 17, 0.9);">
+  <div class="max-w-5xl mx-auto px-7 flex items-center overflow-x-auto scrollbar-none">
+    <a href="/" class="font-serif font-bold text-[var(--color-bright)] text-sm mr-6 shrink-0 py-3">
+      HPS<span class="text-[var(--color-proptech)]">·</span>AI
+    </a>
+    {navLinks.map(link => (
+      <a
+        href={link.href}
+        class:list={[
+          'font-mono text-[10px] tracking-[0.1em] uppercase px-4 py-3.5 border-b-2 whitespace-nowrap transition-colors duration-150',
+          currentPath === link.href
+            ? 'text-[var(--color-bright)] border-[var(--color-proptech)]'
+            : 'text-[var(--color-muted)] border-transparent hover:text-[var(--color-bright)] hover:border-[var(--color-border2)]'
+        ]}
+      >
+        {link.label}
+      </a>
+    ))}
+  </div>
+</nav>
