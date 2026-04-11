@@ -1,0 +1,9 @@
+---
+interface Props {
+  domain: 'build' | 'operate' | 'grow' | 'secure';
+}
+
+const { domain } = Astro.props;
+---
+
+<span data-domain={domain}><slot /></span>

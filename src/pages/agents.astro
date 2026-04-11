@@ -1,15 +1,323 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Pill from '../components/Pill.astro';
+
+const agents = await getCollection('agents');
+
+const domainMap: Record<string, 'build' | 'operate' | 'grow' | 'secure'> = {
+  'Full-Stack': 'build',
+  'IoT':        'build',
+  'ML/DL':      'build',
+  'ML / DL':    'build',
+  'Proptech':   'operate',
+  'Business':   'operate',
+  'Business Ops': 'operate',
+  'Analytics':  'grow',
+  'Marketing':  'grow',
+  'Cybersecurity': 'secure',
+  'Security':   'secure',
+};
+
+function toDomain(d: string): 'build' | 'operate' | 'grow' | 'secure' {
+  for (const [key, val] of Object.entries(domainMap)) {
+    if (d.toLowerCase().includes(key.toLowerCase())) return val;
+  }
+  return 'build';
+}
 ---
 
-<BaseLayout title="Agent Roster — HPS AI Hub">
+<BaseLayout
+  title="Agent Roster — HPS AI Hub"
+  description="20 specialized AI agents across 8 domains. Each agent is category-routed to the right model for the task — Opus for architecture, Sonnet for implementation, Haiku for automation."
+>
   <Nav />
-  <main class="max-w-5xl mx-auto px-7 py-18">
-    <p class="sec-label">02 — Agent Roster</p>
-    <h2 class="mb-8">20 Agents,<br />Category-Routed</h2>
-    <p class="text-[var(--color-muted)]">Full agent roster with model assignments and domain mappings. Content being ported from master reference document.</p>
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">02 — Agent Roster</p>
+        <h1 class="hero-title">The agents.</h1>
+        <p class="hero-lede">
+          20 specialized agents, each wired to a domain and a model tier.
+          Category routing means the right model fires for the right task —
+          no wasted tokens, no generic answers.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Agent grid ────────────────────────────────────────────────── -->
+    <section class="agents-section">
+      <div class="agents-inner">
+        <h2 class="section-title" data-animate="fade-up">Full roster</h2>
+
+        {agents.length === 0 ? (
+          <p class="empty-state" data-animate="fade-up">
+            Agent definitions are being ported from the master reference document.
+            Check back soon — or read the <a href="/architecture">architecture overview</a> for the full picture.
+          </p>
+        ) : (
+          <ul class="agent-grid" role="list">
+            {agents.map((agent) => (
+              <li class="agent-card" data-animate="fade-up">
+                <div class="agent-card-header">
+                  <span class="agent-name">{agent.data.name}</span>
+                  {agent.data.domains?.length > 0 && (
+                    <div class="agent-pills">
+                      {agent.data.domains.map((d: string) => (
+                        <Pill domain={toDomain(d)}>{d}</Pill>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <p class="agent-role">{agent.data.role}</p>
+                {agent.data.model && (
+                  <p class="agent-model">Model: {agent.data.model}</p>
+                )}
+                {agent.data.category && (
+                  <p class="agent-category">{agent.data.category}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+
+    <!-- ── Domain legend ─────────────────────────────────────────────── -->
+    <section class="legend-section">
+      <div class="legend-inner">
+        <h2 class="section-title" data-animate="fade-up">Domain map</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Every agent belongs to one of eight sub-domains, grouped into four routing categories.
+        </p>
+        <ul class="legend-list" role="list">
+          <li class="legend-item" data-animate="fade-up">
+            <Pill domain="build">Build</Pill>
+            <span class="legend-desc">Full-Stack · IoT · ML / DL</span>
+          </li>
+          <li class="legend-item" data-animate="fade-up">
+            <Pill domain="operate">Operate</Pill>
+            <span class="legend-desc">Proptech · Business Ops</span>
+          </li>
+          <li class="legend-item" data-animate="fade-up">
+            <Pill domain="grow">Grow</Pill>
+            <span class="legend-desc">Analytics · Marketing</span>
+          </li>
+          <li class="legend-item" data-animate="fade-up">
+            <Pill domain="secure">Secure</Pill>
+            <span class="legend-desc">Cybersecurity</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  /* ── Main wrapper ──────────────────────────────────────────────────── */
+
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Agent section ─────────────────────────────────────────────────── */
+
+  .agents-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .agents-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12);
+  }
+
+  .section-lede {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-10);
+    line-height: 1.65;
+  }
+
+  .empty-state {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    line-height: 1.65;
+  }
+
+  /* ── Agent grid ─────────────────────────────────────────────────────── */
+
+  .agent-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 640px) {
+    .agent-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .agent-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .agent-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-8);
+    transition: border-color var(--duration-quick) var(--ease-standard);
+  }
+
+  .agent-card:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .agent-card-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .agent-name {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+
+  .agent-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .agent-role {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-2);
+    line-height: 1.5;
+  }
+
+  .agent-model {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: var(--tracking-wide);
+    margin: 0 0 var(--space-1);
+  }
+
+  .agent-category {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  /* ── Legend section ─────────────────────────────────────────────────── */
+
+  .legend-section {
+    /* last section */
+  }
+
+  .legend-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .legend-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .legend-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+</style>
