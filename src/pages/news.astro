@@ -1,15 +1,231 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+
+const entries = await getCollection('news');
+
+// Sort newest first
+const sorted = [...entries].sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+function formatDate(d: Date): string {
+  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+}
 ---
 
-<BaseLayout title="News — HPS AI Hub">
+<BaseLayout
+  title="News — HPS AI Hub"
+  description="Tech and cybersecurity news with AI summaries. Curated from RSS feeds and processed through the HPS multi-model pipeline."
+>
   <Nav />
-  <main class="max-w-5xl mx-auto px-7 py-18">
-    <p class="sec-label">05 — News</p>
-    <h2 class="mb-8">Tech & Cybersecurity<br />Intelligence</h2>
-    <p class="text-[var(--color-muted)]">AI-summarized tech and cybersecurity news from curated RSS feeds. WorldMonitor-inspired with Groq AI summaries.</p>
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">05 — News</p>
+        <h1 class="hero-title">Changelog.</h1>
+        <p class="hero-lede">
+          Tech and cybersecurity developments, filtered through the HPS lens.
+          AI-summarized from curated sources. Updated when something actually matters.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Entry list ────────────────────────────────────────────────── -->
+    <section class="entries-section">
+      <div class="entries-inner">
+
+        {sorted.length === 0 ? (
+          <p class="empty-state" data-animate="fade-up">
+            News entries are being ported from the master reference document.
+            The feed pipeline is being wired to the n8n automation layer.
+          </p>
+        ) : (
+          <ol class="entry-list" role="list">
+            {sorted.map((entry) => (
+              <li class="entry-item" data-animate="fade-up">
+                <time class="entry-date" datetime={entry.data.date.toISOString()}>
+                  {formatDate(entry.data.date)}
+                </time>
+                <div class="entry-body">
+                  <h2 class="entry-title">{entry.data.title}</h2>
+                  <p class="entry-excerpt">{entry.data.excerpt}</p>
+                  {entry.data.tags?.length > 0 && (
+                    <ul class="entry-tags" role="list" aria-label="Tags">
+                      {entry.data.tags.map((tag: string) => (
+                        <li class="entry-tag">{tag}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {entry.data.source && (
+                    <p class="entry-source">Source: {entry.data.source}</p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        )}
+
+      </div>
+    </section>
+
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  /* ── Main wrapper ──────────────────────────────────────────────────── */
+
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Entries section ────────────────────────────────────────────────── */
+
+  .entries-section {
+    /* single content section */
+  }
+
+  .entries-inner {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .empty-state {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+
+  /* ── Entry list ─────────────────────────────────────────────────────── */
+
+  .entry-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .entry-item {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: var(--space-8);
+    align-items: flex-start;
+  }
+
+  @media (max-width: 480px) {
+    .entry-item {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+  }
+
+  .entry-date {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-subtle);
+    letter-spacing: var(--tracking-normal);
+    padding-top: 0.35em;
+    display: block;
+  }
+
+  .entry-body {
+    /* prose column */
+  }
+
+  .entry-title {
+    font-size: var(--font-size-xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    line-height: 1.2;
+    color: var(--color-text);
+    margin: 0 0 var(--space-4);
+  }
+
+  .entry-excerpt {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin: 0 0 var(--space-4);
+  }
+
+  .entry-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0 0 var(--space-3);
+    padding: 0;
+  }
+
+  .entry-tag {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-0-5) var(--space-2);
+  }
+
+  .entry-source {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: var(--tracking-wide);
+    margin: 0;
+  }
+</style>

@@ -11,23 +11,103 @@ const navLinks = [
 const currentPath = Astro.url.pathname;
 ---
 
-<nav class="sticky top-0 z-50 backdrop-blur-xl border-b border-[var(--color-border)]" style="background: rgba(7, 9, 17, 0.9);">
-  <div class="max-w-5xl mx-auto px-7 flex items-center overflow-x-auto scrollbar-none">
-    <a href="/" class="font-serif font-bold text-[var(--color-bright)] text-sm mr-6 shrink-0 py-3">
-      HPS<span class="text-[var(--color-proptech)]">·</span>AI
-    </a>
-    {navLinks.map(link => (
-      <a
-        href={link.href}
-        class:list={[
-          'font-mono text-[10px] tracking-[0.1em] uppercase px-4 py-3.5 border-b-2 whitespace-nowrap transition-colors duration-150',
-          currentPath === link.href
-            ? 'text-[var(--color-bright)] border-[var(--color-proptech)]'
-            : 'text-[var(--color-muted)] border-transparent hover:text-[var(--color-bright)] hover:border-[var(--color-border2)]'
-        ]}
-      >
-        {link.label}
-      </a>
-    ))}
-  </div>
-</nav>
+<header class="nav-header">
+  <nav aria-label="Main navigation" class="nav-inner">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">HPS·AI</a>
+      <ul class="nav-links" role="list">
+        {navLinks.map(link => (
+          <li>
+            <a
+              href={link.href}
+              class="nav-link"
+              aria-current={currentPath === link.href ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .nav-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-background);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-inner {
+    /* full-width inner — container constrains content */
+  }
+
+  .nav-container {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-4);
+    padding-inline: var(--space-6);
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .nav-logo {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: color var(--duration-quick) var(--ease-standard);
+  }
+
+  .nav-logo:hover {
+    color: var(--color-text);
+  }
+
+  .nav-logo:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+  }
+
+  .nav-link {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    transition: color var(--duration-quick) var(--ease-standard);
+  }
+
+  .nav-link:hover {
+    color: var(--color-text);
+  }
+
+  .nav-link[aria-current="page"] {
+    color: var(--color-accent);
+  }
+
+  .nav-link:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 4px;
+  }
+</style>

@@ -4,12 +4,148 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 ---
 
-<BaseLayout title="Explore — HPS AI Hub">
+<BaseLayout
+  title="Explore — HPS AI Hub"
+  description="Interactive graph visualization of the HPS AI ecosystem — agents, models, tools, and domains mapped as a connected network."
+>
   <Nav />
-  <main class="max-w-5xl mx-auto px-7 py-18">
-    <p class="sec-label">04 — Explore</p>
-    <h2 class="mb-8">Interactive<br />Ecosystem Map</h2>
-    <p class="text-[var(--color-muted)]">Interactive graph visualization of agents, models, tools, and domains. React island component coming soon.</p>
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">04 — Explore</p>
+        <h1 class="hero-title">Explore.</h1>
+        <p class="hero-lede">
+          A live graph of the entire HPS AI ecosystem — agents connected to models,
+          models connected to domains, domains connected to tools. Every relationship
+          made visible and navigable.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Placeholder ───────────────────────────────────────────────── -->
+    <section class="placeholder-section">
+      <div class="placeholder-inner">
+        <div class="placeholder-card" data-animate="fade-up">
+          <p class="placeholder-label">Coming soon</p>
+          <h2 class="placeholder-title">Interactive graph</h2>
+          <p class="placeholder-body">
+            The ecosystem graph is being built as a React island component.
+            It will render agents, models, tools, and domains as interactive nodes —
+            filterable by domain, clickable for detail panels.
+          </p>
+          <p class="placeholder-cta">
+            In the meantime, the static reference is in the{' '}
+            <a href="/architecture">architecture overview</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  /* ── Main wrapper ──────────────────────────────────────────────────── */
+
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Placeholder section ────────────────────────────────────────────── */
+
+  .placeholder-section {
+    /* single content area */
+  }
+
+  .placeholder-inner {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .placeholder-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-12);
+  }
+
+  .placeholder-label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-4);
+  }
+
+  .placeholder-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+  }
+
+  .placeholder-body {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin: 0 0 var(--space-4);
+    max-width: var(--content-max);
+  }
+
+  .placeholder-cta {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+</style>

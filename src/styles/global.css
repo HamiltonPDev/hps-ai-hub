@@ -1,171 +1,366 @@
 @import "tailwindcss";
 
-/* ═══ HPS AI Hub Design System ════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════════════
+   HPS AI Hub — Design System Token Layer
+   minimalist-theme-redesign | Phase 1
+
+   Architecture: Primitive → Semantic → Component (three-layer)
+   Primitives: raw values, no semantic meaning, never in components
+   Semantics:  role-based, reference primitives via var()
+   Components: scoped overrides, reference semantics only
+   ═══════════════════════════════════════════════════════════════════════ */
 
 @theme {
-  /* Base palette */
-  --color-bg: #070911;
-  --color-bg2: #0c0f17;
-  --color-bg3: #10141e;
-  --color-surface: #141928;
-  --color-border: #1c2235;
-  --color-border2: #263050;
-  --color-dim: #38425a;
-  --color-muted: #5a6585;
-  --color-text: #b8c4e0;
-  --color-bright: #dce8ff;
 
-  /* Domain accent palette */
-  --color-proptech: #f97316;
-  --color-iot: #2dd4bf;
-  --color-analytics: #facc15;
-  --color-ml: #c084fc;
-  --color-fullstack: #60a5fa;
-  --color-cyber: #f87171;
-  --color-marketing: #e879f9;
-  --color-business: #74aa9c;
+  /* ─── §2.1 Primitive Neutral Scale (10 tokens, dark-mode anchored) ─── */
+  /* Not pure #000 (harsh under artificial light) — #0d0d0d is editorial warmth */
+  /* Not pure #fff — #e8e8e8 at ~17.5:1 removes halation without losing AAA */
 
-  /* Model colors */
-  --color-codex: #10b981;
-  --color-claude: #f97316;
-  --color-gemini: #818cf8;
-  --color-gpt: #74aa9c;
-  --color-deepseek: #4d6bfe;
-  --color-groq: #f97316;
-  --color-llama: #0ea5e9;
+  --primitive-neutral-0:    oklch(8.5% 0 0);   /* #0d0d0d — page background */
+  --primitive-neutral-50:   oklch(11% 0 0);    /* #111111 — surface, subtle lift */
+  --primitive-neutral-100:  oklch(14% 0 0);    /* #181818 — elevated surface */
+  --primitive-neutral-150:  oklch(17% 0 0);    /* #1f1f1f — nested elevation */
+  --primitive-neutral-200:  oklch(20% 0 0);    /* #262626 — border hairline */
+  --primitive-neutral-300:  oklch(26% 0 0);    /* #333333 — border strong */
+  --primitive-neutral-500:  oklch(40% 0 0);    /* #575757 — text subtle (tertiary) */
+  --primitive-neutral-700:  oklch(58% 0 0);    /* #858585 — text muted (secondary) */
+  --primitive-neutral-900:  oklch(82% 0 0);    /* #c8c8c8 — reserved, not in dark v1 */
+  --primitive-neutral-950:  oklch(92% 0 0);    /* #e8e8e8 — primary text */
 
-  /* Typography */
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --font-serif: 'Fraunces', ui-serif, Georgia, serif;
-  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  /* ─── §2.2 Primitive Amber Scale (5 tokens, primary accent = amber-500) ─ */
+  /* amber-500 at L70% on neutral-0 (#0d0d0d): ~8.8:1 — clears WCAG AAA */
+  /* Warm amber over system blue: measured, editorial, unhurried */
+
+  --primitive-amber-300:    oklch(78% 0.10 55);   /* #d4a96a — hover on dark surfaces */
+  --primitive-amber-400:    oklch(74% 0.115 54);  /* #c99358 — accent hover state */
+  --primitive-amber-500:    oklch(70% 0.12 55);   /* #c08845 — PRIMARY ACCENT */
+  --primitive-amber-600:    oklch(65% 0.12 54);   /* #b07638 — pressed/active state */
+  --primitive-amber-700:    oklch(58% 0.11 54);   /* #9a632d — dark accent bg */
+
+  /* ─── §2.3 Primitive Domain Colors (4 tokens, AMENDED crimson) ────────── */
+  /* Chroma kept low (0.09–0.10): editorial, not neon. Amber at 0.12 is focal. */
+  /* CRITICAL: crimson-500 = oklch(65% 0.10 15) / #c55858 — AMENDED for WCAG AA */
+  /* (original oklch(58% 0.10 15) / #a84848 gave 4.1:1 — marginal; amended ≥5.2:1) */
+
+  --primitive-teal-500:     oklch(68% 0.10 195);  /* #3ba8a8 — build domain, ~7.8:1 */
+  --primitive-warm-500:     oklch(66% 0.09 40);   /* #b88a5c — operate domain, ~6.7:1 */
+  --primitive-green-500:    oklch(66% 0.10 145);  /* #3fa870 — grow domain, ~7.0:1 */
+  --primitive-crimson-500:  oklch(65% 0.10 15);   /* #c55858 — secure domain, ~5.2:1 ← AMENDED */
+
+  /* ─── §4.2 Typography: Font Families (3 tokens) ─────────────────────── */
+
+  --font-display: 'Fraunces Variable', Georgia, serif;
+  --font-body:    'DM Sans Variable', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono Variable', 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ─── §4.1 Typography: Size Scale (10 tokens, 1.250 Major Third, 16px base) */
+  /* clamp() applied to 4xl and 5xl only — display/hero sizes. h1 (3xl) is fixed. */
+
+  --font-size-xs:   0.64rem;                                        /* 10.24px — metadata, badges */
+  --font-size-sm:   0.8rem;                                         /* 12.8px  — UI labels, timestamps */
+  --font-size-base: 1rem;                                           /* 16px    — body copy (anchor) */
+  --font-size-md:   1.25rem;                                        /* 20px    — lead paragraph */
+  --font-size-lg:   1.563rem;                                       /* 25px    — h4, h5 */
+  --font-size-xl:   1.953rem;                                       /* 31.25px — h3 */
+  --font-size-2xl:  2.441rem;                                       /* 39.06px — h2 (Fraunces) */
+  --font-size-3xl:  3.052rem;                                       /* 48.83px — h1 article (Fraunces) */
+  --font-size-4xl:  clamp(2.441rem, 2rem + 2.5vw, 3.815rem);       /* 39–61px — display-sm (fluid) */
+  --font-size-5xl:  clamp(3.052rem, 2.5rem + 2.5vw, 4.768rem);     /* 48–76px — display-lg (fluid) */
+
+  /* ─── §4.6 Typography: Letter-Spacing Tokens (5 tokens) ─────────────── */
+
+  --tracking-tight:   -0.035em;   /* display headings */
+  --tracking-snug:    -0.02em;    /* h2, h3 */
+  --tracking-normal:   0em;       /* body, base */
+  --tracking-wide:     0.05em;    /* uppercase labels, small caps */
+  --tracking-wider:    0.1em;     /* metadata, badge text */
+
+  /* ─── §5 Spacing Scale (17 tokens, 4px linear, base = 0.25rem = 4px) ── */
+
+  --space-0:    0;
+  --space-px:   1px;
+  --space-0-5:  0.125rem;    /* 2px  — micro gaps */
+  --space-1:    0.25rem;     /* 4px  — inline element gaps */
+  --space-2:    0.5rem;      /* 8px  — tight spacing */
+  --space-3:    0.75rem;     /* 12px — compact padding */
+  --space-4:    1rem;        /* 16px — standard padding */
+  --space-5:    1.25rem;     /* 20px */
+  --space-6:    1.5rem;      /* 24px — section internal spacing */
+  --space-8:    2rem;        /* 32px — card padding, column gap */
+  --space-10:   2.5rem;      /* 40px */
+  --space-12:   3rem;        /* 48px — section padding */
+  --space-16:   4rem;        /* 64px — section separation */
+  --space-20:   5rem;        /* 80px */
+  --space-24:   6rem;        /* 96px — major section breaks */
+  --space-32:   8rem;        /* 128px */
+  --space-48:   12rem;       /* 192px — hero vertical space */
+
+  /* Layout containers */
+  --container-max: 72rem;    /* 1152px — manifesto max-width */
+  --content-max:   44rem;    /* 704px  — reading-optimal prose */
+
+  /* ─── §6 Radius Tokens (exactly 5, max 6px except full) ─────────────── */
+
+  --radius-none:  0;
+  --radius-sm:    2px;       /* inline code, xs badges */
+  --radius-md:    4px;       /* default: cards, panels */
+  --radius-lg:    6px;       /* larger containers — maximum allowed */
+  --radius-full:  9999px;    /* pills only */
+
+  /* ─── §6 Shadow Token (exactly 1) ───────────────────────────────────── */
+  /* OKLCH for consistency. 0.4 opacity: dark bg absorbs shadows (higher than light-mode) */
+  /* Elevation communicated via surface color steps, not shadow stacking */
+
+  --shadow-sm:  0 1px 2px 0 oklch(0% 0 0 / 0.4);
+
+  /* ─── §7 Motion: Duration Tokens (4 tokens) ─────────────────────────── */
+
+  --duration-instant:  0ms;
+  --duration-quick:    150ms;   /* hover feedback — fast, decisive */
+  --duration-medium:   300ms;   /* standard transitions, panel reveals */
+  --duration-slow:     500ms;   /* entrance animations, stagger sequences */
+
+  /* ─── §7 Motion: Easing Tokens (3 tokens) ───────────────────────────── */
+
+  --ease-standard:  cubic-bezier(0.4, 0, 0.2, 1);   /* Material standard — general purpose */
+  --ease-enter:     cubic-bezier(0, 0, 0.2, 1);      /* Decelerate — elements entering */
+  --ease-exit:      cubic-bezier(0.4, 0, 1, 1);      /* Accelerate — elements leaving */
+
+  /* ─── §3 Semantic Color Tokens — Background / Surface (5 tokens) ────── */
+  /* Reference primitives only — NO raw hex, rgb(), oklch() here */
+
+  --color-background:     var(--primitive-neutral-0);    /* #0d0d0d — page background */
+  --color-surface:        var(--primitive-neutral-50);   /* #111111 — cards, elevated panels */
+  --color-surface-raised: var(--primitive-neutral-100);  /* #181818 — nested elevation, code blocks */
+  --color-border:         var(--primitive-neutral-200);  /* #262626 — hairline dividers */
+  --color-border-strong:  var(--primitive-neutral-300);  /* #333333 — emphasized borders */
+
+  /* ─── §3 Semantic Color Tokens — Text Hierarchy (3 tokens) ──────────── */
+
+  --color-text:        var(--primitive-neutral-950);   /* #e8e8e8 — primary body text */
+  --color-text-muted:  var(--primitive-neutral-700);   /* #858585 — secondary, timestamps */
+  --color-text-subtle: var(--primitive-neutral-500);   /* #575757 — tertiary, metadata ONLY */
+
+  /* ─── §3 Semantic Color Tokens — Accent / Amber (4 tokens) ──────────── */
+
+  --color-accent:       var(--primitive-amber-500);                                   /* #c08845 — links, CTAs */
+  --color-accent-hover: var(--primitive-amber-400);                                   /* #c99358 — hover state */
+  --color-accent-muted: color-mix(in oklch, var(--primitive-amber-500) 15%, transparent); /* subtle accent bg */
+  --color-focus-ring:   var(--primitive-amber-500);                                   /* #c08845 — 2px ring */
+
+  /* ─── §3 Semantic Color Tokens — Domain (4 tokens, content-only) ────── */
+  /* NEVER in Nav, Footer, BaseLayout, or pages directly — confined to Pill.astro */
+
+  --color-domain-build:   var(--primitive-teal-500);     /* #3ba8a8 — Full-Stack, IoT, ML/DL */
+  --color-domain-operate: var(--primitive-warm-500);     /* #b88a5c — Proptech, Business Ops */
+  --color-domain-grow:    var(--primitive-green-500);    /* #3fa870 — Analytics, Marketing */
+  --color-domain-secure:  var(--primitive-crimson-500);  /* #c55858 — Cybersecurity (AMENDED) */
+
+  /* ─── §8 Component Tokens — Pill Backgrounds (4 tokens) ─────────────── */
+  /* Reference semantics only — NO primitives directly */
+
+  --pill-bg-build:   color-mix(in oklch, var(--color-domain-build) 15%, transparent);
+  --pill-bg-operate: color-mix(in oklch, var(--color-domain-operate) 15%, transparent);
+  --pill-bg-grow:    color-mix(in oklch, var(--color-domain-grow) 15%, transparent);
+  --pill-bg-secure:  color-mix(in oklch, var(--color-domain-secure) 15%, transparent);
+
+} /* end @theme */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   §7 prefers-reduced-motion override
+   OUTSIDE @theme — @theme cannot be placed inside @media (Tailwind 4 constraint)
+   :root overrides are picked up at runtime by Tailwind's CSS custom property refs
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-quick:  0.01ms;
+    --duration-medium: 0.01ms;
+    --duration-slow:   0.01ms;
+  }
 }
 
-/* ═══ Base styles ═══════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════════════
+   Base element resets
+   ═══════════════════════════════════════════════════════════════════════ */
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background: var(--color-bg);
+  background-color: var(--color-background);
   color: var(--color-text);
-  font-family: var(--font-sans);
-  font-size: 14.5px;
-  line-height: 1.7;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* ═══ Typography ═══════════════════════════════════════════════════ */
-h1, h2, h3 {
-  font-family: var(--font-serif);
-  color: var(--color-bright);
-  letter-spacing: -0.01em;
+/* ─── Typography: Fraunces scoped to display, h1, h2 ONLY ───────────── */
+
+h1,
+h2,
+[data-display],
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-feature-settings: "kern" 1, "liga" 1, "dlig" 0, "ss01" 0;
+  font-variant-ligatures: common-ligatures;
 }
 
-h1 {
-  font-size: clamp(36px, 7vw, 80px);
-  font-weight: 800;
-  line-height: 0.98;
-}
+/* ─── Code elements: monospace + surface-raised background ───────────── */
 
-h2 {
-  font-size: clamp(22px, 3.5vw, 38px);
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-h3 {
-  font-size: 20px;
-  font-weight: 600;
-}
-
-/* ═══ Code blocks ═══════════════════════════════════════════════════ */
-code {
+code:not(pre code) {
   font-family: var(--font-mono);
-  font-size: 11.5px;
-  background: var(--color-bg3);
+  font-size: 0.875em;
+  background: var(--color-surface-raised);
+  color: var(--color-accent);
+  padding: 0.125em 0.375em;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
-  border-radius: 4px;
-  padding: 1px 6px;
-  color: var(--color-iot);
 }
 
 pre {
-  background: var(--color-bg3);
+  background: var(--color-surface-raised);
   border: 1px solid var(--color-border);
-  border-radius: 10px;
-  padding: 22px;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  color: var(--color-text);
-  line-height: 1.85;
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
   overflow-x: auto;
-}
-
-/* ═══ Section labels (monospace eyebrow) ═══════════════════════════ */
-.sec-label {
   font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  margin-bottom: 10px;
+  font-size: var(--font-size-sm);
+  line-height: 1.7;
+  color: var(--color-text);
 }
 
-/* ═══ Links ════════════════════════════════════════════════════════ */
+pre code {
+  font-family: var(--font-mono);
+  font-size: inherit;
+  background: none;
+  color: inherit;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+/* ─── Prose links ────────────────────────────────────────────────────── */
+/* Hover changes color only — NO transform or layout transitions (spec §5.4) */
+
 a {
-  color: var(--color-fullstack);
-  text-decoration: none;
-  transition: color 0.15s;
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in oklch, var(--color-accent) 50%, transparent);
+  transition:
+    color var(--duration-quick) var(--ease-standard),
+    text-decoration-color var(--duration-quick) var(--ease-standard);
 }
+
 a:hover {
-  color: var(--color-bright);
+  color: var(--color-accent-hover);
+  text-decoration-color: var(--color-accent-hover);
 }
 
-/* ═══ Callouts ═════════════════════════════════════════════════════ */
-.callout {
-  border-left: 3px solid;
-  border-radius: 0 8px 8px 0;
-  padding: 13px 17px;
-  margin: 14px 0;
-  font-size: 13.5px;
-}
-.callout-info { border-color: var(--color-fullstack); background: rgba(96, 165, 250, 0.06); }
-.callout-warn { border-color: var(--color-analytics); background: rgba(250, 204, 21, 0.06); }
-.callout-error { border-color: var(--color-cyber); background: rgba(248, 113, 113, 0.06); }
-.callout-success { border-color: var(--color-iot); background: rgba(45, 212, 191, 0.06); }
+/* ─── Global focus ring — all interactive elements ───────────────────── */
 
-/* ═══ Domain pills ═════════════════════════════════════════════════ */
-.pill {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Keyframe animations
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Entrance animation data-attribute selectors
+   Default state: hidden. IntersectionObserver (BaseLayout.astro) adds
+   [data-animate-active] when element enters viewport.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+[data-animate="fade-up"] {
+  opacity: 0;
+}
+
+[data-animate="fade-in"] {
+  opacity: 0;
+}
+
+[data-animate-active][data-animate="fade-up"] {
+  animation: fadeUp var(--duration-slow) var(--ease-enter) forwards;
+}
+
+[data-animate-active][data-animate="fade-in"] {
+  animation: fadeIn var(--duration-medium) var(--ease-enter) forwards;
+}
+
+/* ─── Stagger for list/grid children via :nth-child ─────────────────── */
+/* 60ms increments for children 1–5 */
+
+[data-animate-active][data-animate="fade-up"]:nth-child(1) { animation-delay: 0ms; }
+[data-animate-active][data-animate="fade-up"]:nth-child(2) { animation-delay: 60ms; }
+[data-animate-active][data-animate="fade-up"]:nth-child(3) { animation-delay: 120ms; }
+[data-animate-active][data-animate="fade-up"]:nth-child(4) { animation-delay: 180ms; }
+[data-animate-active][data-animate="fade-up"]:nth-child(5) { animation-delay: 240ms; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Domain pill pattern — [data-domain] attribute selectors
+   Domain colors GATED here. These are the ONLY place in global.css that
+   references --color-domain-* directly in a visual rule.
+   Components: set data-domain attribute; CSS drives all styling.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+[data-domain] {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-0-5) var(--space-2);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  padding: 5px 14px;
-  border-radius: 99px;
-  border: 1px solid;
-  display: inline-block;
+  text-decoration: none;
 }
 
-/* ═══ Model tags ═══════════════════════════════════════════════════ */
-.model-tag {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  border: 1px solid;
-  display: inline-block;
-  white-space: nowrap;
+[data-domain="build"] {
+  background: color-mix(in oklch, var(--color-domain-build) 15%, transparent);
+  color: var(--color-domain-build);
+  border: 1px solid color-mix(in oklch, var(--color-domain-build) 30%, transparent);
 }
 
-/* ═══ Cards ════════════════════════════════════════════════════════ */
-.card {
-  background: var(--color-bg2);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 20px;
+[data-domain="operate"] {
+  background: color-mix(in oklch, var(--color-domain-operate) 15%, transparent);
+  color: var(--color-domain-operate);
+  border: 1px solid color-mix(in oklch, var(--color-domain-operate) 30%, transparent);
 }
 
-/* ═══ Scrollbar ════════════════════════════════════════════════════ */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--color-bg); }
-::-webkit-scrollbar-thumb { background: var(--color-border2); border-radius: 3px; }
+[data-domain="grow"] {
+  background: color-mix(in oklch, var(--color-domain-grow) 15%, transparent);
+  color: var(--color-domain-grow);
+  border: 1px solid color-mix(in oklch, var(--color-domain-grow) 30%, transparent);
+}
+
+[data-domain="secure"] {
+  background: color-mix(in oklch, var(--color-domain-secure) 15%, transparent);
+  color: var(--color-domain-secure);
+  border: 1px solid color-mix(in oklch, var(--color-domain-secure) 30%, transparent);
+}
