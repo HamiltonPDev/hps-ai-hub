@@ -1,11 +1,22 @@
 ---
-const navLinks = [
+type NavLink = { href: string; label: string; disabled?: boolean; todo?: string };
+
+const navLinks: NavLink[] = [
   { href: '/', label: 'Home' },
   { href: '/architecture', label: 'Architecture' },
   { href: '/agents', label: 'Agents' },
   { href: '/models', label: 'Models' },
   { href: '/explore', label: 'Explore' },
   { href: '/news', label: 'News' },
+  // Placeholders — each replaced by its owning content-migration sub-change.
+  // Each line has a unique TODO marker so downstream sub-changes can rg+Edit.
+  { href: '#', label: 'Skills',    disabled: true, todo: 'content-migration-4'  }, // TODO(content-migration-4)
+  { href: '#', label: 'Ecosystem', disabled: true, todo: 'content-migration-5'  }, // TODO(content-migration-5)
+  { href: '#', label: 'Workflow',  disabled: true, todo: 'content-migration-6'  }, // TODO(content-migration-6)
+  { href: '#', label: 'Roadmap',   disabled: true, todo: 'content-migration-8'  }, // TODO(content-migration-8)
+  { href: '#', label: 'Setup',     disabled: true, todo: 'content-migration-9a' }, // TODO(content-migration-9a)
+  { href: '#', label: 'Reference', disabled: true, todo: 'content-migration-9b' }, // TODO(content-migration-9b)
+  { href: '#', label: 'Domains',   disabled: true, todo: 'content-migration-11' }, // TODO(content-migration-11)
 ];
 
 const currentPath = Astro.url.pathname;
@@ -19,9 +30,11 @@ const currentPath = Astro.url.pathname;
         {navLinks.map(link => (
           <li>
             <a
-              href={link.href}
+              href={link.disabled ? '#' : link.href}
               class="nav-link"
-              aria-current={currentPath === link.href ? 'page' : undefined}
+              aria-current={!link.disabled && currentPath === link.href ? 'page' : undefined}
+              aria-disabled={link.disabled ? 'true' : undefined}
+              tabindex={link.disabled ? -1 : undefined}
             >
               {link.label}
             </a>
