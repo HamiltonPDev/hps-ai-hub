@@ -7,8 +7,12 @@ import Pill from '../components/Pill.astro';
 import { buildSlugSet, assertXref, assertXrefList } from '../lib/xref';
 
 const agents = await getCollection('agents');
-const domains = await getCollection('domains');
-const models = await getCollection('models');
+// domains and models are empty until Wave-1 sub-changes 3 and 11 populate them.
+// getCollection throws on empty glob, so we guard with try/catch.
+let domains: Awaited<ReturnType<typeof getCollection<'domains'>>> = [];
+let models: Awaited<ReturnType<typeof getCollection<'models'>>> = [];
+try { domains = await getCollection('domains'); } catch {}
+try { models = await getCollection('models'); } catch {}
 
 // Cross-reference validation — safe at Wave-1 because helpers skip empty target sets.
 const domainSet = buildSlugSet(domains);
