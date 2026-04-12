@@ -4,34 +4,67 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Pill from '../components/Pill.astro';
+import { buildSlugSet, assertXref, assertXrefList } from '../lib/xref';
 
 const agents = await getCollection('agents');
+const domains = await getCollection('domains');
+const models = await getCollection('models');
 
-const domainMap: Record<string, 'build' | 'operate' | 'grow' | 'secure'> = {
-  'Full-Stack': 'build',
-  'IoT':        'build',
-  'ML/DL':      'build',
-  'ML / DL':    'build',
-  'Proptech':   'operate',
-  'Business':   'operate',
-  'Business Ops': 'operate',
-  'Analytics':  'grow',
-  'Marketing':  'grow',
-  'Cybersecurity': 'secure',
-  'Security':   'secure',
-};
-
-function toDomain(d: string): 'build' | 'operate' | 'grow' | 'secure' {
-  for (const [key, val] of Object.entries(domainMap)) {
-    if (d.toLowerCase().includes(key.toLowerCase())) return val;
+// Cross-reference validation — safe at Wave-1 because helpers skip empty target sets.
+const domainSet = buildSlugSet(domains);
+const modelSet = buildSlugSet(models);
+for (const a of agents) {
+  if (domainSet.size > 0) {
+    assertXrefList(`agents/${a.id}`, 'domains', a.data.domains, domainSet, 'domains');
   }
-  return 'build';
+  if (modelSet.size > 0 && a.data.modelSlug) {
+    assertXref(`agents/${a.id}`, 'modelSlug', a.data.modelSlug, modelSet, 'models');
+  }
 }
+
+// TODO(sub-change-11): remove after domains collection populates — colors will resolve via getCollection('domains').
+// Once domains collection has items, replace this block with Pattern 1 from meta-design #93 §5:
+//   const domainColorBySlug = new Map(domains.map(d => [d.id.replace(/\.md$/, ''), d.data.color]));
+//   function pillFor(slug: string) { return domainColorBySlug.get(slug) ?? 'build'; }
+// For now, the domains collection is empty so we hardcode the authoritative slug → color map.
+const domainColorMap: Record<string, 'build' | 'operate' | 'grow' | 'secure'> = {
+  proptech: 'operate',
+  iot: 'operate',
+  fullstack: 'build',
+  'ml-dl': 'build',
+  analytics: 'grow',
+  cybersecurity: 'secure',
+  marketing: 'grow',
+  'business-ops': 'grow',
+};
+function pillFor(slug: string): 'build' | 'operate' | 'grow' | 'secure' {
+  return domainColorMap[slug] ?? 'build';
+}
+
+// Sort by category enum index → alphabetical within category.
+const CATEGORY_ORDER = [
+  'orchestration',
+  'planning',
+  'execution',
+  'worker',
+  'domain-specialist',
+  'security',
+  'read-only',
+] as const;
+type Category = typeof CATEGORY_ORDER[number];
+function categoryIndex(c?: string): number {
+  return c ? CATEGORY_ORDER.indexOf(c as Category) : 999;
+}
+const sortedAgents = [...agents].sort(
+  (a, b) =>
+    categoryIndex(a.data.category) - categoryIndex(b.data.category) ||
+    a.data.name.localeCompare(b.data.name),
+);
 ---
 
 <BaseLayout
   title="Agent Roster — HPS AI Hub"
-  description="20 specialized AI agents across 8 domains. Each agent is category-routed to the right model for the task — Opus for architecture, Sonnet for implementation, Haiku for automation."
+  description="19 specialized AI agents across 8 domains. Each agent is category-routed to the right model for the task — Opus for architecture, Sonnet for implementation, Haiku for automation."
 >
   <Nav />
 
@@ -43,7 +76,7 @@ function toDomain(d: string): 'build' | 'operate' | 'grow' | 'secure' {
         <p class="eyebrow">02 — Agent Roster</p>
         <h1 class="hero-title">The agents.</h1>
         <p class="hero-lede">
-          20 specialized agents, each wired to a domain and a model tier.
+          19 specialized agents, each wired to a domain and a model tier.
           Category routing means the right model fires for the right task —
           no wasted tokens, no generic answers.
         </p>
@@ -55,36 +88,37 @@ function toDomain(d: string): 'build' | 'operate' | 'grow' | 'secure' {
       <div class="agents-inner">
         <h2 class="section-title" data-animate="fade-up">Full roster</h2>
 
-        {agents.length === 0 ? (
-          <p class="empty-state" data-animate="fade-up">
-            Agent definitions are being ported from the master reference document.
-            Check back soon — or read the <a href="/architecture">architecture overview</a> for the full picture.
-          </p>
-        ) : (
-          <ul class="agent-grid" role="list">
-            {agents.map((agent) => (
-              <li class="agent-card" data-animate="fade-up">
-                <div class="agent-card-header">
-                  <span class="agent-name">{agent.data.name}</span>
-                  {agent.data.domains?.length > 0 && (
-                    <div class="agent-pills">
-                      {agent.data.domains.map((d: string) => (
-                        <Pill domain={toDomain(d)}>{d}</Pill>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <p class="agent-role">{agent.data.role}</p>
-                {agent.data.model && (
-                  <p class="agent-model">Model: {agent.data.model}</p>
+        <ul class="agent-grid" role="list">
+          {sortedAgents.map((agent) => (
+            <li class="agent-card" data-animate="fade-up">
+              <div class="agent-card-header">
+                <span class="agent-name">{agent.data.name}</span>
+                {agent.data.domains?.length > 0 && (
+                  <div class="agent-pills">
+                    {agent.data.domains.map((d: string) => (
+                      <Pill domain={pillFor(d)}>{d}</Pill>
+                    ))}
+                  </div>
                 )}
-                {agent.data.category && (
-                  <p class="agent-category">{agent.data.category}</p>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
+              </div>
+              <p class="agent-role">{agent.data.role}</p>
+              <p class="agent-description">{agent.data.description}</p>
+              <p class="agent-model">Model: {agent.data.model}</p>
+              {agent.data.modelAlternative && (
+                <p class="agent-alt">Alt: {agent.data.modelAlternative}</p>
+              )}
+              {agent.data.trigger && (
+                <p class="agent-trigger">Trigger: <code>{agent.data.trigger}</code></p>
+              )}
+              {agent.data.tools && agent.data.tools.length > 0 && (
+                <p class="agent-tools">Tools: {agent.data.tools.join(', ')}</p>
+              )}
+              {agent.data.category && (
+                <p class="agent-category">{agent.data.category}</p>
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
 
@@ -98,15 +132,15 @@ function toDomain(d: string): 'build' | 'operate' | 'grow' | 'secure' {
         <ul class="legend-list" role="list">
           <li class="legend-item" data-animate="fade-up">
             <Pill domain="build">Build</Pill>
-            <span class="legend-desc">Full-Stack · IoT · ML / DL</span>
+            <span class="legend-desc">Full-Stack · ML / DL</span>
           </li>
           <li class="legend-item" data-animate="fade-up">
             <Pill domain="operate">Operate</Pill>
-            <span class="legend-desc">Proptech · Business Ops</span>
+            <span class="legend-desc">Proptech · IoT</span>
           </li>
           <li class="legend-item" data-animate="fade-up">
             <Pill domain="grow">Grow</Pill>
-            <span class="legend-desc">Analytics · Marketing</span>
+            <span class="legend-desc">Analytics · Marketing · Business Ops</span>
           </li>
           <li class="legend-item" data-animate="fade-up">
             <Pill domain="secure">Secure</Pill>
@@ -199,13 +233,6 @@ function toDomain(d: string): 'build' | 'operate' | 'grow' | 'secure' {
     line-height: 1.65;
   }
 
-  .empty-state {
-    font-size: var(--font-size-base);
-    color: var(--color-text-muted);
-    max-width: var(--content-max);
-    line-height: 1.65;
-  }
-
   /* ── Agent grid ─────────────────────────────────────────────────────── */
 
   .agent-grid {
@@ -235,6 +262,9 @@ function toDomain(d: string): 'build' | 'operate' | 'grow' | 'secure' {
     border-radius: var(--radius-md);
     padding: var(--space-8);
     transition: border-color var(--duration-quick) var(--ease-standard);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
   }
 
   .agent-card:hover {
@@ -247,7 +277,7 @@ function toDomain(d: string): 'build' | 'operate' | 'grow' | 'secure' {
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--space-2);
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-2);
   }
 
   .agent-name {
@@ -267,8 +297,16 @@ function toDomain(d: string): 'build' | 'operate' | 'grow' | 'secure' {
   .agent-role {
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
-    margin: 0 0 var(--space-2);
+    margin: 0;
     line-height: 1.5;
+    font-style: italic;
+  }
+
+  .agent-description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: var(--space-1) 0 var(--space-2);
+    line-height: 1.6;
   }
 
   .agent-model {
@@ -276,7 +314,42 @@ function toDomain(d: string): 'build' | 'operate' | 'grow' | 'secure' {
     font-size: var(--font-size-xs);
     color: var(--color-text-subtle);
     letter-spacing: var(--tracking-wide);
-    margin: 0 0 var(--space-1);
+    margin: 0;
+  }
+
+  .agent-alt {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: var(--tracking-wide);
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  .agent-trigger {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: var(--tracking-wide);
+    margin: 0;
+  }
+
+  .agent-trigger code {
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text);
+  }
+
+  .agent-tools {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: var(--tracking-wide);
+    margin: 0;
   }
 
   .agent-category {
@@ -285,7 +358,7 @@ function toDomain(d: string): 'build' | 'operate' | 'grow' | 'secure' {
     color: var(--color-text-subtle);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    margin: 0;
+    margin: var(--space-1) 0 0;
   }
 
   /* ── Legend section ─────────────────────────────────────────────────── */
