@@ -1,0 +1,336 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const skills = await getCollection('skills');
+
+// Domain slug → human-readable label
+const domainLabels: Record<string, string> = {
+  fullstack: 'Full-Stack Development',
+  proptech: 'Proptech',
+  iot: 'IoT & Smart Home',
+  cybersecurity: 'Cybersecurity',
+  ml: 'Machine Learning',
+  analytics: 'Analytics',
+  automation: 'Automation',
+  devops: 'DevOps',
+  marketing: 'Marketing',
+  'business-ops': 'Business Operations',
+};
+
+// Domain slug → Pill color (same transitory map as agents.astro)
+// TODO(sub-change-11): replace with getCollection('domains') lookup once domains populated.
+const domainColorMap: Record<string, 'build' | 'operate' | 'grow' | 'secure'> = {
+  fullstack: 'build',
+  proptech: 'operate',
+  iot: 'operate',
+  cybersecurity: 'secure',
+  ml: 'build',
+  analytics: 'grow',
+  automation: 'build',
+  devops: 'build',
+  marketing: 'grow',
+  'business-ops': 'grow',
+};
+
+// Domain display order — matches the skill inventory grouping from the proposal.
+const domainOrder = [
+  'fullstack',
+  'proptech',
+  'iot',
+  'automation',
+  'cybersecurity',
+  'business-ops',
+  'ml',
+  'devops',
+];
+
+// Group skills by domain, sort alphabetically within each domain.
+const byDomain = new Map<string, typeof skills>();
+for (const domain of domainOrder) {
+  const items = skills
+    .filter(s => s.data.domain === domain)
+    .sort((a, b) => a.data.name.localeCompare(b.data.name));
+  if (items.length > 0) {
+    byDomain.set(domain, items);
+  }
+}
+
+// Priority label for display
+const priorityLabels: Record<string, string> = {
+  critical: 'Critical',
+  important: 'Important',
+  'nice-to-have': 'Nice to have',
+};
+---
+
+<BaseLayout
+  title="Skill Library — HPS AI Hub"
+  description="12 domain-specific Claude Code skill files. Each configures models, MCPs, and conventions for a vertical."
+>
+  <Nav />
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">10 — Skill Files</p>
+        <h1 class="hero-title">12 HPS Skills</h1>
+        <p class="hero-lede">
+          Domain-specific Claude Code skill files. Each configures models, MCPs,
+          and conventions for a vertical.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Skill grid by domain ──────────────────────────────────────── -->
+    {[...byDomain.entries()].map(([domain, items]) => (
+      <section class="domain-section" id={domain}>
+        <div class="domain-inner">
+          <h2 class="section-title" data-animate="fade-up">
+            {domainLabels[domain] ?? domain}
+          </h2>
+
+          <ul class="skill-grid" role="list">
+            {items.map((skill) => (
+              <li class="skill-card" data-animate="fade-up">
+                <div class="skill-card-header">
+                  <span class="skill-name">{skill.data.name}</span>
+                  <span
+                    class="skill-domain-badge"
+                    data-domain={domainColorMap[skill.data.domain] ?? 'build'}
+                  >
+                    {skill.data.domain}
+                  </span>
+                </div>
+                <p class="skill-description">{skill.data.description}</p>
+                <div class="skill-meta">
+                  <span class="skill-status" data-installed={String(skill.data.installed)}>
+                    {skill.data.installed ? 'Installed' : 'Planned'}
+                  </span>
+                  {skill.data.priority && (
+                    <span class="skill-priority" data-priority={skill.data.priority}>
+                      {priorityLabels[skill.data.priority] ?? skill.data.priority}
+                    </span>
+                  )}
+                  {skill.data.bundledMcp && (
+                    <span class="skill-mcp">
+                      MCP: <code>{skill.data.bundledMcp}</code>
+                    </span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    ))}
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* ── Main wrapper ──────────────────────────────────────────────────── */
+
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Domain sections ───────────────────────────────────────────────── */
+
+  .domain-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .domain-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12);
+  }
+
+  /* ── Skill grid ────────────────────────────────────────────────────── */
+
+  .skill-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 640px) {
+    .skill-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .skill-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ── Skill card ────────────────────────────────────────────────────── */
+
+  .skill-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-8);
+    transition: border-color var(--duration-quick) var(--ease-standard);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .skill-card:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .skill-card-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .skill-name {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+
+  /* Domain badge reuses the global [data-domain] pill styles from global.css */
+  .skill-domain-badge {
+    /* Inherits [data-domain] styles from global.css */
+  }
+
+  .skill-description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: var(--space-1) 0 var(--space-2);
+    line-height: 1.6;
+  }
+
+  /* ── Skill metadata row ────────────────────────────────────────────── */
+
+  .skill-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: auto;
+    padding-top: var(--space-2);
+  }
+
+  .skill-status {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: var(--space-0-5) var(--space-2);
+    border-radius: var(--radius-full);
+  }
+
+  .skill-status[data-installed="false"] {
+    color: var(--color-text-subtle);
+    border: 1px solid var(--color-border);
+    background: transparent;
+  }
+
+  .skill-status[data-installed="true"] {
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    background: var(--color-accent-muted);
+  }
+
+  .skill-priority {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-subtle);
+  }
+
+  .skill-priority[data-priority="critical"] {
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  .skill-mcp {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .skill-mcp code {
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text);
+  }
+</style>
