@@ -1,0 +1,475 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Unified Workflow — HPS AI Hub"
+  description="One workflow: SDD handles planning, OmO handles execution, Engram persists everything across sessions."
+>
+  <Nav />
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow">06 — Unified Workflow</p>
+        <h1 class="hero-title">SDD Planning +<br/>OmO Execution</h1>
+        <p class="hero-lede">
+          One workflow, not five. <strong>SDD</strong> (gentle-ai) handles planning — what to build.
+          <strong>OmO</strong> handles execution — how to build it, with the right model for each task.
+          <strong>Engram</strong> persists everything across sessions.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── §1 Main Workflow Routing ─────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title">Workflow Routing</h2>
+
+        <pre class="diagram">USER types in OpenCode
+  │
+  ├─ /session-{"'{domain}'"}        ← Domain preset (skills + models + MCPs)
+  │
+  ├─ TRIVIAL ("fix typo")    → Direct execution (category: quick)
+  │                              Model: GPT-5.4 Mini or Qwen 3 Coder (FREE)
+  │
+  ├─ MEDIUM ("add button")   → SDD-lite: explore → apply → verify
+  │                              Model: Sonnet for all phases
+  │
+  ├─ LARGE ("build feature") → SDD FULL + OmO execution
+  │   ├── PLAN (SDD):   explore → propose → spec → design → tasks
+  │   │   Models:        Sonnet    Opus      Sonnet  Opus    Sonnet
+  │   │   All persists to Engram — survives sessions + compaction
+  │   │
+  │   ├── EXECUTE (OmO): Atlas reads tasks → category-routes workers
+  │   │   ├── UI task         → Gemini 3.1 Pro (visual-engineering)
+  │   │   ├── API task        → Sonnet / Qwen 3 Coder (FREE)
+  │   │   ├── Architecture    → GPT-5.4 (ultrabrain)
+  │   │   ├── Docs task       → Gemini Flash (writing)
+  │   │   └── Trivial task    → GPT-5.4 Mini (quick)
+  │   │   + Hash-anchored edits (68.3% success)
+  │   │   + Wisdom accumulation (learnings pass forward)
+  │   │   + Ralph Loop: refuses to stop until 100% done
+  │   │
+  │   └── VERIFY (SDD): compare implementation vs specs
+  │       Model: Sonnet · Reports: CRITICAL / WARNING / SUGGESTION
+  │
+  ├─ EMERGENCY ("prod down") → Ralph Loop: persistent until fixed
+  │
+  └─ RESULTS → Engram → HPS-Dream (nightly consolidation at 03:00)</pre>
+      </div>
+    </section>
+
+    <!-- ── §2 Enhanced SDD Protocol ─────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title">Enhanced SDD for OpenCode — Opt-in Quality Gates</h2>
+
+        <div class="callout callout-warning">
+          <strong>Scope rule:</strong> In <strong>Claude Code</strong> use ONLY the canonical SDD pipeline above.
+          The Enhanced SDD integration with Prometheus/Metis/Momus is <strong>OpenCode-only</strong> —
+          it invokes real OmO agents that don't exist in Claude Code. One host = one workflow.
+          Portability is preserved via engram topic keys regardless.
+        </div>
+
+        <p class="prose">
+          Gentleman SDD and OmO Prometheus/Metis/Momus overlap in the planning layer — both produce
+          a plan describing what to build. They differ in decomposition strategy: SDD is phase-based
+          with sequential artifacts, P+M+M is role-based with iterative interview/review loops.
+          Rather than picking one or the other, Enhanced SDD <strong>fuses</strong> them by keeping
+          SDD's phase structure and topic key discipline while injecting P+M+M behaviors at specific
+          integration points — but only in OpenCode where the real agents exist natively.
+        </p>
+
+        <h3 class="subsection-title">Opt-in Phases in the SDD DAG</h3>
+
+        <pre class="diagram">The 3 opt-in phases inserted into the canonical SDD DAG (OpenCode + OmO only):
+
+explore
+  │
+  ├──▶ INTERVIEW ◀── (Prometheus: back-and-forth clarification)
+  │
+  ▼
+propose
+  │
+  ├──▶ GAP-ANALYZE ◀── (Metis: scope creep, hidden intent, AI-slop)
+  │
+  ▼
+[spec ∥ design]
+  │
+  ├──▶ PLAN-REVIEW ◀── (Momus: OKAY/REJECT loop on 4 criteria)
+  │         │
+  │    (loop back if REJECT — no max retry)
+  ▼         ▼
+tasks ◀────┘
+  │
+  ▼
+apply → verify → archive</pre>
+
+        <h3 class="subsection-title">Phase Contracts</h3>
+
+        <div class="table-wrap">
+          <table class="routing-table" role="table">
+            <thead>
+              <tr>
+                <th>Phase</th>
+                <th>Purpose</th>
+                <th>Backing Agent</th>
+                <th>Model</th>
+                <th>Output Topic Key</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>sdd-interview</code></td>
+                <td>Interactive clarification before propose. Identifies ambiguities, edge cases, implicit constraints. READ-ONLY.</td>
+                <td>Prometheus</td>
+                <td>Opus / Kimi K2.5</td>
+                <td><code>{"sdd/{change}/interview-transcript"}</code></td>
+              </tr>
+              <tr>
+                <td><code>sdd-gap-analyze</code></td>
+                <td>Gap analysis after propose. Catches scope creep, hidden intent, AI-slop placeholders, missing acceptance criteria, uncaught edge cases.</td>
+                <td>Metis</td>
+                <td>Opus</td>
+                <td><code>{"sdd/{change}/gap-analysis"}</code></td>
+              </tr>
+              <tr>
+                <td><code>sdd-plan-review</code></td>
+                <td>Quality gate before tasks. Validates plan vs 4 criteria: clarity, verification, context, big picture. OKAY/REJECT loop with NO max retry.</td>
+                <td>Momus</td>
+                <td>GPT-5.4 xhigh</td>
+                <td><code>{"sdd/{change}/plan-review"}</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subsection-title">Activation by Size Tier</h3>
+
+        <div class="table-wrap">
+          <table class="routing-table" role="table">
+            <thead>
+              <tr>
+                <th>Tier</th>
+                <th>interview</th>
+                <th>gap-analyze</th>
+                <th>plan-review</th>
+                <th>Rationale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>TRIVIAL</td><td>✗</td><td>✗</td><td>✗</td><td>Overkill for typo fixes</td></tr>
+              <tr><td>MEDIUM</td><td>✗</td><td>✗</td><td>✗</td><td>Canonical SDD is sufficient</td></tr>
+              <tr><td>LARGE</td><td>optional</td><td>✓ on</td><td>✓ on</td><td>Big changes benefit from gap check + plan review</td></tr>
+              <tr><td>INITIATIVE</td><td>✓ on</td><td>✓ on</td><td>✓ on</td><td>Multi-change work requires full quality gates</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subsection-title">The Plan-Review Loop (Momus-style)</h3>
+
+        <p class="prose">
+          The most important Enhanced SDD contribution: <strong>moving bug detection to the plan,
+          not the code</strong>. In canonical SDD, if specs have problems, they surface during
+          <code>verify</code> — after implementation. Momus moves this check BEFORE <code>apply</code>:
+        </p>
+
+        <pre class="diagram">design → plan-review
+             │
+             ▼
+          OKAY? ──── yes ──▶ tasks
+             │
+             no
+             │
+             ▼
+         REJECT reason
+             │
+             ├── design-level  → re-run sdd-design with feedback
+             ├── spec-level    → re-run sdd-spec with feedback
+             └── propose-level → re-run sdd-propose with feedback (cascade)
+             │
+             ▼
+         loop back to plan-review (no max retry)</pre>
+
+        <p class="prose">
+          <strong>Value:</strong> catches ~80% of bugs that would normally surface in
+          <code>verify</code>, but BEFORE spending tokens on <code>apply</code>. Rewriting a spec
+          costs ~1/10 of rewriting code + re-verify. Overhead per LARGE change with all 3 phases
+          active: ~50–80k tokens + 5–10 min on a change that normally costs 300–500k tokens in
+          apply — <strong>5–15% overhead for significant re-work reduction</strong>.
+        </p>
+
+        <h3 class="subsection-title">Extended Topic Keys (OpenCode only)</h3>
+
+        <pre class="diagram">{"sdd/{change}/"}{`
+  ├── explore
+  ├── interview-transcript      ← NEW (Prometheus)
+  ├── propose
+  ├── gap-analysis              ← NEW (Metis)
+  ├── spec
+  ├── design
+  ├── design-amendments         (if user overrides)
+  ├── plan-review               ← NEW (Momus, with retry history)
+  ├── tasks
+  ├── apply-progress
+  ├── verify-report
+  └── archive-report`}</pre>
+
+        <div class="callout callout-info">
+          <strong>Portability:</strong> a change can start in Claude Code (canonical SDD only) and
+          continue in OpenCode (enhanced phases added mid-stream). Engram topic keys are portable
+          across hosts — the enhanced observations simply don't appear in the trail when running
+          canonical. Full protocol: engram topic key <code>architecture/enhanced-sdd-opencode-protocol</code>,
+          plus <code>AGENTS.md</code> §Enhanced SDD Protocol.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §3 Domain Sessions ───────────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title">Domain Sessions</h2>
+
+        <p class="prose">
+          Each domain has a preset that loads the right skills, models, and MCPs. Switch
+          mid-project — Engram keeps context. Compose multiple domains for cross-cutting projects.
+        </p>
+
+        <div class="table-wrap">
+          <table class="routing-table" role="table">
+            <thead>
+              <tr>
+                <th>Session Command</th>
+                <th>Skills Loaded</th>
+                <th>Model Bias</th>
+                <th>MCPs Active</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>/session-fullstack</code></td><td>nextjs-15, react-19, tailwind-4, prisma, supabase</td><td>Sonnet for code, Gemini for UI</td><td>Vercel, Supabase</td></tr>
+              <tr><td><code>/session-proptech</code></td><td>hps-sevilla-pms, hps-casa-brunelli, stripe, supabase</td><td>Opus for fiscal rules</td><td>Supabase, Stripe</td></tr>
+              <tr><td><code>/session-iot</code></td><td>home-assistant, n8n-workflow, hps-iot</td><td>Gemini Pro for API docs</td><td>Home Assistant</td></tr>
+              <tr><td><code>/session-cybersecurity</code></td><td>owasp-security, hps-security</td><td>Opus for analysis</td><td>GitHub</td></tr>
+              <tr><td><code>/session-marketing</code></td><td>agency-agents marketing profiles</td><td>Gemini for research, Flash for copy</td><td>Exa</td></tr>
+              <tr><td><code>/session-deep-learning</code></td><td>hps-ml, Context7</td><td>Gemini Pro (1M context for papers)</td><td>Context7</td></tr>
+              <tr><td><code>/session-financial</code></td><td>hps-fiscal-es, stripe-best-practices</td><td>Opus for fiscal rules</td><td>Stripe</td></tr>
+              <tr><td><code>/session-business</code></td><td>agency-agents finance/PM profiles</td><td>Gemini for data, Sonnet for reports</td><td>Supabase</td></tr>
+              <tr><td><code>/session-compose X+Y</code></td><td>Combines multiple session presets</td><td>Mixed based on task</td><td>All from combined sessions</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info">
+          <strong>Connecting sessions:</strong> <code>SWITCH</code> — change session mid-project,
+          Engram persists between. <code>COMPOSE</code> — load multiple domains at once for
+          cross-cutting work. <code>PARALLEL</code> — background agent runs in a different domain
+          session via tmux while you work in another.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* ── Main wrapper ──────────────────────────────────────────────────── */
+
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Content sections ──────────────────────────────────────────────── */
+
+  .content-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12);
+  }
+
+  .subsection-title {
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: var(--space-16) 0 var(--space-6);
+  }
+
+  /* ── Prose ─────────────────────────────────────────────────────────── */
+
+  .prose {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-8);
+    line-height: 1.7;
+  }
+
+  .prose strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    background: var(--color-surface);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── ASCII Diagrams ────────────────────────────────────────────────── */
+
+  .diagram {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 0 var(--space-8);
+    white-space: pre;
+  }
+
+  /* ── Tables (reuses models.astro pattern) ──────────────────────────── */
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: var(--space-6);
+  }
+
+  .routing-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+  }
+
+  .routing-table th,
+  .routing-table td {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .routing-table thead th {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .routing-table td {
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .routing-table code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    background: var(--color-surface-raised);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Callouts ──────────────────────────────────────────────────────── */
+
+  .callout {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-6);
+    margin: var(--space-8) 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .callout strong {
+    color: var(--color-text);
+  }
+
+  .callout code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    background: var(--color-surface-raised);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  .callout-warning {
+    border-left: 3px solid var(--color-accent);
+    background: var(--color-accent-muted);
+  }
+
+  .callout-info {
+    border-left: 3px solid var(--color-border-strong);
+    background: var(--color-surface);
+  }
+</style>
