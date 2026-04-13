@@ -1,0 +1,571 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Roadmap — HPS AI Hub"
+  description="What leaked from the Claude Code source, what HPS OS replicated, and what's coming next."
+>
+  <Nav />
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">05 / 12 — What's Coming</p>
+        <h1 class="hero-title">Roadmap</h1>
+        <p class="hero-lede">
+          What the March 2026 Claude Code source leak revealed, how HPS OS
+          replicated or diverged from each feature, and what's planned next.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── §05 — What Leaked ───────────────────────────────────────── -->
+    <section class="content-section" data-animate="fade-up">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">What Leaked</h2>
+        <p class="prose">
+          In March 2026 the Claude Code source was decompiled and published.
+          Nine internal features were exposed — some unreleased, some behind
+          environment flags, some already shipped. The following cards capture
+          each feature's status <strong>as of the March 2026 Claude Code source leak</strong>
+          and how HPS OS responded.
+        </p>
+
+        <ul class="leak-grid" role="list">
+
+          <!-- 1. KAIROS -->
+          <li class="leak-card" data-animate="fade-up">
+            <div class="leak-header">
+              <h3 class="leak-name">KAIROS</h3>
+              <span class="status-badge" data-status="unreleased">Unreleased</span>
+            </div>
+            <p class="leak-desc">Overnight memory consolidation engine — orient, gather, consolidate, prune. Runs at 03:00 via cron, compresses a week of observations into a structured summary.</p>
+            <p class="leak-hps"><strong>HPS replication:</strong> HPS-Dream replicates the full 4-phase pipeline via Engram MCP + nightly cron.</p>
+          </li>
+
+          <!-- 2. ULTRAPLAN -->
+          <li class="leak-card" data-animate="fade-up">
+            <div class="leak-header">
+              <h3 class="leak-name">ULTRAPLAN</h3>
+              <span class="status-badge" data-status="unreleased">Unreleased</span>
+            </div>
+            <p class="leak-desc">Multi-phase planning system for complex tasks — decompose, sequence, execute, verify. Internal orchestration layer.</p>
+            <p class="leak-hps"><strong>HPS replication:</strong> OmO Prometheus + Metis + Momus provide equivalent planning, execution, and verification phases.</p>
+          </li>
+
+          <!-- 3. Coordinator Mode -->
+          <li class="leak-card" data-animate="fade-up">
+            <div class="leak-header">
+              <h3 class="leak-name">Coordinator Mode</h3>
+              <span class="status-badge" data-status="env-flag">ENV Flag</span>
+            </div>
+            <p class="leak-desc">Multi-agent coordination where a primary agent spawns and manages worker agents. Gated behind an environment variable in the leaked source.</p>
+            <p class="leak-hps"><strong>HPS replication:</strong> OmO Sisyphus and Atlas agents provide coordinator-worker orchestration.</p>
+          </li>
+
+          <!-- 4. SKILL_SEARCH -->
+          <li class="leak-card" data-animate="fade-up">
+            <div class="leak-header">
+              <h3 class="leak-name">SKILL_SEARCH</h3>
+              <span class="status-badge" data-status="unreleased">Unreleased</span>
+            </div>
+            <p class="leak-desc">Semantic vector search over the skill registry — finds relevant skills by embedding similarity rather than keyword match.</p>
+            <p class="leak-hps"><strong>HPS replication:</strong> Planned — hps-ml embeddings will power skill search via FTS5 + vector index.</p>
+          </li>
+
+          <!-- 5. Daemon Mode -->
+          <li class="leak-card" data-animate="fade-up">
+            <div class="leak-header">
+              <h3 class="leak-name">Daemon Mode</h3>
+              <span class="status-badge" data-status="unreleased">Unreleased</span>
+            </div>
+            <p class="leak-desc">Background agent process that persists between terminal sessions — always-on, event-driven execution.</p>
+            <p class="leak-hps"><strong>HPS replication:</strong> OmO Background Agents provide equivalent always-on daemon capability.</p>
+          </li>
+
+          <!-- 6. Auto-Dream -->
+          <li class="leak-card" data-animate="fade-up">
+            <div class="leak-header">
+              <h3 class="leak-name">Auto-Dream</h3>
+              <span class="status-badge" data-status="unreleased">Unreleased</span>
+            </div>
+            <p class="leak-desc">Automatic overnight memory processing — the system dreams while you sleep, consolidating context autonomously.</p>
+            <p class="leak-hps"><strong>HPS replication:</strong> HPS-Dream nightly cron fires the same pipeline at 03:00 automatically.</p>
+          </li>
+
+          <!-- 7. UDS Inbox -->
+          <li class="leak-card" data-animate="fade-up">
+            <div class="leak-header">
+              <h3 class="leak-name">UDS Inbox</h3>
+              <span class="status-badge" data-status="unreleased">Unreleased</span>
+            </div>
+            <p class="leak-desc">Cross-session inter-process communication via Unix domain sockets — agents can message each other without shared filesystem.</p>
+            <p class="leak-hps"><strong>HPS replication:</strong> Not yet in HPS OS — planned for Layer C.</p>
+          </li>
+
+          <!-- 8. BUDDY -->
+          <li class="leak-card" data-animate="fade-up">
+            <div class="leak-header">
+              <h3 class="leak-name">BUDDY</h3>
+              <span class="status-badge" data-status="released">Released</span>
+            </div>
+            <p class="leak-desc">Easter egg companion mode — a lighter conversational personality embedded in the CLI.</p>
+            <p class="leak-hps"><strong>HPS replication:</strong> Easter egg — not critical to the operating system.</p>
+          </li>
+
+          <!-- 9. Bridge -->
+          <li class="leak-card" data-animate="fade-up">
+            <div class="leak-header">
+              <h3 class="leak-name">Bridge</h3>
+              <span class="status-badge" data-status="released">Released</span>
+            </div>
+            <p class="leak-desc">Remote control interface — manage CLI sessions from a phone or browser. Bridges the terminal to external clients.</p>
+            <p class="leak-hps"><strong>HPS replication:</strong> Planned — Flutter HPS Owner app will provide remote bridge capability.</p>
+          </li>
+
+        </ul>
+
+        <!-- Evergreen callout -->
+        <div class="callout callout-evergreen" data-animate="fade-up">
+          <p>
+            HPS OS moved to an API-direct integration strategy after Anthropic
+            ended third-party harness access — no intermediary harness layers,
+            the Anthropic SDK is the integration point.
+            <a href="/news">Read the news entry</a> for context.
+          </p>
+        </div>
+
+        <!-- Hidden Commands -->
+        <h3 class="subsection-title" data-animate="fade-up">Hidden Commands</h3>
+        <p class="prose">
+          The leaked source also exposed six undocumented slash commands.
+          These were not part of the public CLI help output as of the March 2026 leak.
+        </p>
+
+        <div class="table-wrapper" data-animate="fade-up">
+          <table class="cmd-table">
+            <thead>
+              <tr>
+                <th>Command</th>
+                <th>Description</th>
+                <th>Leaked status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>/ctx-viz</code></td>
+                <td>Visualise context window token usage in a sparkline bar</td>
+                <td>Internal only</td>
+              </tr>
+              <tr>
+                <td><code>/btw</code></td>
+                <td>Inject a side-note into the conversation without triggering a full turn</td>
+                <td>Internal only</td>
+              </tr>
+              <tr>
+                <td><code>/dream</code></td>
+                <td>Manually trigger the KAIROS overnight consolidation pipeline</td>
+                <td>Internal only</td>
+              </tr>
+              <tr>
+                <td><code>/force-snip</code></td>
+                <td>Manually free context tokens by snipping older conversation turns</td>
+                <td>Internal only</td>
+              </tr>
+              <tr>
+                <td><code>/bughunter</code></td>
+                <td>Adversarial agent that probes your code for edge cases and bugs</td>
+                <td>Internal only</td>
+              </tr>
+              <tr>
+                <td><code>/debug-tool-call</code></td>
+                <td>Dump the raw tool-call payload for the last tool invocation</td>
+                <td>Internal only</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── §12 — What's Next ───────────────────────────────────────── -->
+    <section class="content-section" data-animate="fade-up">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">What's Next</h2>
+        <p class="prose">
+          The roadmap is organised in two tiers. <strong>Layer B</strong> focuses
+          on token efficiency and security hardening. <strong>Layer C</strong>
+          adds advanced capabilities that extend the operating system's reach.
+        </p>
+
+        <h3 class="subsection-title" data-animate="fade-up">Layer B — Token Efficiency &amp; Security</h3>
+        <ul class="road-grid" role="list">
+
+          <li class="road-card" data-animate="fade-up">
+            <h4 class="road-name">HPS-YOLO</h4>
+            <p class="road-layer">Layer 7 — Security</p>
+            <p class="road-desc">PreToolUse hook security classifier. Evaluates every tool call before execution and blocks unsafe operations without a confirmation prompt.</p>
+          </li>
+
+          <li class="road-card" data-animate="fade-up">
+            <h4 class="road-name">Dippy</h4>
+            <p class="road-layer">Replaces Bash AST Safety</p>
+            <p class="road-desc">Pure Python AST parser with 14K tests. Install-not-build approach — validates shell commands structurally instead of regex matching.</p>
+          </li>
+
+          <li class="road-card" data-animate="fade-up">
+            <h4 class="road-name">context-mode</h4>
+            <p class="road-layer">Replaces /ctx-viz + /btw + /force-snip</p>
+            <p class="road-desc">Single plugin that unifies three leaked commands into one coherent context management interface — visualise, annotate, and free tokens.</p>
+          </li>
+
+        </ul>
+
+        <h3 class="subsection-title" data-animate="fade-up">Layer C — Advanced Capabilities</h3>
+        <ul class="road-grid" role="list">
+
+          <li class="road-card" data-animate="fade-up">
+            <h4 class="road-name">UDS Inbox</h4>
+            <p class="road-layer">Layer 1 — Runtime</p>
+            <p class="road-desc">Cross-session IPC via Unix domain sockets. Agents message each other without shared filesystem — persistent inbox survives restarts.</p>
+          </li>
+
+          <li class="road-card" data-animate="fade-up">
+            <h4 class="road-name">Bridge</h4>
+            <p class="road-layer">Layer 8 — Remote</p>
+            <p class="road-desc">Remote control via phone or browser. Manage terminal sessions, approve tool calls, and review diffs from the Flutter HPS Owner app.</p>
+          </li>
+
+          <li class="road-card" data-animate="fade-up">
+            <h4 class="road-name">/bughunter</h4>
+            <p class="road-layer">Layer 2 — Orchestration</p>
+            <p class="road-desc">Adversarial agent that probes your code for edge cases, race conditions, and logic bugs. Runs in parallel with normal development.</p>
+          </li>
+
+          <li class="road-card" data-animate="fade-up">
+            <h4 class="road-name">SKILL_SEARCH</h4>
+            <p class="road-layer">Layer 2 — Orchestration</p>
+            <p class="road-desc">Semantic vector search over the skill registry. Finds relevant skills by embedding similarity — powered by hps-ml and FTS5.</p>
+          </li>
+
+          <li class="road-card" data-animate="fade-up">
+            <h4 class="road-name">Injection Defense</h4>
+            <p class="road-layer">Layer 7 — Security</p>
+            <p class="road-desc">Six-layer prompt injection defense system. Detects and blocks injection attempts at input, tool-call, and output stages.</p>
+          </li>
+
+          <li class="road-card" data-animate="fade-up">
+            <h4 class="road-name">/force-snip</h4>
+            <p class="road-layer">Layer 4 — Memory</p>
+            <p class="road-desc">Manual context token freeing. Snip older conversation turns to reclaim context window space — also unified into context-mode (Layer B).</p>
+          </li>
+
+        </ul>
+
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* ── Main wrapper ──────────────────────────────────────────────────── */
+
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Content sections ──────────────────────────────────────────────── */
+
+  .content-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12);
+  }
+
+  .subsection-title {
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    color: var(--color-text);
+    margin: var(--space-16) 0 var(--space-8);
+  }
+
+  /* ── Prose ─────────────────────────────────────────────────────────── */
+
+  .prose {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-8);
+    line-height: 1.7;
+  }
+
+  .prose strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  /* ── Leak grid — feature cards ─────────────────────────────────────── */
+
+  .leak-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0 0 var(--space-12);
+    padding: 0;
+  }
+
+  .leak-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    transition: border-color var(--duration-quick) var(--ease-standard);
+  }
+
+  .leak-card:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .leak-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .leak-name {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .status-badge {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: var(--space-0-5) var(--space-2);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+  .status-badge[data-status="unreleased"] {
+    border-color: var(--color-border-strong);
+    color: var(--color-text-subtle);
+  }
+
+  .status-badge[data-status="env-flag"] {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .status-badge[data-status="released"] {
+    border-color: var(--color-success, var(--color-accent));
+    color: var(--color-success, var(--color-accent));
+  }
+
+  .leak-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0 0 var(--space-3);
+  }
+
+  .leak-hps {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .leak-hps strong {
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  /* ── Callouts ──────────────────────────────────────────────────────── */
+
+  .callout {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-6);
+    margin: var(--space-8) 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .callout p {
+    margin: 0;
+  }
+
+  .callout a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .callout-evergreen {
+    border-left: 3px solid var(--color-accent);
+    background: var(--color-surface);
+  }
+
+  /* ── Hidden Commands table ─────────────────────────────────────────── */
+
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: var(--space-8);
+  }
+
+  .cmd-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+  }
+
+  .cmd-table th,
+  .cmd-table td {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cmd-table th {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    font-weight: 500;
+  }
+
+  .cmd-table td {
+    color: var(--color-text-muted);
+  }
+
+  .cmd-table code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    background: var(--color-surface);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+  }
+
+  /* ── Roadmap grid — future items ───────────────────────────────────── */
+
+  .road-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0 0 var(--space-8);
+    padding: 0;
+  }
+
+  .road-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    transition: border-color var(--duration-quick) var(--ease-standard);
+  }
+
+  .road-card:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .road-name {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0 0 var(--space-1);
+  }
+
+  .road-layer {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-3);
+  }
+
+  .road-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+</style>
