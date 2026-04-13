@@ -1,0 +1,91 @@
+---
+// src/components/WorkflowDiagram.astro
+// Reusable ASCII diagram wrapper with copy button.
+// Owner: content-migration/1-architecture-layers
+// Reused by: 6-unified-workflow, 7-memory-and-daily-loop
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="workflow-diagram" data-animate="fade-up">
+  {title && <p class="workflow-diagram__title">{title}</p>}
+  <div class="workflow-diagram__container">
+    <button class="workflow-diagram__copy" type="button" aria-label="Copy diagram to clipboard">
+      Copy
+    </button>
+    <pre class="workflow-diagram__pre"><slot /></pre>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.workflow-diagram__copy').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const pre = btn.closest('.workflow-diagram__container')?.querySelector('pre');
+      if (!pre) return;
+      navigator.clipboard.writeText(pre.textContent ?? '').then(() => {
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = original; }, 1500);
+      });
+    });
+  });
+</script>
+
+<style>
+  .workflow-diagram {
+    margin-block: var(--space-8);
+  }
+
+  .workflow-diagram__title {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-3);
+  }
+
+  .workflow-diagram__container {
+    position: relative;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-raised);
+    overflow: hidden;
+  }
+
+  .workflow-diagram__copy {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    z-index: 1;
+  }
+
+  .workflow-diagram__copy:hover {
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+  }
+
+  .workflow-diagram__pre {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    line-height: 1.55;
+    color: var(--color-text-muted);
+    margin: 0;
+    padding: var(--space-6);
+    overflow-x: auto;
+    white-space: pre;
+  }
+</style>
