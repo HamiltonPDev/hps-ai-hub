@@ -1,0 +1,435 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Manifesto — HPS AI Hub"
+  description="How one architect builds software in 2026. AI is a tool. You are the architect."
+>
+  <Nav />
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">Manifesto</p>
+        <h1 class="hero-title">AI is a tool.<br/>You are the architect.</h1>
+        <p class="hero-lede">
+          This is not a framework. This is not a product. This is how
+          one architect builds software in 2026.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── §1 What This Is ─────────────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">What This Is</h2>
+
+        <p class="prose" data-animate="fade-up">
+          The HPS AI OS is an operating system for AI-assisted development.
+          It is a set of opinions — hardened by 15 years of building real systems —
+          about how a solo developer should work with AI agents.
+          Not alongside them. Not under them.
+          <strong>Directing them.</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- ── §2 The Problem ─────────────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">The Problem</h2>
+
+        <p class="prose" data-animate="fade-up">
+          Every week, a new "AI coding assistant" promises to replace developers.
+          Every week, developers who never learned architecture let AI generate
+          spaghetti code at the speed of light. The result is the same mess we had
+          before — just produced faster.
+        </p>
+
+        <div class="callout callout-warning" data-animate="fade-up">
+          <strong>Here is the thing:</strong> speed without direction is just chaos with a deadline.
+        </div>
+
+        <p class="prose" data-animate="fade-up">
+          A solo developer building proptech, IoT, cybersecurity — real systems
+          with real users — cannot afford to babysit a chatbot. But they also
+          cannot afford to hand over architectural decisions to a model that has
+          no skin in the game. The model does not maintain your code at 3am
+          when production breaks. <strong>You do.</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- ── §3 The Philosophy ──────────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">The Philosophy</h2>
+
+        <p class="hero-lede" data-animate="fade-up">
+          <strong>AI is a tool. You are the architect.</strong>
+        </p>
+
+        <p class="prose" data-animate="fade-up">
+          An architect does not lay every brick. But an architect decides WHERE
+          every brick goes, WHY it goes there, and WHAT the building should look
+          like when it is done. The bricklayers execute. In this system,
+          19 named AI agents are the bricklayers.
+        </p>
+
+        <div class="principles-grid">
+
+          <div class="principle-card" data-animate="fade-up">
+            <span class="principle-label">01</span>
+            <h3 class="principle-title">Concepts before code</h3>
+            <p class="principle-desc">
+              If you do not understand what you are building, no amount of
+              AI-generated code will save you. We do not skip fundamentals.
+              We do not take shortcuts. Real learning takes effort and time,
+              and there is no prompt that replaces understanding.
+            </p>
+          </div>
+
+          <div class="principle-card" data-animate="fade-up">
+            <span class="principle-label">02</span>
+            <h3 class="principle-title">Specifications before implementation</h3>
+            <p class="principle-desc">
+              Every meaningful change goes through SDD — Spec-Driven Development.
+              Explore, propose, specify, design, task, implement, verify, archive.
+              Nine phases. Because "just make it work" is how you build systems
+              that break at scale.
+            </p>
+          </div>
+
+          <div class="principle-card" data-animate="fade-up">
+            <span class="principle-label">03</span>
+            <h3 class="principle-title">Memory over repetition</h3>
+            <p class="principle-desc">
+              The system remembers. Decisions, conventions, gotchas, bugs —
+              all persisted in Engram. An agent that forgets what it learned
+              yesterday is not an agent. It is a stateless function with
+              delusions of continuity. We fix that.
+            </p>
+          </div>
+
+          <div class="principle-card" data-animate="fade-up">
+            <span class="principle-label">04</span>
+            <h3 class="principle-title">Orchestration over configuration</h3>
+            <p class="principle-desc">
+              You should describe WHAT you want, not WHO should do it.
+              IntentGate classifies. The category router picks the right model.
+              The worker executes. You review. That is the loop.
+            </p>
+          </div>
+
+          <div class="principle-card" data-animate="fade-up">
+            <span class="principle-label">05</span>
+            <h3 class="principle-title">Cost discipline</h3>
+            <p class="principle-desc">
+              Not every task deserves Opus. Routine work goes to Haiku.
+              Architecture goes to Opus. The system decides, not your
+              wallet's anxiety.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §4 What It Means to Be an AI Orchestrator ────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">What It Means to Be an AI Orchestrator</h2>
+
+        <p class="prose" data-animate="fade-up">
+          It means you are the one person in the room who understands the entire
+          system. You know why the database schema looks the way it does. You
+          know why the API contract has that specific shape. You know why the
+          frontend state is managed that particular way.
+        </p>
+
+        <p class="prose" data-animate="fade-up">
+          The AI agents know none of this. They are brilliant at the task in
+          front of them and blind to everything else. <strong>YOUR job is to be
+          the connective tissue</strong> — the one who sees the whole building,
+          not just the current brick.
+        </p>
+
+        <h3 class="subsection-title" data-animate="fade-up">An AI orchestrator:</h3>
+
+        <ul class="conviction-list">
+          <li data-animate="fade-up">
+            Writes specs, not code, as their primary output
+          </li>
+          <li data-animate="fade-up">
+            Reviews AI work with the same rigor they would apply to a junior developer
+          </li>
+          <li data-animate="fade-up">
+            Saves every decision to memory because context is the most expensive thing in this system
+          </li>
+          <li data-animate="fade-up">
+            Never trusts AI output without verification — not because AI is bad, but because trust without verification is not engineering
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── §5 The Conviction ─────────────────────────────────────── -->
+    <section class="content-section conviction-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">The Conviction</h2>
+
+        <p class="prose" data-animate="fade-up">
+          I built this because I was tired of the false choice: either you code
+          everything yourself, or you let AI drive and hope for the best.
+          There is a third way. You architect. You specify. You orchestrate.
+          And you hold the entire system accountable to YOUR standards.
+        </p>
+
+        <div class="conviction-pullquote" data-animate="fade-up">
+          <p class="pullquote-line">One developer.</p>
+          <p class="pullquote-line">Nineteen agents.</p>
+          <p class="pullquote-line">Zero excuses.</p>
+          <p class="pullquote-emphasis">The human always leads.</p>
+        </div>
+
+        <div class="signature" data-animate="fade-up">
+          <p class="sig-name">Hamilton Posada</p>
+          <p class="sig-meta">Architect · GDE · MVP</p>
+          <p class="sig-meta">Building between Spain and the Netherlands</p>
+          <p class="sig-meta">2026</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .main {
+    min-height: calc(100vh - 80px);
+  }
+
+  /* ── Hero ─────────────────────────────────────────────────────── */
+  .hero {
+    padding-block: var(--space-12) var(--space-8);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    margin-bottom: var(--space-6);
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-lg);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    max-width: 60ch;
+  }
+
+  /* ── Content Sections ─────────────────────────────────────────── */
+  .content-section {
+    padding-block: var(--space-10);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .section-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-bottom: var(--space-6);
+  }
+
+  .subsection-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-4);
+  }
+
+  .prose {
+    font-size: var(--font-size-base);
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    max-width: 65ch;
+    margin-bottom: var(--space-4);
+  }
+
+  .prose strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  /* ── Callout ──────────────────────────────────────────────────── */
+  .callout {
+    padding: var(--space-5) var(--space-6);
+    border-radius: var(--radius-md);
+    margin-block: var(--space-6);
+    max-width: 65ch;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  .callout-warning {
+    border-left: 3px solid var(--color-accent);
+    padding-left: var(--space-5);
+  }
+
+  .callout strong {
+    color: var(--color-text);
+  }
+
+  /* ── Principles Grid ──────────────────────────────────────────── */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    margin-top: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .principles-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .principle-card {
+    padding: var(--space-6);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    position: relative;
+  }
+
+  .principle-label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: var(--space-3);
+  }
+
+  .principle-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-3);
+  }
+
+  .principle-desc {
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  /* ── Conviction List ──────────────────────────────────────────── */
+  .conviction-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0 0;
+    max-width: 65ch;
+  }
+
+  .conviction-list li {
+    padding: var(--space-4) 0;
+    padding-left: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--color-text);
+    position: relative;
+  }
+
+  .conviction-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+  }
+
+  .conviction-list li:last-child {
+    border-bottom: none;
+  }
+
+  /* ── Conviction Section (the closer) ──────────────────────────── */
+  .conviction-pullquote {
+    margin-block: var(--space-10);
+    padding: var(--space-8);
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .pullquote-line {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 300;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-2);
+    letter-spacing: -0.01em;
+  }
+
+  .pullquote-emphasis {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: var(--space-5);
+    letter-spacing: -0.02em;
+  }
+
+  /* ── Signature ────────────────────────────────────────────────── */
+  .signature {
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .sig-name {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .sig-meta {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+    letter-spacing: 0.04em;
+  }
+</style>
