@@ -2,11 +2,53 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import WorkflowDiagram from '../components/WorkflowDiagram.astro';
+import { getCollection } from 'astro:content';
+import { buildSlugSet, assertXref, assertXrefList } from '../lib/xref';
+
+// ── Collections ──────────────────────────────────────────────────────────
+const layers = (await getCollection('layers')).sort((a, b) => a.data.index - b.data.index);
+const agents = await getCollection('agents');
+const models = await getCollection('models');
+
+// Domains — empty until Wave-3; guard with try/catch
+let domains: Awaited<ReturnType<typeof getCollection>> = [];
+try {
+  domains = await getCollection('domains');
+} catch {
+  // domains collection empty until Wave-3
+}
+
+// ── Cross-reference validation ───────────────────────────────────────────
+const agentSet = buildSlugSet(agents);
+const modelSet = buildSlugSet(models);
+
+for (const layer of layers) {
+  if (layer.data.model) {
+    assertXref(`layers/${layer.id}`, 'model', layer.data.model, modelSet, 'models');
+  }
+  assertXrefList(`layers/${layer.id}`, 'relatedAgents', layer.data.relatedAgents, agentSet, 'agents');
+}
+
+// ── Agent name lookup (for pills) ────────────────────────────────────────
+const agentNameMap = new Map(agents.map((a) => [a.id.replace(/\.md$/, ''), a.data.name]));
+
+// ── Unified ASCII diagram (all layers combined) ──────────────────────────
+const unifiedDiagram = layers
+  .filter((l) => l.data.diagramAscii)
+  .map((l) => l.data.diagramAscii!.trimEnd())
+  .join('\n\n────────────────────────────────────────────────────────────────────\n\n');
+
+const fullDiagram = `╔══════════════════════════════════════════════════════════════════════╗
+║                    HPS AI OPERATING SYSTEM v2                        ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+${unifiedDiagram}`;
 ---
 
 <BaseLayout
   title="Architecture — HPS AI Hub"
-  description="The 9-layer architecture powering HPS AI Hub. From hardware and infrastructure through to the AI agent layer — a unified workflow for solo development at scale."
+  description="The 9-layer architecture of the HPS AI Operating System. From models through orchestration to remote clients — every component has a single responsibility."
 >
   <Nav />
 
@@ -18,152 +60,53 @@ import Footer from '../components/Footer.astro';
         <p class="eyebrow">01 — Architecture</p>
         <h1 class="hero-title">The full stack,<br />layer by layer.</h1>
         <p class="hero-lede">
-          Nine layers from hardware to AI agent orchestration.
-          Each layer has a single responsibility. Together they make solo development at scale possible.
+          Every component has a single responsibility. Nothing overlaps. Nothing is missing.
         </p>
       </div>
     </section>
 
-    <!-- ── Layer overview ───────────────────────────────────────────── -->
+    <!-- ── Layer list ──────────────────────────────────────────────── -->
     <section class="content-section">
       <div class="content-inner">
 
         <h2 class="section-title" data-animate="fade-up">The nine layers</h2>
 
         <ol class="layer-list" role="list">
-          <li class="layer-item" data-animate="fade-up">
-            <span class="layer-index">01</span>
-            <div class="layer-body">
-              <h3 class="layer-name">Infrastructure & Hardware</h3>
-              <p class="layer-desc">
-                MacBook Pro M4 Pro · NixOS VM fleet · Docker Compose stacks.
-                The physical and virtual substrate everything runs on.
-              </p>
-            </div>
-          </li>
-
-          <li class="layer-item" data-animate="fade-up">
-            <span class="layer-index">02</span>
-            <div class="layer-body">
-              <h3 class="layer-name">Shell & Terminal Environment</h3>
-              <p class="layer-desc">
-                Fish shell · Zellij multiplexer · LazyVim editor.
-                One terminal. Every workflow starts here.
-              </p>
-            </div>
-          </li>
-
-          <li class="layer-item" data-animate="fade-up">
-            <span class="layer-index">03</span>
-            <div class="layer-body">
-              <h3 class="layer-name">Version Control & Automation</h3>
-              <p class="layer-desc">
-                Git · GitHub CLI · conventional commits · pre-commit hooks.
-                Clean history enforced at the commit gate.
-              </p>
-            </div>
-          </li>
-
-          <li class="layer-item" data-animate="fade-up">
-            <span class="layer-index">04</span>
-            <div class="layer-body">
-              <h3 class="layer-name">Package & Dependency Management</h3>
-              <p class="layer-desc">
-                Nix home-manager · Homebrew · pnpm · uv.
-                Reproducible environments, pinned dependencies.
-              </p>
-            </div>
-          </li>
-
-          <li class="layer-item" data-animate="fade-up">
-            <span class="layer-index">05</span>
-            <div class="layer-body">
-              <h3 class="layer-name">Data Layer</h3>
-              <p class="layer-desc">
-                Supabase (Postgres) · SQLite for local work · Redis for session state.
-                Right database for the right job.
-              </p>
-            </div>
-          </li>
-
-          <li class="layer-item" data-animate="fade-up">
-            <span class="layer-index">06</span>
-            <div class="layer-body">
-              <h3 class="layer-name">API & Backend Services</h3>
-              <p class="layer-desc">
-                Hono · FastAPI · n8n automation engine.
-                Minimal surfaces. Each service does one thing.
-              </p>
-            </div>
-          </li>
-
-          <li class="layer-item" data-animate="fade-up">
-            <span class="layer-index">07</span>
-            <div class="layer-body">
-              <h3 class="layer-name">Frontend Applications</h3>
-              <p class="layer-desc">
-                Astro · Next.js 15 · Angular 19.
-                Static-first where possible, React islands for interactivity.
-              </p>
-            </div>
-          </li>
-
-          <li class="layer-item" data-animate="fade-up">
-            <span class="layer-index">08</span>
-            <div class="layer-body">
-              <h3 class="layer-name">Model Routing Layer</h3>
-              <p class="layer-desc">
-                Claude Opus · Claude Sonnet · Claude Haiku · Gemini · GPT-4o · Groq (free tier).
-                Category-based routing: the right model for the right task.
-              </p>
-            </div>
-          </li>
-
-          <li class="layer-item" data-animate="fade-up">
-            <span class="layer-index">09</span>
-            <div class="layer-body">
-              <h3 class="layer-name">AI Agent Orchestration</h3>
-              <p class="layer-desc">
-                20 specialized agents · 66 skills · SDD workflow · Engram persistent memory.
-                The intelligence layer that coordinates everything above it.
-              </p>
-            </div>
-          </li>
+          {layers.map((layer) => (
+            <li class="layer-item" data-animate="fade-up">
+              <span class="layer-index">{String(layer.data.index).padStart(2, '0')}</span>
+              <div class="layer-body">
+                <h3 class="layer-name">{layer.data.name}</h3>
+                <p class="layer-desc">{layer.data.responsibility}</p>
+                {layer.data.components.length > 0 && (
+                  <ul class="layer-components" role="list">
+                    {layer.data.components.map((c: string) => (
+                      <li class="layer-component">{c}</li>
+                    ))}
+                  </ul>
+                )}
+                {layer.data.relatedAgents.length > 0 && (
+                  <div class="layer-agents">
+                    {layer.data.relatedAgents.map((slug: string) => (
+                      <span class="layer-agent-pill">{agentNameMap.get(slug) ?? slug}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </li>
+          ))}
         </ol>
 
       </div>
     </section>
 
-    <!-- ── Unified workflow ──────────────────────────────────────────── -->
-    <section class="content-section content-section--bordered">
+    <!-- ── Unified architecture diagram ────────────────────────────── -->
+    <section class="content-section content-section--bordered" data-animate="fade-up">
       <div class="content-inner">
-
-        <h2 class="section-title" data-animate="fade-up">Unified workflow</h2>
-        <p class="prose" data-animate="fade-up">
-          Every feature, fix, and exploration runs through the same pipeline:
-          intent → spec → design → tasks → apply → verify → archive.
-          This is Spec-Driven Development (SDD) — a planning layer that sits
-          above the code and keeps the AI in the executor seat, not the decision seat.
-        </p>
-
-        <p class="prose" data-animate="fade-up">
-          The workflow is enforced by Claude Code agents, not by willpower.
-          Skipping a phase isn't possible without explicitly overriding the orchestrator.
-          That friction is intentional.
-        </p>
-
-        <h2 class="section-title section-title--spaced" data-animate="fade-up">Cost model</h2>
-        <p class="prose" data-animate="fade-up">
-          The entire stack runs for €68/month. That includes API costs across
-          three paid model tiers plus free-tier fallbacks for non-critical tasks.
-          Opus is reserved for architecture decisions. Haiku handles automation.
-          Sonnet does everything in between.
-        </p>
-
-        <p class="prose" data-animate="fade-up">
-          No VC funding. No team. One developer, one terminal, eight domains.
-        </p>
-
+        <h2 class="section-title" data-animate="fade-up">Architecture diagram</h2>
+        <WorkflowDiagram title="HPS AI Operating System v2">
+          {fullDiagram}
+        </WorkflowDiagram>
       </div>
     </section>
 
@@ -259,18 +202,6 @@ import Footer from '../components/Footer.astro';
     margin: 0 0 var(--space-10);
   }
 
-  .section-title--spaced {
-    margin-top: var(--space-16);
-  }
-
-  .prose {
-    font-size: var(--font-size-base);
-    color: var(--color-text-muted);
-    line-height: 1.75;
-    margin: 0 0 var(--space-6);
-    max-width: var(--content-max);
-  }
-
   /* ── Layer list ─────────────────────────────────────────────────────── */
 
   .layer-list {
@@ -315,6 +246,48 @@ import Footer from '../components/Footer.astro';
     color: var(--color-text-muted);
     margin: 0;
     line-height: 1.65;
+  }
+
+  /* ── Components (inline tag list below description) ─────────────────── */
+
+  .layer-components {
+    list-style: none;
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .layer-component {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    background: var(--color-bg-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+    white-space: nowrap;
+  }
+
+  /* ── Agent pills (below components) ─────────────────────────────────── */
+
+  .layer-agents {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .layer-agent-pill {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-full);
+    padding: var(--space-1) var(--space-3);
+    white-space: nowrap;
   }
 
   /* ── Nav list ───────────────────────────────────────────────────────── */
