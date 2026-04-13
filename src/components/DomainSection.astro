@@ -1,0 +1,189 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Pill from './Pill.astro';
+
+interface Props {
+  domain: CollectionEntry<'domains'>;
+}
+
+const { domain } = Astro.props;
+const d = domain.data;
+---
+
+<section id={domain.id.replace(/\.md$/, '')} class:list={['domain-section', { 'is-coming-soon': d.comingSoon }]} data-animate="fade-up">
+  <div class="domain-header">
+    <span class="domain-icon">{d.icon}</span>
+    <div>
+      <h3 class="domain-name">{d.name}</h3>
+      <p class="domain-subtitle">{d.subtitle}</p>
+    </div>
+    <Pill domain={d.color}>{d.color}</Pill>
+    {d.comingSoon && <span class="badge-coming-soon">Coming soon</span>}
+  </div>
+
+  {!d.comingSoon && (
+    <>
+      {d.stack.length > 0 && (
+        <div class="stack-tags">
+          {d.stack.map((t: string) => <span class="stack-tag">{t}</span>)}
+        </div>
+      )}
+
+      {d.workflowSteps.length > 0 && (
+        <ol class="workflow-steps" role="list">
+          {d.workflowSteps.map((step) => (
+            <li class="ws" data-animate="fade-up">
+              <span class="ws-num">{String(step.index).padStart(2, '0')}</span>
+              <div class="ws-body">
+                <p class="ws-title">{step.title}</p>
+                <p class="ws-desc">{step.description}</p>
+                {step.tags.length > 0 && (
+                  <div class="ws-tags">
+                    {step.tags.map((tag: string) => <span class="tag">{tag}</span>)}
+                  </div>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
+    </>
+  )}
+</section>
+
+<style>
+  .domain-section {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-8);
+    background: var(--color-surface);
+    transition: border-color var(--duration-quick) var(--ease-standard);
+  }
+
+  .domain-section:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .domain-section.is-coming-soon {
+    opacity: 0.55;
+    border-style: dashed;
+  }
+
+  .domain-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-6);
+  }
+
+  .domain-icon {
+    font-size: var(--font-size-3xl);
+    line-height: 1;
+  }
+
+  .domain-name {
+    font-family: var(--font-display);
+    font-size: var(--font-size-xl);
+    font-weight: 400;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .domain-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: var(--space-1) 0 0;
+  }
+
+  .badge-coming-soon {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+    margin-left: auto;
+  }
+
+  .stack-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  .stack-tag {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .workflow-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .ws {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .ws-num {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-subtle);
+    flex-shrink: 0;
+    width: var(--space-8);
+    text-align: right;
+    padding-top: var(--space-1);
+  }
+
+  .ws-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ws-title {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0 0 var(--space-2);
+  }
+
+  .ws-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-2);
+    line-height: 1.6;
+  }
+
+  .ws-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-1);
+  }
+</style>

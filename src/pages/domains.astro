@@ -1,0 +1,293 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import DomainSection from '../components/DomainSection.astro';
+import Pill from '../components/Pill.astro';
+import { buildSlugSet, assertXrefList } from '../lib/xref';
+
+const domains = (await getCollection('domains')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const agents = await getCollection('agents');
+const skills = await getCollection('skills');
+
+const agentSet = buildSlugSet(agents);
+const skillSet = buildSlugSet(skills);
+
+// Cross-reference validation — FULL, no empty-target skips.
+for (const d of domains) {
+  assertXrefList(`domains/${d.id}`, 'agents', d.data.agents, agentSet, 'agents');
+  assertXrefList(`domains/${d.id}`, 'skills', d.data.skills, skillSet, 'skills');
+  for (const step of d.data.workflowSteps) {
+    assertXrefList(
+      `domains/${d.id} step ${step.index}`,
+      'tags',
+      step.tags,
+      agentSet,
+      'agents',
+    );
+  }
+}
+
+const domainCount = domains.length;
+const realCount = domains.filter(d => !d.data.comingSoon).length;
+---
+
+<BaseLayout
+  title="Domain Playbooks — HPS AI Hub"
+  description="8 domains, 8 workflows. Each domain has dedicated agents, skills, MCPs, and session commands. Switch with /session-{domain}."
+>
+  <Nav />
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">07 — Domain Playbooks</p>
+        <h1 class="hero-title">Eight domains,<br />eight workflows.</h1>
+        <p class="hero-lede">
+          {realCount} active playbooks, {domainCount - realCount} coming soon.
+          Each domain has a specific session command, skills, models, and MCPs.
+          Switch between domains with <code>/session-&#123;domain&#125;</code>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Anchor nav ───────────────────────────────────────────────── -->
+    <section class="anchor-nav-section" data-animate="fade-up">
+      <div class="anchor-nav-inner">
+        <ul class="anchor-nav" role="list">
+          {domains.map(d => (
+            <li>
+              <a
+                href={`#${d.id.replace(/\.md$/, '')}`}
+                class:list={['anchor-link', { 'is-muted': d.data.comingSoon }]}
+              >
+                <span class="anchor-icon">{d.data.icon}</span>
+                <span>{d.data.name}</span>
+                {d.data.comingSoon && <span class="anchor-soon">soon</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── Domain sections ──────────────────────────────────────────── -->
+    <section class="domains-section">
+      <div class="domains-inner">
+        {domains.map(d => <DomainSection domain={d} />)}
+      </div>
+    </section>
+
+    <!-- ── Color legend ─────────────────────────────────────────────── -->
+    <section class="legend-section">
+      <div class="legend-inner">
+        <h2 class="section-title" data-animate="fade-up">Domain routing</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Four categories drive model selection and tool access.
+        </p>
+        <ul class="legend-list" role="list">
+          <li class="legend-item" data-animate="fade-up">
+            <Pill domain="build">Build</Pill>
+            <span class="legend-desc">Proptech · ML/DL · Full-Stack</span>
+          </li>
+          <li class="legend-item" data-animate="fade-up">
+            <Pill domain="operate">Operate</Pill>
+            <span class="legend-desc">IoT · Business Ops</span>
+          </li>
+          <li class="legend-item" data-animate="fade-up">
+            <Pill domain="grow">Grow</Pill>
+            <span class="legend-desc">Analytics · Marketing</span>
+          </li>
+          <li class="legend-item" data-animate="fade-up">
+            <Pill domain="secure">Secure</Pill>
+            <span class="legend-desc">Cybersecurity</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .hero-lede code {
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+  }
+
+  /* ── Anchor nav ────────────────────────────────────────────────────── */
+
+  .anchor-nav-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .anchor-nav-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-6);
+    padding-inline: var(--space-6);
+  }
+
+  .anchor-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .anchor-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--duration-quick) var(--ease-standard),
+                color var(--duration-quick) var(--ease-standard);
+  }
+
+  .anchor-link:hover {
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+  }
+
+  .anchor-link.is-muted {
+    opacity: 0.5;
+  }
+
+  .anchor-icon {
+    font-size: var(--font-size-base);
+  }
+
+  .anchor-soon {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* ── Domains section ───────────────────────────────────────────────── */
+
+  .domains-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .domains-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+
+  /* ── Legend section ─────────────────────────────────────────────────── */
+
+  .legend-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12);
+  }
+
+  .section-lede {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-10);
+    line-height: 1.65;
+  }
+
+  .legend-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .legend-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+</style>
