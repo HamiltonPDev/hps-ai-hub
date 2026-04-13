@@ -1,0 +1,423 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="KAIROS Memory + The Daily Loop — HPS AI Hub"
+  description="Cross-session memory that thinks overnight and loads itself every morning. One terminal, one workflow, no manual context injection."
+>
+  <Nav />
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">08 / 09 — Runtime</p>
+        <h1 class="hero-title">KAIROS Memory +<br/>The Daily Loop</h1>
+        <p class="hero-lede">
+          Cross-session memory that thinks overnight and loads itself every morning.
+          One terminal, one workflow, no manual context injection.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── §08 KAIROS Memory ──────────────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">KAIROS Memory</h2>
+
+        <p class="prose">
+          KAIROS is the overnight consolidation engine. At <strong>03:00</strong> the HPS-Dream
+          cron fires and runs a 4-phase pipeline: it orients itself in recent work, pulls related
+          memories via FTS5 + vector search, synthesises a structured weekly summary using
+          Claude Sonnet, then prunes stale observations and sends an FCM notification.
+          By morning, <strong>Engram MCP</strong> has a fresh, condensed context ready — no
+          manual session reload, no stale memory walls. The session log and <code>AGENTS.md</code>
+          project rules are loaded automatically when you open the next terminal.
+        </p>
+
+        <div class="kairos-grid">
+
+          <div class="kr-card" data-animate="fade-up">
+            <span class="kr-phase">Phase 1</span>
+            <h3 class="kr-title">Orient</h3>
+            <p class="kr-desc">Read recent work — load the last 7 days of session activity to ground the synthesis in what actually happened.</p>
+            <pre class="kr-code"><code>engram.query("sessions:last_7_days")</code></pre>
+          </div>
+
+          <div class="kr-card" data-animate="fade-up">
+            <span class="kr-phase">Phase 2</span>
+            <h3 class="kr-title">Gather</h3>
+            <p class="kr-desc">Pull related memories — FTS5 full-text search plus vector similarity to surface the most relevant past observations for the week's topics.</p>
+            <pre class="kr-code"><code>engram.search(recent_topics, limit=50)</code></pre>
+          </div>
+
+          <div class="kr-card" data-animate="fade-up">
+            <span class="kr-phase">Phase 3</span>
+            <h3 class="kr-title">Consolidate</h3>
+            <p class="kr-desc">Claude Sonnet synthesis — compress the gathered observations into a structured weekly summary: decisions, patterns, bugs, next steps.</p>
+            <pre class="kr-code"><code>claude_api("consolidate", model="sonnet")</code></pre>
+          </div>
+
+          <div class="kr-card" data-animate="fade-up">
+            <span class="kr-phase">Phase 4</span>
+            <h3 class="kr-title">Prune + Notify</h3>
+            <p class="kr-desc">Clean up and send — delete observations older than 30 days, then push an FCM notification with the summary excerpt so you wake up informed.</p>
+            <pre class="kr-code"><code>engram.prune_older_than(days=30)
+fcm.notify(summary.excerpt)</code></pre>
+          </div>
+
+        </div>
+
+        <div class="callout callout-info" data-animate="fade-up">
+          <strong>Build-time estimate:</strong> the full 4-phase pipeline runs in approximately
+          <strong>3–5 minutes</strong> on a typical week of sessions (~50–200 observations).
+          Token cost is dominated by Phase 3 (Sonnet synthesis) — roughly <strong>20–40k tokens</strong>
+          per nightly run. Prune keeps the total observation count bounded so cost stays flat over time.
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── §09 The Daily Loop ─────────────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">The Daily Loop</h2>
+
+        <p class="prose">
+          This is what a typical working day looks like once the stack is running. No manual
+          tool switching. No context re-injection. One terminal.
+        </p>
+
+        <ol class="timeline">
+
+          <li class="tl-item" data-animate="fade-up">
+            <strong class="tl-time">03:00</strong>
+            <div class="tl-body">
+              <h3 class="tl-title">HPS-Dream runs automatically</h3>
+              <p class="tl-desc">The nightly cron fires KAIROS — orient, gather, consolidate, prune. By morning your context is ready. You do nothing.</p>
+            </div>
+          </li>
+
+          <li class="tl-item" data-animate="fade-up">
+            <strong class="tl-time">Morning</strong>
+            <div class="tl-body">
+              <h3 class="tl-title">Open terminal — context loaded</h3>
+              <p class="tl-desc">Engram MCP loads the overnight summary automatically. AGENTS.md injects project rules. No warm-up prompt needed.</p>
+              <pre class="tl-cmd"><code>cd ~/projects/sevilla-pms && opencode</code></pre>
+            </div>
+          </li>
+
+          <li class="tl-item" data-animate="fade-up">
+            <strong class="tl-time">Research</strong>
+            <div class="tl-body">
+              <h3 class="tl-title">Start with Gemini</h3>
+              <p class="tl-desc">Use Gemini Pro's 1M context window for API docs, papers, and deep research. No copy-paste — the MCP handles retrieval.</p>
+              <pre class="tl-cmd"><code>"research the Aqara U200 lock PIN management API"</code></pre>
+            </div>
+          </li>
+
+          <li class="tl-item" data-animate="fade-up">
+            <strong class="tl-time">Planning</strong>
+            <div class="tl-body">
+              <h3 class="tl-title">Plan before coding</h3>
+              <p class="tl-desc">SDD explore → propose → spec → design → tasks before a single line of implementation. The plan is the product.</p>
+              <pre class="tl-cmd"><code>plan the automatic late payment reminder system</code></pre>
+            </div>
+          </li>
+
+          <li class="tl-item" data-animate="fade-up">
+            <strong class="tl-time">Execute</strong>
+            <div class="tl-body">
+              <h3 class="tl-title">Hephaestus builds in parallel</h3>
+              <p class="tl-desc">OmO routes tasks to the right models — UI to Gemini, API to Sonnet, architecture to GPT. Hash-anchored edits. Ralph Loop guarantees 100% completion.</p>
+              <pre class="tl-cmd"><code>ultrawork</code></pre>
+            </div>
+          </li>
+
+          <li class="tl-item" data-animate="fade-up">
+            <strong class="tl-time">Review</strong>
+            <div class="tl-body">
+              <h3 class="tl-title">Oracle + hps-security</h3>
+              <p class="tl-desc">sdd-verify compares implementation against spec. Oracle reviews for logic, hps-security scans for OWASP violations. CRITICAL / WARNING / SUGGESTION output.</p>
+              <pre class="tl-cmd"><code>review the payment handler changes</code></pre>
+            </div>
+          </li>
+
+          <li class="tl-item" data-animate="fade-up">
+            <strong class="tl-time">Deploy</strong>
+            <div class="tl-body">
+              <h3 class="tl-title">Vercel + Cloudflare MCP</h3>
+              <p class="tl-desc">Deploy via MCP — no context switching to a dashboard, no copy-paste of environment variables. The agent handles the whole pipeline.</p>
+              <pre class="tl-cmd"><code>deploy sevilla-pms to staging</code></pre>
+            </div>
+          </li>
+
+          <li class="tl-item" data-animate="fade-up">
+            <strong class="tl-time">End of day</strong>
+            <div class="tl-body">
+              <h3 class="tl-title">Session log saved</h3>
+              <p class="tl-desc">mem_session_summary persists everything to Engram — decisions, bugs, discoveries, next steps. KAIROS picks it up tonight. The loop closes.</p>
+              <pre class="tl-cmd"><code>/dream</code></pre>
+            </div>
+          </li>
+
+        </ol>
+
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* ── Main wrapper ──────────────────────────────────────────────────── */
+
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Content sections ──────────────────────────────────────────────── */
+
+  .content-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12);
+  }
+
+  /* ── Prose ─────────────────────────────────────────────────────────── */
+
+  .prose {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-8);
+    line-height: 1.7;
+  }
+
+  .prose strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    background: var(--color-surface);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Callouts ──────────────────────────────────────────────────────── */
+
+  .callout {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-6);
+    margin: var(--space-8) 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .callout strong {
+    color: var(--color-text);
+  }
+
+  .callout-info {
+    border-left: 3px solid var(--color-border-strong);
+    background: var(--color-surface);
+  }
+
+  /* ── KAIROS Grid ───────────────────────────────────────────────────── */
+
+  .kairos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  .kr-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+  }
+
+  .kr-phase {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-subtle);
+  }
+
+  .kr-title {
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    color: var(--color-text);
+    margin: var(--space-2) 0 var(--space-3);
+  }
+
+  .kr-desc {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0 0 var(--space-4);
+  }
+
+  .kr-code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0;
+    white-space: pre;
+  }
+
+  .kr-code code {
+    font-family: inherit;
+    font-size: inherit;
+    background: none;
+    padding: 0;
+  }
+
+  /* ── Timeline ──────────────────────────────────────────────────────── */
+
+  .timeline {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    border-left: 2px solid var(--color-border);
+    margin-left: var(--space-4);
+  }
+
+  .tl-item {
+    padding-left: var(--space-6);
+    padding-bottom: var(--space-8);
+    position: relative;
+  }
+
+  .tl-item::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    position: absolute;
+    left: -6px;
+    top: var(--space-1);
+  }
+
+  .tl-time {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-subtle);
+    letter-spacing: var(--tracking-wide);
+    display: block;
+    margin-bottom: var(--space-1);
+  }
+
+  .tl-title {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+    margin: var(--space-1) 0 var(--space-2);
+  }
+
+  .tl-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0 0 var(--space-3);
+  }
+
+  .tl-cmd {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0;
+    white-space: pre;
+  }
+
+  .tl-cmd code {
+    font-family: inherit;
+    font-size: inherit;
+    background: none;
+    padding: 0;
+  }
+</style>
