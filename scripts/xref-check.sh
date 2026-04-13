@@ -65,7 +65,7 @@ iterate_scalar() {
   fi
   local f slug
   for f in $glob; do
-    slug=$(yq "$yq_path" "$f" 2>/dev/null || echo "")
+    slug=$(yq --front-matter=extract "$yq_path" "$f" 2>/dev/null || echo "")
     check_slug "$f" "$field" "$slug" "$target"
   done
 }
@@ -82,7 +82,7 @@ iterate_array() {
     while IFS= read -r slug; do
       [[ -z "$slug" || "$slug" == "null" ]] && continue
       check_slug "$f" "$field" "$slug" "$target"
-    done < <(yq "$yq_path" "$f" 2>/dev/null || true)
+    done < <(yq --front-matter=extract "$yq_path" "$f" 2>/dev/null || true)
   done
 }
 
@@ -101,7 +101,7 @@ iterate_scalar "${CONTENT_ROOT}/agents/*.md" '.modelSlug' 'agents.modelSlug' 'mo
 #    with that slug exists in models/; otherwise assume human-readable and skip)
 if ! target_is_empty 'models'; then
   for f in ${CONTENT_ROOT}/agents/*.md; do
-    slug=$(yq '.modelAlternative' "$f" 2>/dev/null || echo "")
+    slug=$(yq --front-matter=extract '.modelAlternative' "$f" 2>/dev/null || echo "")
     [[ -z "$slug" || "$slug" == "null" ]] && continue
     # Heuristic: only validate if the value looks like a slug AND a candidate file exists
     if [[ "$slug" =~ ^[a-z0-9-]+$ ]] && [[ -f "${CONTENT_ROOT}/models/${slug}.md" ]]; then

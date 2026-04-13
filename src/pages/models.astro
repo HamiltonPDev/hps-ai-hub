@@ -3,18 +3,63 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import { buildSlugSet, assertXrefList } from '../lib/xref';
 
 const models = await getCollection('models');
 
-// Sort by category for display grouping
-const sorted = [...models].sort((a, b) =>
-  a.data.category.localeCompare(b.data.category)
-);
+// Agents populated by sub-change 2; guard defensively.
+let agents: Awaited<ReturnType<typeof getCollection<'agents'>>> = [];
+try { agents = await getCollection('agents'); } catch {}
+
+// Domains empty until Wave-3 sub-change 11. MUST guard (getCollection throws on empty glob).
+let domains: Awaited<ReturnType<typeof getCollection<'domains'>>> = [];
+try { domains = await getCollection('domains'); } catch {}
+
+// Cross-reference validation: models.usedBy[] → agents
+const agentSet = buildSlugSet(agents);
+if (agentSet.size > 0) {
+  for (const m of models) {
+    assertXrefList(`models/${m.id}`, 'usedBy', m.data.usedBy, agentSet, 'agents');
+  }
+}
+
+// Sort: tier enum order → provider alpha → name alpha
+const tierOrder: Record<string, number> = {
+  architecture: 0,
+  implementation: 1,
+  automation: 2,
+  free: 3,
+};
+const sorted = [...models].sort((a, b) => {
+  const t = (tierOrder[a.data.tier] ?? 99) - (tierOrder[b.data.tier] ?? 99);
+  if (t !== 0) return t;
+  const p = a.data.provider.localeCompare(b.data.provider);
+  if (p !== 0) return p;
+  return a.data.name.localeCompare(b.data.name);
+});
+
+// Group by tier for display
+const paidModels = sorted.filter((m) => m.data.tier !== 'free');
+const freeModels = sorted.filter((m) => m.data.tier === 'free');
+
+// Tier display labels
+const tierLabels: Record<string, string> = {
+  architecture: 'Architecture',
+  implementation: 'Implementation',
+  automation: 'Automation',
+};
+
+// Group paid models by tier for section rendering
+const paidByTier = Object.entries(tierLabels).map(([tier, label]) => ({
+  tier,
+  label,
+  models: paidModels.filter((m) => m.data.tier === tier),
+})).filter((g) => g.models.length > 0);
 ---
 
 <BaseLayout
   title="Model Routing — HPS AI Hub"
-  description="Multi-model decision engine powering HPS AI Hub. Opus for architecture, Sonnet for implementation, Haiku for automation, free tiers for non-critical tasks."
+  description="Multi-model decision engine powering HPS AI Hub. 17 models across 4 tiers. Opus for architecture, Sonnet for implementation, Haiku for automation, free tiers for non-critical tasks."
 >
   <Nav />
 
@@ -26,9 +71,9 @@ const sorted = [...models].sort((a, b) =>
         <p class="eyebrow">03 — Model Routing</p>
         <h1 class="hero-title">The decision engine.</h1>
         <p class="hero-lede">
-          Not every task deserves the same model. Category routing fires the right
-          model for the right task — maximizing quality where it matters,
-          minimizing cost where it doesn't.
+          17 models across 4 tiers. 6 paid, 11 free/budget.
+          Category routing fires the right model for the right task —
+          maximizing quality where it matters, minimizing cost where it doesn't.
         </p>
       </div>
     </section>
@@ -50,31 +95,101 @@ const sorted = [...models].sort((a, b) =>
       </div>
     </section>
 
-    <!-- ── Model list ────────────────────────────────────────────────── -->
-    <section class="models-section">
-      <div class="models-inner">
-        <h2 class="section-title" data-animate="fade-up">Model roster</h2>
-
-        {sorted.length === 0 ? (
-          <p class="empty-state" data-animate="fade-up">
-            Model definitions are being ported from the master reference document.
-            See the <a href="/architecture">architecture page</a> for the current routing overview.
-          </p>
-        ) : (
+    <!-- ── Paid model tiers ──────────────────────────────────────────── -->
+    {paidByTier.map((group) => (
+      <section class="models-section">
+        <div class="models-inner">
+          <h2 class="section-title" data-animate="fade-up">
+            {group.label} tier
+          </h2>
           <ul class="model-grid" role="list">
-            {sorted.map((model) => (
+            {group.models.map((model) => (
               <li class="model-card" data-animate="fade-up">
                 <div class="model-header">
                   <span class="model-name">{model.data.name}</span>
                   <span class="model-provider">{model.data.provider}</span>
                 </div>
-                <p class="model-category">{model.data.category}</p>
+                <div class="model-badges">
+                  <span class={`tier-badge tier-${model.data.tier}`}>
+                    {model.data.tier}
+                  </span>
+                  {model.data.omoCategory.map((cat) => (
+                    <span class="omo-badge">{cat}</span>
+                  ))}
+                </div>
                 <p class="model-best-for">{model.data.bestFor}</p>
-                <p class="model-cost">{model.data.cost}</p>
+                <div class="model-meta">
+                  <span class="model-cost">{model.data.cost}</span>
+                  {model.data.speed && (
+                    <span class="model-speed">{model.data.speed}</span>
+                  )}
+                  {model.data.contextWindow && (
+                    <span class="model-context">{model.data.contextWindow} ctx</span>
+                  )}
+                </div>
+                {model.data.comparable && (
+                  <p class="model-comparable">{model.data.comparable}</p>
+                )}
+                {model.data.usedBy.length > 0 && (
+                  <div class="model-used-by">
+                    <span class="used-by-label">Used by:</span>
+                    {model.data.usedBy.map((slug, i) => (
+                      <Fragment>
+                        <a href={`/agents#${slug}`} class="agent-link">{slug}</a>
+                        {i < model.data.usedBy.length - 1 && ', '}
+                      </Fragment>
+                    ))}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
-        )}
+        </div>
+      </section>
+    ))}
+
+    <!-- ── Free / budget models ──────────────────────────────────────── -->
+    <section class="models-section free-section">
+      <div class="models-inner">
+        <h2 class="section-title" data-animate="fade-up">
+          Free &amp; budget models
+        </h2>
+        <ul class="model-grid" role="list">
+          {freeModels.map((model) => (
+            <li class="model-card free-card" data-animate="fade-up">
+              <div class="model-header">
+                <span class="model-name">{model.data.name}</span>
+                <span class="model-provider">{model.data.provider}</span>
+              </div>
+              <div class="model-badges">
+                <span class={`tier-badge tier-free ${model.data.isFree ? 'is-free' : 'is-budget'}`}>
+                  {model.data.isFree ? 'free' : 'budget'}
+                </span>
+              </div>
+              <p class="model-best-for">{model.data.bestFor}</p>
+              <div class="model-meta">
+                <span class="model-cost">{model.data.cost}</span>
+                {model.data.speed && (
+                  <span class="model-speed">{model.data.speed}</span>
+                )}
+              </div>
+              {model.data.comparable && (
+                <p class="model-comparable">{model.data.comparable}</p>
+              )}
+              {model.data.usedBy.length > 0 && (
+                <div class="model-used-by">
+                  <span class="used-by-label">Used by:</span>
+                  {model.data.usedBy.map((slug, i) => (
+                    <Fragment>
+                      <a href={`/agents#${slug}`} class="agent-link">{slug}</a>
+                      {i < model.data.usedBy.length - 1 && ', '}
+                    </Fragment>
+                  ))}
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
 
@@ -112,6 +227,243 @@ const sorted = [...models].sort((a, b) =>
             </p>
           </li>
         </ul>
+      </div>
+    </section>
+
+    <!-- ── Routing table ─────────────────────────────────────────────── -->
+    <section class="routing-section">
+      <div class="routing-inner">
+        <h2 class="section-title" data-animate="fade-up">Intent routing table</h2>
+        <p class="prose" data-animate="fade-up">
+          How OmO decides which model fires. The routing rule maps natural-language
+          intent to the right model and agent.
+        </p>
+        <div class="table-wrap" data-animate="fade-up">
+          <table class="routing-table" role="table">
+            <thead>
+              <tr>
+                <th scope="col">When you say…</th>
+                <th scope="col">Model</th>
+                <th scope="col">Agent</th>
+                <th scope="col">Why</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Task-based routing -->
+              <tr>
+                <td>"Research / find…"</td>
+                <td>GPT-5.4</td>
+                <td>Oracle</td>
+                <td>Deep research synthesis</td>
+              </tr>
+              <tr>
+                <td>"Architecture / design…"</td>
+                <td>Claude Opus 4.6</td>
+                <td>Sisyphus</td>
+                <td>System-level design decisions</td>
+              </tr>
+              <tr>
+                <td>"Plan / spec…"</td>
+                <td>Claude Opus 4.6</td>
+                <td>Prometheus</td>
+                <td>Strategic planning</td>
+              </tr>
+              <tr>
+                <td>"Implement / build…"</td>
+                <td>Claude Sonnet 4.6</td>
+                <td>Atlas</td>
+                <td>Feature development</td>
+              </tr>
+              <tr>
+                <td>"Ultrawork / ULW…"</td>
+                <td>Claude Opus 4.6</td>
+                <td>Sisyphus</td>
+                <td>Full autonomous pipeline</td>
+              </tr>
+              <tr>
+                <td>"Review / check…"</td>
+                <td>GPT-5.4</td>
+                <td>Momus</td>
+                <td>Adversarial code review</td>
+              </tr>
+              <tr>
+                <td>"Find in codebase…"</td>
+                <td>Grok Code Fast</td>
+                <td>Explore</td>
+                <td>Quick code navigation</td>
+              </tr>
+              <tr>
+                <td>"Security / vulnerability…"</td>
+                <td>Claude Sonnet 4.6</td>
+                <td>HPS-Security</td>
+                <td>Security analysis</td>
+              </tr>
+              <tr>
+                <td>"ML / model training…"</td>
+                <td>Gemini 3.1 Pro</td>
+                <td>HPS-ML</td>
+                <td>Machine learning tasks</td>
+              </tr>
+              <tr>
+                <td>"IoT / Aqara…"</td>
+                <td>Gemini 3.1 Pro</td>
+                <td>HPS-IoT</td>
+                <td>IoT device management</td>
+              </tr>
+              <tr>
+                <td>"Classify / quick…"</td>
+                <td>Claude Haiku 4.6</td>
+                <td>(automation)</td>
+                <td>Low-cost classification</td>
+              </tr>
+              <!-- OmO Category routing -->
+              <tr class="separator-row">
+                <th colspan="4">OmO Category Routing</th>
+              </tr>
+              <tr>
+                <td>visual-engineering</td>
+                <td>Gemini 3.1 Pro</td>
+                <td>Frontend</td>
+                <td>UI/UX, visual design</td>
+              </tr>
+              <tr>
+                <td>ultrabrain</td>
+                <td>Claude Opus 4.6 / GPT-5.4</td>
+                <td>Sisyphus / Oracle</td>
+                <td>Highest reasoning</td>
+              </tr>
+              <tr>
+                <td>deep</td>
+                <td>Claude Opus 4.6 / GPT-5.4</td>
+                <td>(context-dependent)</td>
+                <td>Deep analysis</td>
+              </tr>
+              <tr>
+                <td>writing</td>
+                <td>Claude Sonnet 4.6 / Gemini 3 Flash</td>
+                <td>(context-dependent)</td>
+                <td>Content generation</td>
+              </tr>
+              <tr>
+                <td>quick</td>
+                <td>Claude Haiku 4.6 / Gemini 3 Flash</td>
+                <td>(automation)</td>
+                <td>Fast, cheap tasks</td>
+              </tr>
+              <tr>
+                <td>artistry</td>
+                <td>Gemini 3.1 Pro</td>
+                <td>Frontend / Multimodal-Looker</td>
+                <td>Visual creativity</td>
+              </tr>
+              <!-- Free & Budget routing -->
+              <tr class="separator-row">
+                <th colspan="4">Free &amp; Budget Routing</th>
+              </tr>
+              <tr>
+                <td>"Implement / scaffold (budget)…"</td>
+                <td>Qwen 3 Coder 480B</td>
+                <td>(any)</td>
+                <td>Free code generation</td>
+              </tr>
+              <tr>
+                <td>"Reason / think deep (budget)…"</td>
+                <td>DeepSeek V3</td>
+                <td>(any)</td>
+                <td>Budget reasoning</td>
+              </tr>
+              <tr>
+                <td>"Fast / quick (free)…"</td>
+                <td>Llama 3.3 70B</td>
+                <td>(any)</td>
+                <td>Fastest free inference (500 tok/s)</td>
+              </tr>
+              <tr>
+                <td>"Generate docs…"</td>
+                <td>MiniMax M2.7</td>
+                <td>Librarian</td>
+                <td>Documentation curation</td>
+              </tr>
+              <tr>
+                <td>"Orchestrate / fallback…"</td>
+                <td>Kimi K2</td>
+                <td>(fallback)</td>
+                <td>Budget orchestration</td>
+              </tr>
+              <tr>
+                <td>"Local / offline…"</td>
+                <td>Llama 3.3 70B (Ollama)</td>
+                <td>(any)</td>
+                <td>Local inference, no cloud</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ── Agent assignment table ─────────────────────────────────── -->
+        <h3 class="subsection-title" data-animate="fade-up">Optimal model assignment by agent</h3>
+        <div class="table-wrap" data-animate="fade-up">
+          <table class="routing-table" role="table">
+            <thead>
+              <tr>
+                <th scope="col">Agent</th>
+                <th scope="col">Paid Model</th>
+                <th scope="col">Free / Budget Alt</th>
+                <th scope="col">When to use free</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sisyphus</td>
+                <td>Claude Opus 4.6</td>
+                <td>Kimi K2</td>
+                <td>Non-critical orchestration</td>
+              </tr>
+              <tr>
+                <td>Oracle</td>
+                <td>GPT-5.4</td>
+                <td>DeepSeek V3</td>
+                <td>Budget research queries</td>
+              </tr>
+              <tr>
+                <td>Atlas</td>
+                <td>Claude Sonnet 4.6</td>
+                <td>Qwen 3 Coder 480B</td>
+                <td>Non-critical implementation</td>
+              </tr>
+              <tr>
+                <td>Hephaestus</td>
+                <td>GPT-5.4</td>
+                <td>Codex / Qwen Coder</td>
+                <td>Routine autonomous builds</td>
+              </tr>
+              <tr>
+                <td>Frontend</td>
+                <td>Gemini 3.1 Pro</td>
+                <td>Gemini Flash (Free)</td>
+                <td>Simple UI tweaks</td>
+              </tr>
+              <tr>
+                <td>Librarian</td>
+                <td>Gemini 3 Flash</td>
+                <td>MiniMax M2.7</td>
+                <td>Routine doc curation</td>
+              </tr>
+              <tr>
+                <td>Explore</td>
+                <td>Claude Sonnet 4.6</td>
+                <td>Grok Code Fast</td>
+                <td>Quick code navigation</td>
+              </tr>
+              <tr>
+                <td>HPS-Security</td>
+                <td>Claude Sonnet 4.6</td>
+                <td>Mistral Large</td>
+                <td>Non-critical scans</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -186,6 +538,14 @@ const sorted = [...models].sort((a, b) =>
     margin: 0 0 var(--space-10);
   }
 
+  .subsection-title {
+    font-size: var(--font-size-xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: var(--space-16) 0 var(--space-8);
+  }
+
   .prose {
     font-size: var(--font-size-base);
     color: var(--color-text-muted);
@@ -210,13 +570,6 @@ const sorted = [...models].sort((a, b) =>
     margin-inline: auto;
     padding-block: var(--space-24);
     padding-inline: var(--space-6);
-  }
-
-  .empty-state {
-    font-size: var(--font-size-base);
-    color: var(--color-text-muted);
-    max-width: var(--content-max);
-    line-height: 1.65;
   }
 
   .model-grid {
@@ -252,6 +605,10 @@ const sorted = [...models].sort((a, b) =>
     border-color: var(--color-border-strong);
   }
 
+  .free-card {
+    opacity: 0.85;
+  }
+
   .model-header {
     display: flex;
     justify-content: space-between;
@@ -277,14 +634,64 @@ const sorted = [...models].sort((a, b) =>
     flex-shrink: 0;
   }
 
-  .model-category {
+  /* ── Badges ──────────────────────────────────────────────────────────── */
+
+  .model-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .tier-badge {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
-    color: var(--color-text-subtle);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    margin: 0 0 var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-subtle);
   }
+
+  .tier-architecture {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .tier-implementation {
+    border-color: var(--color-text-muted);
+    color: var(--color-text-muted);
+  }
+
+  .tier-automation {
+    border-color: var(--color-text-subtle);
+    color: var(--color-text-subtle);
+  }
+
+  .tier-free.is-free {
+    border-color: var(--color-text-subtle);
+    color: var(--color-text-subtle);
+  }
+
+  .tier-free.is-budget {
+    border-color: var(--color-text-subtle);
+    color: var(--color-text-subtle);
+    font-style: italic;
+  }
+
+  .omo-badge {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-subtle);
+  }
+
+  /* ── Card body ───────────────────────────────────────────────────────── */
 
   .model-best-for {
     font-size: var(--font-size-sm);
@@ -293,17 +700,54 @@ const sorted = [...models].sort((a, b) =>
     line-height: 1.5;
   }
 
-  .model-cost {
+  .model-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .model-cost,
+  .model-speed,
+  .model-context {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     color: var(--color-text-subtle);
-    margin: 0;
+  }
+
+  .model-comparable {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    font-style: italic;
+    margin: 0 0 var(--space-3);
+  }
+
+  .model-used-by {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    margin-top: var(--space-2);
+  }
+
+  .used-by-label {
+    font-family: var(--font-mono);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    margin-right: var(--space-1);
+  }
+
+  .agent-link {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .agent-link:hover {
+    text-decoration: underline;
   }
 
   /* ── Tiers section ──────────────────────────────────────────────────── */
 
   .tiers-section {
-    /* last section */
+    border-bottom: 1px solid var(--color-border);
   }
 
   .tier-list {
@@ -334,5 +778,68 @@ const sorted = [...models].sort((a, b) =>
     margin: 0;
     line-height: 1.7;
     max-width: var(--content-max);
+  }
+
+  /* ── Routing section ────────────────────────────────────────────────── */
+
+  .routing-section {
+    /* last section */
+  }
+
+  .routing-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: var(--space-6);
+  }
+
+  .routing-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+  }
+
+  .routing-table th,
+  .routing-table td {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .routing-table thead th {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .routing-table td {
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .separator-row th {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text);
+    padding-top: var(--space-8);
+    border-bottom: 2px solid var(--color-border);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  /* ── Free section divider ───────────────────────────────────────────── */
+
+  .free-section {
+    border-top: 2px solid var(--color-border);
   }
 </style>
