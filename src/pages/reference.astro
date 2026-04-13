@@ -1,0 +1,375 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Quick Reference — HPS AI Hub"
+  description="Command quick reference card for all HPS AI domains: Proptech, IoT, Security, Analytics, Memory, and Execution Modes."
+>
+  <Nav />
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">14 — Reference</p>
+        <h1 class="hero-title">Quick Reference<br/>Card</h1>
+        <p class="hero-lede">
+          Every command you reach for in a working day — grouped by domain,
+          ready to scan in seconds.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Command Cards ─────────────────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">Domain Commands</h2>
+
+        <div class="qr-grid">
+
+          <!-- Proptech — operate -->
+          <div class="qr-card" data-domain="operate" data-animate="fade-up">
+            <span class="qr-label">Proptech Commands</span>
+            <dl class="qr-list">
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">plan</code></dt>
+                <dd class="qr-desc">Prometheus interview mode → spec</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">ultrawork</code></dt>
+                <dd class="qr-desc">Full parallel execution team</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">review</code></dt>
+                <dd class="qr-desc">Oracle + security review</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">deploy</code></dt>
+                <dd class="qr-desc">Vercel + Supabase MCP deploy</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">/sdd-spec</code></dt>
+                <dd class="qr-desc">SDD specification phase (Opus)</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- IoT — build -->
+          <div class="qr-card" data-domain="build" data-animate="fade-up">
+            <span class="qr-label">IoT Commands</span>
+            <dl class="qr-list">
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">research</code></dt>
+                <dd class="qr-desc">Gemini Pro reads full API docs</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">/init-deep</code></dt>
+                <dd class="qr-desc">Generate hierarchical AGENTS.md</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">build workflow</code></dt>
+                <dd class="qr-desc">n8n JSON generation (Codex)</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">check server</code></dt>
+                <dd class="qr-desc">Hetzner/HA status via MCP</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Security — secure -->
+          <div class="qr-card" data-domain="secure" data-animate="fade-up">
+            <span class="qr-label">Security Commands</span>
+            <dl class="qr-list">
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">security scan</code></dt>
+                <dd class="qr-desc">OWASP + GDPR + secret check</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">gga init</code></dt>
+                <dd class="qr-desc">Enable GGA hook in current repo</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">/env</code></dt>
+                <dd class="qr-desc">Inspect sanitised env visible to agent</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">/debug-tool-call</code></dt>
+                <dd class="qr-desc">Raw JSON of last tool execution</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Analytics — grow -->
+          <div class="qr-card" data-domain="grow" data-animate="fade-up">
+            <span class="qr-label">Analytics Commands</span>
+            <dl class="qr-list">
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">portfolio report</code></dt>
+                <dd class="qr-desc">KPIs from Supabase → HPS Owner</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">cost report</code></dt>
+                <dd class="qr-desc">Token spend by model + project</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">analyse rental data</code></dt>
+                <dd class="qr-desc">Time-series on payment history</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Memory — accent -->
+          <div class="qr-card" data-domain="accent" data-animate="fade-up">
+            <span class="qr-label">Memory Commands</span>
+            <dl class="qr-list">
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">/dream</code></dt>
+                <dd class="qr-desc">Consolidate memories now (manual)</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">remember this</code></dt>
+                <dd class="qr-desc">Force-save decision to Engram</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">what did we decide</code></dt>
+                <dd class="qr-desc">FTS5 search Engram memories</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">/ctx-viz</code></dt>
+                <dd class="qr-desc">Visualise current context window</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">/btw</code></dt>
+                <dd class="qr-desc">Side question, no context pollution</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Execution Modes — build (shared, no dedicated token) -->
+          <div class="qr-card" data-domain="build" data-animate="fade-up">
+            <span class="qr-label">Execution Modes</span>
+            <dl class="qr-list">
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">ultrawork</code></dt>
+                <dd class="qr-desc">All agents, maximum parallelism</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">ralph</code></dt>
+                <dd class="qr-desc">Persistence loop until 100% done</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">eco</code></dt>
+                <dd class="qr-desc">Token-efficient, Haiku for simple work</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">$team N</code></dt>
+                <dd class="qr-desc">N parallel Codex workers</dd>
+              </div>
+              <div class="qr-entry">
+                <dt><code class="qr-cmd">/force-snip</code></dt>
+                <dd class="qr-desc">Free context tokens mid-session</dd>
+              </div>
+            </dl>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* ── Main wrapper ──────────────────────────────────────────────────── */
+
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Content section ───────────────────────────────────────────────── */
+
+  .content-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12);
+  }
+
+  /* ── QR Grid ───────────────────────────────────────────────────────── */
+
+  .qr-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-6);
+  }
+
+  /* ── QR Card ───────────────────────────────────────────────────────── */
+
+  .qr-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    border-top: 3px solid var(--color-border-strong);
+  }
+
+  .qr-card[data-domain="operate"] {
+    border-top-color: var(--color-domain-operate);
+  }
+
+  .qr-card[data-domain="build"] {
+    border-top-color: var(--color-domain-build);
+  }
+
+  .qr-card[data-domain="secure"] {
+    border-top-color: var(--color-domain-secure);
+  }
+
+  .qr-card[data-domain="grow"] {
+    border-top-color: var(--color-domain-grow);
+  }
+
+  .qr-card[data-domain="accent"] {
+    border-top-color: var(--color-accent);
+  }
+
+  /* ── QR Label ──────────────────────────────────────────────────────── */
+
+  .qr-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-subtle);
+    margin-bottom: var(--space-4);
+  }
+
+  .qr-card[data-domain="operate"] .qr-label {
+    color: var(--color-domain-operate);
+  }
+
+  .qr-card[data-domain="build"] .qr-label {
+    color: var(--color-domain-build);
+  }
+
+  .qr-card[data-domain="secure"] .qr-label {
+    color: var(--color-domain-secure);
+  }
+
+  .qr-card[data-domain="grow"] .qr-label {
+    color: var(--color-domain-grow);
+  }
+
+  .qr-card[data-domain="accent"] .qr-label {
+    color: var(--color-accent);
+  }
+
+  /* ── QR List ───────────────────────────────────────────────────────── */
+
+  .qr-list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .qr-entry {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-0-5);
+  }
+
+  .qr-entry dt {
+    margin: 0;
+    padding: 0;
+  }
+
+  .qr-entry dd {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ── QR Command ────────────────────────────────────────────────────── */
+
+  .qr-cmd {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: var(--space-0-5) var(--space-2);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+  }
+
+  /* ── QR Description ────────────────────────────────────────────────── */
+
+  .qr-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+</style>

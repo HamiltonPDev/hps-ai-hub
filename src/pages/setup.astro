@@ -1,0 +1,434 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const step01 = `brew install anomalyco/tap/opencode
+opencode auth login
+# configure Claude as primary
+# Inside an OpenCode session:
+/plugin install oh-my-openagent
+# or let an agent do it:
+# "install oh-my-openagent from
+# https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/refs/heads/dev/docs/guide/installation.md"`;
+
+const step02 = `npm install -g @google/gemini-cli
+gemini auth login
+# GEMINI_API_KEY
+# In opencode.json, add provider:
+# "providers": { "google": { "apiKey": "$GEMINI_API_KEY" } }
+# In omo config, map hps-gemini-research → gemini-2.5-pro`;
+
+const step03 = `npm install -g @openai/codex
+export OPENAI_API_KEY="sk-..."
+# In omo config (~/.config/opencode/oh-my-openagent.jsonc):
+# "agents": {
+#   "hephaestus": { "model": "codex-4.1", "provider": "openai" }
+# }`;
+
+const step04 = `brew tap Gentleman-Programming/homebrew-tap
+brew install gentle-ai engram
+gentle-ai install       # detects OpenCode, injects config
+engram setup opencode   # wires Engram MCP into opencode.json
+engram setup codex      # also wires for Codex CLI sessions`;
+
+const step05 = `gentle-ai install   # includes GGA
+# Enable per project:
+cd ~/projects/sevilla-pms && gga init
+cd ~/projects/casa-brunelli && gga init`;
+
+const step06 = `# Supabase MCP
+npx @supabase/mcp-server-supabase@latest \\
+  --supabase-url $SUPABASE_URL --supabase-key $SUPABASE_KEY
+
+# GitHub MCP
+GITHUB_TOKEN=your_token npx @modelcontextprotocol/server-github
+
+# Filesystem MCP (your projects)
+npx @modelcontextprotocol/server-filesystem ~/projects
+
+# Vercel MCP, Cloudflare MCP — add similarly`;
+
+const step07 = `cd ~/projects/sevilla-pms && opencode /init-deep
+git add AGENTS.md **/AGENTS.md
+git commit -m "feat: add AI agent context"
+# Repeat for: casa-brunelli, flutter apps, posadas-schoonmaken`;
+
+const step08 = `mkdir -p ~/.config/opencode/skills/{hps-sevilla-pms,hps-casa-brunelli,hps-fiscal-es}
+# Write each SKILL.md with your domain-specific knowledge
+# All tech skills (nextjs, flutter, supabase, hono, etc) already installed`;
+
+const step09a = `mkdir -p ~/.hps/scripts ~/.hps/logs
+# Write ~/.hps/scripts/dream.ts (~150 lines)
+# See KAIROS section for full code sketch
+
+# macOS launchd (runs at 03:00 daily):
+# ~/Library/LaunchAgents/com.hps.dream.plist`;
+
+const step09xml = `&lt;key&gt;StartCalendarInterval&lt;/key&gt;
+&lt;dict&gt;
+  &lt;key&gt;Hour&lt;/key&gt;
+  &lt;integer&gt;3&lt;/integer&gt;
+&lt;/dict&gt;`;
+
+const step09b = `launchctl load ~/Library/LaunchAgents/com.hps.dream.plist`;
+
+const step10 = `# OpenCode pre-tool hook: ~/.config/opencode/hooks/pre-tool.ts
+# Receives: tool name + arguments
+# Calls: Claude Haiku with your security rules
+# Returns: { action: "allow" | "warn" | "block", reason: string }
+# Configure in opencode.json:
+# "hooks": { "preToolUse": "~/.config/opencode/hooks/pre-tool.ts" }`;
+---
+
+<BaseLayout
+  title="Installation — HPS AI Hub"
+  description="Step-by-step installation sequence to build the full HPS AI operation stack. Estimated total: 4–6 hours."
+>
+  <Nav />
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">15 — Setup</p>
+        <h1 class="hero-title">Installation<br/>Sequence</h1>
+        <p class="hero-lede">
+          In order. Each step builds on the previous. Estimated total:
+          <strong>4–6 hours</strong> to a fully operational stack.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Steps ─────────────────────────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">Steps</h2>
+
+        <ol class="setup-steps">
+
+          <!-- Step 01 -->
+          <li class="step" data-animate="fade-up">
+            <span class="step-num">01</span>
+            <h3 class="step-title">OpenCode + omo</h3>
+            <p class="step-desc">
+              The base runtime + harness layer. omo adds all agents, Hashline
+              editing, LSP tools, Exa search, Context7 docs, and the ralph loop.
+            </p>
+            <pre class="step-code"><code set:text={step01}></code></pre>
+          </li>
+
+          <!-- Step 02 -->
+          <li class="step" data-animate="fade-up">
+            <span class="step-num">02</span>
+            <h3 class="step-title">Configure Gemini CLI as secondary model</h3>
+            <p class="step-desc">
+              Add Gemini 2.5 Pro as the research model. omo routes
+              hps-gemini-research tasks to it automatically.
+            </p>
+            <pre class="step-code"><code set:text={step02}></code></pre>
+          </li>
+
+          <!-- Step 03 -->
+          <li class="step" data-animate="fade-up">
+            <span class="step-num">03</span>
+            <h3 class="step-title">Configure Codex CLI as deep executor</h3>
+            <p class="step-desc">
+              Codex powers Hephaestus — the autonomous deep worker. omo routes
+              all "executor" and "deep" category tasks to it.
+            </p>
+            <pre class="step-code"><code set:text={step03}></code></pre>
+          </li>
+
+          <!-- Step 04 -->
+          <li class="step" data-animate="fade-up">
+            <span class="step-num">04</span>
+            <h3 class="step-title">Engram (persistent memory) + gentle-ai (SDD workflow)</h3>
+            <p class="step-desc">
+              Cross-session memory and structured development workflow. Engram
+              auto-wires as an MCP server inside OpenCode.
+            </p>
+            <pre class="step-code"><code set:text={step04}></code></pre>
+          </li>
+
+          <!-- Step 05 -->
+          <li class="step" data-animate="fade-up">
+            <span class="step-num">05</span>
+            <h3 class="step-title">GGA — security enforcement on every commit</h3>
+            <p class="step-desc">
+              Gentleman Guardian Angel: pure Bash git hook that runs AI review
+              on staged files. Install globally, enable per project.
+            </p>
+            <pre class="step-code"><code set:text={step05}></code></pre>
+          </li>
+
+          <!-- Step 06 -->
+          <li class="step" data-animate="fade-up">
+            <span class="step-num">06</span>
+            <h3 class="step-title">MCP servers (infra integrations)</h3>
+            <p class="step-desc">
+              Add these to <code>~/.config/opencode/opencode.json</code> →
+              mcpServers. Each gives the agent direct access to your infra.
+            </p>
+            <pre class="step-code"><code set:text={step06}></code></pre>
+          </li>
+
+          <!-- Step 07 -->
+          <li class="step" data-animate="fade-up">
+            <span class="step-num">07</span>
+            <h3 class="step-title">Run /init-deep in every project</h3>
+            <p class="step-desc">
+              Generates hierarchical AGENTS.md throughout each project tree.
+              Commit to Git — the context travels with the repo.
+            </p>
+            <pre class="step-code"><code set:text={step07}></code></pre>
+          </li>
+
+          <!-- Step 08 -->
+          <li class="step" data-animate="fade-up">
+            <span class="step-num">08</span>
+            <h3 class="step-title">Write 3 HPS domain skill files (66 already installed)</h3>
+            <p class="step-desc">
+              66 tech skills already installed via community + gentle-ai. Only 3
+              HPS domain-specific skills need creating: hps-sevilla-pms
+              (LAU/IRPF), hps-casa-brunelli (reservations), hps-fiscal-es
+              (Spanish fiscal). All others were installed via
+              <code>npx skills add</code>.
+            </p>
+            <pre class="step-code"><code set:text={step08}></code></pre>
+          </li>
+
+          <!-- Step 09 -->
+          <li class="step" data-animate="fade-up">
+            <span class="step-num">09</span>
+            <h3 class="step-title">Build HPS-Dream (nightly memory consolidation)</h3>
+            <p class="step-desc">
+              The KAIROS replication. Cron job at 3am. Reads session logs →
+              Engram → Claude Sonnet consolidation → FCM push to Flutter.
+              Highest-leverage build of the weekend.
+            </p>
+            <pre class="step-code"><code set:text={step09a}></code></pre>
+            <pre class="step-code" data-animate="fade-up"><code set:html={step09xml}></code></pre>
+            <pre class="step-code" data-animate="fade-up"><code set:text={step09b}></code></pre>
+          </li>
+
+          <!-- Step 10 -->
+          <li class="step" data-animate="fade-up">
+            <span class="step-num">10</span>
+            <h3 class="step-title">Build HPS-YOLO security classifier</h3>
+            <p class="step-desc">
+              Pre-tool-call security check via Claude Haiku. OpenCode hook
+              that runs before every file write or bash command.
+              LOW/MEDIUM/HIGH risk. Inspired by the CC leaked
+              <code>classifyYoloAction()</code>.
+            </p>
+            <pre class="step-code"><code set:text={step10}></code></pre>
+          </li>
+
+        </ol>
+
+        <div class="callout" data-animate="fade-up">
+          <strong>What changes in your workflow vs today:</strong> Gemini DR
+          stays as your research trigger but now it's in-session via
+          hps-gemini-research. ChatGPT o3 is replaced by Prometheus (Claude
+          Opus) for planning — decisions are now stored to Engram permanently
+          instead of disappearing when you close the browser tab. Claude Code is
+          replaced by OpenCode + omo + Codex, with Codex doing the actual
+          execution work and Claude doing the reasoning. One terminal. No
+          switching.
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* ── Main wrapper ──────────────────────────────────────────────────── */
+
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .hero-lede strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  /* ── Content section ───────────────────────────────────────────────── */
+
+  .content-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12);
+  }
+
+  /* ── Steps list ────────────────────────────────────────────────────── */
+
+  .setup-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  /* ── Step ──────────────────────────────────────────────────────────── */
+
+  .step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--space-6);
+    row-gap: var(--space-3);
+    align-items: start;
+  }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+    white-space: nowrap;
+    align-self: start;
+    margin-top: var(--space-1);
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .step-title {
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    color: var(--color-text);
+    margin: 0;
+    align-self: center;
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .step-desc {
+    grid-column: 2;
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .step-desc code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    background: var(--color-surface);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+  }
+
+  /* ── Code blocks ───────────────────────────────────────────────────── */
+
+  .step-code {
+    grid-column: 2;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: var(--space-4) var(--space-6);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0;
+    white-space: pre;
+  }
+
+  .step-code code {
+    font-family: inherit;
+    font-size: inherit;
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  /* ── Callout ───────────────────────────────────────────────────────── */
+
+  .callout {
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    padding: var(--space-4) var(--space-6);
+    margin-top: var(--space-12);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .callout strong {
+    color: var(--color-text);
+  }
+</style>
