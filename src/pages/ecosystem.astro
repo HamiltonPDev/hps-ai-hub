@@ -1,0 +1,605 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+<BaseLayout
+  title="Integrated Ecosystem — HPS AI Hub"
+  description="Seven tools, one operating system. Each tool does one thing exceptionally well. Together they create a unified AI operating system where the intelligence is in the system."
+>
+  <Nav />
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">04 — Integrated Ecosystem</p>
+        <h1 class="hero-title">Seven Tools, One Operating System</h1>
+        <p class="hero-lede">
+          Each tool does one thing exceptionally well. Together, they create something
+          no single tool can match — a unified AI operating system where the intelligence
+          is in the <strong>system</strong>, not individual agents.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Tool grid — 7 cards ──────────────────────────────────────── -->
+    <section class="tools-section">
+      <div class="tools-inner">
+        <!-- star counts removed per D1 — link to GitHub instead -->
+        <ul class="eco-grid" role="list">
+
+          <!-- 1. OmO -->
+          <li class="eco-card">
+            <article>
+              <header class="eco-card-header">
+                <span class="eco-icon" aria-hidden="true">🔧</span>
+                <div class="eco-name-group">
+                  <h2 class="eco-name">OmO</h2>
+                  <p class="eco-subtitle">oh-my-openagent · Plugin for OpenCode</p>
+                </div>
+              </header>
+              <p class="eco-desc">
+                3-layer orchestration brain: Planning → Execution → Workers. The routing
+                intelligence that makes the ecosystem greater than the sum of its parts.
+              </p>
+              <ul class="eco-features" role="list">
+                <li>Category routing to optimal model per task</li>
+                <li>Hash-anchored edits — 6.7% → 68.3% success rate</li>
+                <li>Ralph Loop for iterative refinement</li>
+                <li>Wisdom accumulation across sessions</li>
+                <li>Skill-embedded MCPs</li>
+                <li>IntentGate pre-flight validation</li>
+                <li>Kimi K2.5 + GLM-5 model alternatives</li>
+              </ul>
+              <a
+                href="https://github.com/code-yeongyu/oh-my-openagent"
+                class="eco-github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View OmO on GitHub"
+              >View on GitHub →</a>
+            </article>
+          </li>
+
+          <!-- 2. OMC -->
+          <li class="eco-card">
+            <article>
+              <header class="eco-card-header">
+                <span class="eco-icon" aria-hidden="true">🎭</span>
+                <div class="eco-name-group">
+                  <h2 class="eco-name">OMC</h2>
+                  <p class="eco-subtitle">oh-my-claudecode · Plugin for Claude Code</p>
+                </div>
+              </header>
+              <p class="eco-desc">
+                Full-team AI workflow in one terminal. Plan → PRD → Execute → Verify → Fix,
+                with parallel tmux workers and tri-model synthesis.
+              </p>
+              <ul class="eco-features" role="list">
+                <li>Team Mode: plan → PRD → exec → verify → fix</li>
+                <li>Parallel tmux CLI workers</li>
+                <li>/ccg tri-model synthesis</li>
+                <li>Deep Interview for requirements clarity</li>
+                <li>19 specialized agents</li>
+                <li>Smart model routing saves 30–50% token cost</li>
+              </ul>
+              <a
+                href="https://github.com/Yeachan-Heo/oh-my-claudecode"
+                class="eco-github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View OMC on GitHub"
+              >View on GitHub →</a>
+            </article>
+          </li>
+
+          <!-- 3. gentle-ai -->
+          <li class="eco-card">
+            <article>
+              <header class="eco-card-header">
+                <span class="eco-icon" aria-hidden="true">🤵</span>
+                <div class="eco-name-group">
+                  <h2 class="eco-name">gentle-ai</h2>
+                  <p class="eco-subtitle">Ecosystem Configurator</p>
+                </div>
+              </header>
+              <p class="eco-desc">
+                One installer that configures Engram, SDD, skills, Context7, and GGA
+                across 8 AI agents in a single pass.
+              </p>
+              <ul class="eco-features" role="list">
+                <li>8 supported agents: Claude Code, OpenCode, Gemini CLI, Cursor, VS Code Copilot, Codex, Windsurf, Antigravity</li>
+                <li>SDD 9-phase workflow</li>
+                <li>14 domain-specific skills</li>
+                <li>Multi-mode SDD (engram / openspec / hybrid)</li>
+                <li>5 configuration presets</li>
+              </ul>
+              <a
+                href="https://github.com/Gentleman-Programming/gentle-ai"
+                class="eco-github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View gentle-ai on GitHub"
+              >View on GitHub →</a>
+            </article>
+          </li>
+
+          <!-- 4. agency-agents -->
+          <li class="eco-card">
+            <article>
+              <header class="eco-card-header">
+                <span class="eco-icon" aria-hidden="true">🏢</span>
+                <div class="eco-name-group">
+                  <h2 class="eco-name">agency-agents</h2>
+                  <p class="eco-subtitle">147 Agents · 18 Divisions</p>
+                </div>
+              </header>
+              <p class="eco-desc">
+                A complete AI agency in a repository. 18 divisions covering every business
+                function, deployable via cp or convert.sh.
+              </p>
+              <ul class="eco-features" role="list">
+                <li>Engineering division</li>
+                <li>Marketing division</li>
+                <li>Business operations division</li>
+                <li>Design division</li>
+                <li>Install via cp or convert.sh</li>
+              </ul>
+              <a
+                href="https://github.com/msitarzewski/agency-agents"
+                class="eco-github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View agency-agents on GitHub"
+              >View on GitHub →</a>
+            </article>
+          </li>
+
+          <!-- 5. claw-code -->
+          <li class="eco-card">
+            <article>
+              <header class="eco-card-header">
+                <span class="eco-icon" aria-hidden="true">🔓</span>
+                <div class="eco-name-group">
+                  <h2 class="eco-name">claw-code</h2>
+                  <p class="eco-subtitle">Clean-room CC rewrite</p>
+                </div>
+              </header>
+              <p class="eco-desc">
+                CC reverse-engineering project that exposes internal architecture —
+                KAIROS, ULTRAPLAN, and the full 3-layer permission system.
+              </p>
+              <ul class="eco-features" role="list">
+                <li>Reveals KAIROS/ULTRAPLAN internals</li>
+                <li>43 tools / 39 services / 512K lines of code exposed</li>
+                <li>3-layer permission system</li>
+                <li>YOLO classifier pattern</li>
+                <li>1M context window management</li>
+              </ul>
+              <a
+                href="https://github.com/ultraworkers/claw-code"
+                class="eco-github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View claw-code on GitHub"
+              >View on GitHub →</a>
+            </article>
+          </li>
+
+          <!-- 6. OpenCode -->
+          <li class="eco-card">
+            <article>
+              <header class="eco-card-header">
+                <span class="eco-icon" aria-hidden="true">📡</span>
+                <div class="eco-name-group">
+                  <h2 class="eco-name">OpenCode</h2>
+                  <p class="eco-subtitle">Runtime Backbone</p>
+                </div>
+              </header>
+              <p class="eco-desc">
+                Provider-agnostic Claude Code alternative with a client/server daemon
+                architecture. OmO runs as a plugin on top.
+              </p>
+              <ul class="eco-features" role="list">
+                <li>Client/server daemon architecture</li>
+                <li>Multi-provider AI support</li>
+                <li>LSP integration</li>
+                <li>Plugin system (OmO runs here)</li>
+                <li>Built-in agent support</li>
+              </ul>
+              <a
+                href="https://github.com/anomalyco/opencode"
+                class="eco-github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View OpenCode on GitHub"
+              >View on GitHub →</a>
+            </article>
+          </li>
+
+          <!-- 7. OpenClaw -->
+          <li class="eco-card">
+            <article>
+              <header class="eco-card-header">
+                <span class="eco-icon" aria-hidden="true">🦞</span>
+                <div class="eco-name-group">
+                  <h2 class="eco-name">OpenClaw</h2>
+                  <p class="eco-subtitle">Personal AI Assistant · Future Layer 8</p>
+                </div>
+              </header>
+              <p class="eco-desc">
+                Not a coding runtime — a personal AI assistant that bridges every
+                communication channel to the development ecosystem.
+              </p>
+              <ul class="eco-features" role="list">
+                <li>23+ channels: WhatsApp, Telegram, Slack, and more</li>
+                <li>Voice + wake word support</li>
+                <li>Always-on daemon</li>
+                <li>Bridges to OpenCode and Claude Code</li>
+                <li>SOUL.md workspace model</li>
+              </ul>
+              <a
+                href="https://github.com/openclaw/openclaw"
+                class="eco-github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View OpenClaw on GitHub"
+              >View on GitHub →</a>
+            </article>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── Advantage grid — 8 stat cards ────────────────────────────── -->
+    <section class="advantages-section">
+      <div class="advantages-inner">
+        <h2 class="section-title" data-animate="fade-up">The Advantage</h2>
+        <div class="advantage-grid">
+
+          <div class="stat-card" data-color="build">
+            <span class="stat-number">68.3%</span>
+            <span class="stat-title">Edit Success Rate</span>
+            <p class="stat-desc">Hash-anchored edits (OmO) eliminate stale-line errors. Up from 6.7%.</p>
+          </div>
+
+          <div class="stat-card" data-color="operate">
+            <span class="stat-number">100+</span>
+            <span class="stat-title">Specialist Agents</span>
+            <p class="stat-desc">From agency-agents. Engineering, marketing, sales, finance, PM, design.</p>
+          </div>
+
+          <div class="stat-card" data-color="accent">
+            <span class="stat-number">6</span>
+            <span class="stat-title">AI Models Routed</span>
+            <p class="stat-desc">Category routing picks the optimal model. No manual switching.</p>
+          </div>
+
+          <div class="stat-card" data-color="grow">
+            <span class="stat-number">$61</span>
+            <span class="stat-title">Monthly Cost</span>
+            <p class="stat-desc">3 Pro plans (Claude + ChatGPT + Gemini) + Kimi. Full agency for the price of one contractor hour.</p>
+          </div>
+
+          <div class="stat-card" data-color="build">
+            <span class="stat-number">∞</span>
+            <span class="stat-title">Cross-Session Memory</span>
+            <p class="stat-desc">Engram persists across ALL tools. Context survives sessions, compaction, tool switches.</p>
+          </div>
+
+          <div class="stat-card" data-color="secure">
+            <span class="stat-number">3</span>
+            <span class="stat-title">Security Layers</span>
+            <p class="stat-desc">YOLO classifier + GGA hooks + Bash AST parser.</p>
+          </div>
+
+          <div class="stat-card" data-color="build">
+            <span class="stat-number">8</span>
+            <span class="stat-title">Compatible Agents</span>
+            <p class="stat-desc">gentle-ai configures: Claude Code, OpenCode, Gemini CLI, Cursor, VS Code Copilot, Codex, Windsurf, Antigravity.</p>
+          </div>
+
+          <div class="stat-card" data-color="accent">
+            <span class="stat-number">0</span>
+            <span class="stat-title">Manual Switching</span>
+            <p class="stat-desc">One terminal. Category routing + skill loading + memory injection — all automatic.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* ── Main wrapper ──────────────────────────────────────────────────── */
+
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Tools section ─────────────────────────────────────────────────── */
+
+  .tools-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .tools-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  /* ── Eco grid — 1→2→3 col ──────────────────────────────────────────── */
+
+  .eco-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 640px) {
+    .eco-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .eco-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ── Eco card ──────────────────────────────────────────────────────── */
+
+  .eco-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--duration-quick) var(--ease-standard);
+  }
+
+  .eco-card:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .eco-card article {
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    height: 100%;
+  }
+
+  .eco-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .eco-icon {
+    font-size: var(--font-size-2xl);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .eco-name-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .eco-name {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .eco-subtitle {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-subtle);
+    margin: 0;
+  }
+
+  .eco-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .eco-features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    flex: 1;
+  }
+
+  .eco-features li {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    padding-left: var(--space-3);
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .eco-features li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--color-text-subtle);
+  }
+
+  .eco-github-link {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent);
+    text-decoration: none;
+    letter-spacing: var(--tracking-wide);
+    margin-top: auto;
+    align-self: flex-start;
+    transition: opacity var(--duration-quick) var(--ease-standard);
+  }
+
+  .eco-github-link:hover {
+    opacity: 0.75;
+  }
+
+  /* ── Advantages section ────────────────────────────────────────────── */
+
+  .advantages-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .advantages-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12);
+  }
+
+  /* ── Advantage grid — 1→2→4 col ────────────────────────────────────── */
+
+  .advantage-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .advantage-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .advantage-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* ── Stat card ─────────────────────────────────────────────────────── */
+
+  .stat-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-2);
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .stat-title {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+
+  .stat-desc {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── Stat number colors via data-color ─────────────────────────────── */
+
+  .stat-card[data-color="build"] .stat-number {
+    color: var(--color-domain-build);
+  }
+
+  .stat-card[data-color="operate"] .stat-number {
+    color: var(--color-domain-operate);
+  }
+
+  .stat-card[data-color="grow"] .stat-number {
+    color: var(--color-domain-grow);
+  }
+
+  .stat-card[data-color="secure"] .stat-number {
+    color: var(--color-domain-secure);
+  }
+
+  .stat-card[data-color="accent"] .stat-number {
+    color: var(--color-accent);
+  }
+</style>
