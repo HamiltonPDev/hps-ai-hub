@@ -3,6 +3,9 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 
 const skills = await getCollection('skills');
 
@@ -74,19 +77,17 @@ const priorityLabels: Record<string, string> = {
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">10 — Skill Files</p>
-        <h1 class="hero-title">72+ skills,<br/>12 HPS-native.</h1>
-        <p class="hero-lede">
-          Claude Code skills are context-loaded at session start — each one packs
-          a domain's conventions, models, MCPs, and gotchas into one file. HPS
-          runs with 12 native skills (domain-specific) plus 60+ community skills
-          (SDD phases, frameworks, UI/UX, security, testing).
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="10 — Skill Files" eyebrowIcon="lucide:brain">
+      <Fragment slot="title">
+        72+ skills, <span class="accent">12 HPS-native</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        Claude Code skills are context-loaded at session start — each one packs
+        a domain's conventions, models, MCPs, and gotchas into one file. HPS
+        runs with 12 native skills (domain-specific) plus 60+ community skills
+        (SDD phases, frameworks, UI/UX, security, testing).
+      </Fragment>
+    </Hero>
 
     <!-- ── §1 Skills 2.0 Taxonomy ────────────────────────────────────── -->
     <section class="taxonomy-section">
@@ -381,6 +382,16 @@ const priorityLabels: Record<string, string> = {
         </div>
       </section>
     ))}
+
+    <CTASection
+      title="Skills compose into agents. Agents route to models."
+      lede="See how the 72 skills wire into the 20-agent roster — and how each agent picks a model tier."
+    >
+      <Fragment slot="cta">
+        <Button href="/agents" variant="primary" icon="lucide:arrow-right" iconPosition="end">Agent Roster</Button>
+        <Button href="/workflow" variant="ghost" icon="lucide:git-branch">Unified Workflow</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 

@@ -3,6 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import WorkflowDiagram from '../components/WorkflowDiagram.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 import { getCollection } from 'astro:content';
 import { buildSlugSet, assertXref, assertXrefList } from '../lib/xref';
 
@@ -54,16 +57,14 @@ ${unifiedDiagram}`;
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">01 — Architecture</p>
-        <h1 class="hero-title">The full stack,<br />layer by layer.</h1>
-        <p class="hero-lede">
-          Every component has a single responsibility. Nothing overlaps. Nothing is missing.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="01 — Architecture" eyebrowIcon="lucide:layers">
+      <Fragment slot="title">
+        The full stack, <span class="accent">layer by layer</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        Every component has a single responsibility. Nothing overlaps. Nothing is missing.
+      </Fragment>
+    </Hero>
 
     <!-- ── Layer list ──────────────────────────────────────────────── -->
     <section class="content-section">
@@ -110,17 +111,16 @@ ${unifiedDiagram}`;
       </div>
     </section>
 
-    <!-- ── Navigation ────────────────────────────────────────────────── -->
-    <section class="content-section">
-      <div class="content-inner">
-        <h2 class="section-title" data-animate="fade-up">Go deeper</h2>
-        <ul class="nav-list" role="list">
-          <li data-animate="fade-up"><a href="/agents">Agent Roster →</a></li>
-          <li data-animate="fade-up"><a href="/models">Model Routing →</a></li>
-          <li data-animate="fade-up"><a href="/explore">Explore the graph →</a></li>
-        </ul>
-      </div>
-    </section>
+    <CTASection
+      title="Go deeper into the system."
+      lede="From the agent roster to the model routing engine — every layer links out."
+    >
+      <Fragment slot="cta">
+        <Button href="/agents" variant="primary" icon="lucide:arrow-right" iconPosition="end">Agent Roster</Button>
+        <Button href="/models" variant="ghost" icon="lucide:route">Model Routing</Button>
+        <Button href="/explore" variant="ghost" icon="lucide:search">Explore Graph</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 

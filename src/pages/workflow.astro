@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 ---
 
 <BaseLayout
@@ -12,18 +15,16 @@ import Footer from '../components/Footer.astro';
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">06 — Unified Workflow</p>
-        <h1 class="hero-title">SDD Planning +<br/>OmO Execution</h1>
-        <p class="hero-lede">
-          One workflow, not five. <strong>SDD</strong> (gentle-ai) handles planning — what to build.
-          <strong>OmO</strong> handles execution — how to build it, with the right model for each task.
-          <strong>Engram</strong> persists everything across sessions.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="06 — Unified Workflow" eyebrowIcon="lucide:git-branch">
+      <Fragment slot="title">
+        SDD Planning + <span class="accent">OmO Execution</span>
+      </Fragment>
+      <Fragment slot="lede">
+        One workflow, not five. <strong>SDD</strong> (gentle-ai) handles planning — what to build.
+        <strong>OmO</strong> handles execution — how to build it, with the right model for each task.
+        <strong>Engram</strong> persists everything across sessions.
+      </Fragment>
+    </Hero>
 
     <!-- ── §1 IntentGate (Phase 0) ──────────────────────────────────── -->
     <section class="content-section" id="intentgate">
@@ -465,6 +466,16 @@ apply → verify → archive</pre>
         </div>
       </div>
     </section>
+
+    <CTASection
+      title="See the agents behind each workflow step."
+      lede="From IntentGate to ULTRAWORK to Ralph Loop — every phase maps to an agent and a model tier."
+    >
+      <Fragment slot="cta">
+        <Button href="/agents" variant="primary" icon="lucide:arrow-right" iconPosition="end">Agent Roster</Button>
+        <Button href="/omo" variant="ghost" icon="lucide:bot">OmO Deep-Dive</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 

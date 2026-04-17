@@ -1,0 +1,75 @@
+---
+interface Props {
+  title: string;
+  lede?: string;
+}
+
+const { title, lede } = Astro.props;
+---
+
+<section class="cta-section">
+  <div class="cta-inner" data-animate="fade-up">
+    <h2 class="cta-title">{title}</h2>
+    {lede && <p class="cta-lede">{lede}</p>}
+    {Astro.slots.has('cta') && (
+      <div class="cta-actions"><slot name="cta" /></div>
+    )}
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    background: var(--color-surface);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(
+        ellipse 60% 50% at 50% 50%,
+        color-mix(in oklch, var(--color-accent) 10%, transparent),
+        transparent 70%
+      );
+  }
+
+  .cta-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-32);
+    padding-inline: var(--space-6);
+    text-align: center;
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.1;
+    color: var(--color-text);
+    margin: 0 auto var(--space-6);
+    max-width: 22ch;
+  }
+
+  .cta-lede {
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    margin: 0 auto var(--space-10);
+    max-width: 40ch;
+    line-height: 1.6;
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+</style>
