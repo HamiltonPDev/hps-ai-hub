@@ -2,7 +2,7 @@
 name: "Business Analytics"
 icon: "📊"
 color: grow
-subtitle: "Rental portfolio KPIs · Supabase queries · ZOE University prep · HPS Owner dashboard"
+subtitle: "Turn rental data + ZOE Master's coursework into actionable dashboards and study material"
 stack:
   - Supabase
   - ZOE University
@@ -35,6 +35,6 @@ workflowSteps:
       - hps-analytics
 ---
 
-The analytics domain powers business intelligence across all HPS properties and supports Hamilton's ZOE University Business Analytics Master's programme. It connects to Supabase for rental data queries, generates weekly KPI reports for the HPS Owner Flutter dashboard, and provides study session support using Gemini Pro for long-form reading.
+**Problem**: rental KPIs live in Supabase queries that nobody runs weekly, ZOE Business Analytics Master's coursework needs real data to ground it, and API costs run untracked until the bill hits. **Solution**: `/session-analytics` queries Supabase via MCP for weekly portfolio KPIs (feeds the HPS Owner Flutter dashboard), synthesises ZOE course materials using Gemini Pro's 1M context, and logs model spend per project — so you catch a task routed to Opus when Sonnet would have done.
 
-The `/session-analytics` command loads hps-fiscal-es for Spanish tax calculations and primes the agent with portfolio schemas, occupancy models, and cost-tracking templates.
+The session loads `hps-fiscal-es` for Spanish tax calculations and primes the agent with portfolio schemas (24 rooms across 6 apartments), occupancy models, and cost-tracking templates.

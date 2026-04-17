@@ -2,7 +2,7 @@
 name: "Proptech — Sevilla PMS & Casa Brunelli"
 icon: "🏠"
 color: build
-subtitle: "Next.js 15 · Supabase · Prisma · Stripe SEPA · Resend · Docuseal · n8n · Flutter"
+subtitle: "End-to-end rental automation: contract → PIN → lock → Spanish fiscal compliance"
 stack:
   - Next.js 15
   - Supabase
@@ -52,8 +52,8 @@ workflowSteps:
       - hps-proptech
 ---
 
-The proptech domain covers two active real-estate projects: **Sevilla PMS** (6 apartments, 24 rooms in Seville) and **Casa Brunelli** (seasonal rental in Italy). Both share a Next.js + Supabase + Prisma stack, with Stripe SEPA for EU payments, Docuseal for digital contracts, and n8n for automation workflows.
+**Problem**: managing rental properties across two countries means juggling contracts, payments, smart locks, and Spanish fiscal rules (LAU, IRPF, zona tensionada) in parallel — each one its own context switch. **Solution**: HPS AI OS chains the whole flow into one session. A new contract triggers Docuseal → n8n → Aqara PIN rotation → Supabase record → fiscal compliance check, all from `/session-proptech` — no tab-switching, no re-explaining.
 
-Every session starts with `/session-proptech` which loads the hps-proptech skill, configures Supabase MCP with the correct project, and primes the agent with your property schemas and fiscal rules. The skill file carries the full context: Spanish LAU rental law, IRPF deduction rules, zona tensionada status, and the Aqara lock integration chain.
+Two properties run on this playbook: **Sevilla PMS** (6 apartments, 24 rooms in Seville) and **Casa Brunelli** (seasonal rental in Italy). Both share the Next.js + Supabase + Prisma stack with Stripe SEPA for EU payments, Docuseal for digital contracts, and n8n for automation glue. The `/session-proptech` command loads hps-proptech, configures the Supabase MCP, and primes the agent with LAU rental law, IRPF deduction rules, zona tensionada status, and the Aqara lock integration chain.
 
-Prometheus handles planning, Oracle reviews security, and Codex executes implementation — all wired through the four workflow steps below.
+Prometheus plans, Oracle reviews security, Codex implements — wired through the four workflow steps below.

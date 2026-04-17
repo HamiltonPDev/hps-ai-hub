@@ -48,11 +48,13 @@ const realCount = domains.filter(d => !d.data.comingSoon).length;
     <section class="hero" data-animate="fade-up">
       <div class="hero-inner">
         <p class="eyebrow">07 — Domain Playbooks</p>
-        <h1 class="hero-title">Eight domains,<br />eight workflows.</h1>
+        <h1 class="hero-title">Eight problems,<br />eight workflows.</h1>
         <p class="hero-lede">
-          {realCount} active playbooks, {domainCount - realCount} coming soon.
-          Each domain has a specific session command, skills, models, and MCPs.
-          Switch between domains with <code>/session-&#123;domain&#125;</code>.
+          Each domain solves one concrete HPS problem end-to-end — rental automation,
+          smart homes, stack-consistent shipping, tenant-data GDPR, fiscal compliance.
+          {realCount} live workflows, {domainCount - realCount} coming soon. Switch between
+          problems with <code>/session-&#123;domain&#125;</code> — skills, models, and MCPs
+          auto-loaded per session.
         </p>
       </div>
     </section>

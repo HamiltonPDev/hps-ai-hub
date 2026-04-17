@@ -2,7 +2,7 @@
 name: "Home Automation / Domotica"
 icon: "🏡"
 color: operate
-subtitle: "Aqara Hub M3 · U200 lock · SmartThings API · Home Assistant · Hono API · n8n · Hetzner"
+subtitle: "Control smart homes without 20 open tabs: Aqara + SmartThings + Home Assistant + n8n in one session"
 stack:
   - Aqara Hub M3
   - SmartThings API
@@ -40,6 +40,6 @@ workflowSteps:
       - hps-iot
 ---
 
-The IoT domain manages the smart-home infrastructure across all Sevilla properties. An Aqara Hub M3 + U200 smart lock per apartment, SmartThings as the cloud API layer, Home Assistant running on a Hetzner VPS for local automations, and n8n orchestrating webhook-driven workflows between them.
+**Problem**: integrating Aqara locks with SmartThings cloud, wiring n8n webhooks to Home Assistant, and managing a Hetzner-hosted server usually means 20 open browser tabs and constant context-switching between four API docs. **Solution**: `/session-iot` loads every doc into a 1M-context Gemini Pro session, wires the Hetzner MCP, and lets one agent design, code, and deploy the full integration chain without leaving the terminal.
 
-The `/session-iot` command loads hps-iot-aqara and hps-n8n skills, wires up the Hetzner MCP, and primes the agent with the full device inventory and automation YAML templates. Gemini Pro handles the API-doc reading (1M context), Codex handles implementation.
+Behind the scenes: Aqara Hub M3 + U200 smart lock per apartment, SmartThings as the cloud API layer, Home Assistant on a Hetzner VPS for local automations, and n8n orchestrating webhook-driven workflows. The session loads `hps-iot-aqara` and `hps-n8n` skills pre-primed with the device inventory and automation YAML templates. Gemini Pro reads API docs (1M context), Codex implements.

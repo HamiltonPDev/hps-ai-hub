@@ -2,7 +2,7 @@
 name: "Full-Stack Development"
 icon: "⚡"
 color: build
-subtitle: "Next.js 15 · Prisma · Supabase · Hono · Flutter · Vercel · Cloudflare · Docuseal"
+subtitle: "Ship Next.js + Flutter features without re-explaining the HPS stack every session"
 stack:
   - Next.js 15
   - Prisma
@@ -45,6 +45,6 @@ workflowSteps:
       - hps-analytics
 ---
 
-The full-stack domain covers the primary development workflow: building and maintaining the HPS app suite (4 Flutter apps), the Hono API layer with Prisma ORM, and the Next.js admin dashboards. It also includes the Posada's Schoonmaken cleaning company invoice automation.
+**Problem**: re-explaining the HPS stack (Next.js 15 + Hono + Prisma + Supabase + 4 Flutter apps) to a fresh session costs 15 minutes every time. Multiply that across a week of shipping and the friction becomes the blocker. **Solution**: `/session-fullstack` loads four skill files that already know your auth patterns, Riverpod state conventions, Hono middleware structure, e-boekhouden SOAP calls, and Vercel deployment config. New features ship in one session — zero stack context re-injection.
 
-The `/session-fullstack` command loads all four core skills (hps-flutter, hps-hono, hps-nextjs, hps-supabase), wires up Supabase and Vercel MCPs, and configures Codex as the primary executor with Sonnet for code review.
+The session covers the primary HPS development workflow: the 4-app Flutter suite (Clean/Owner/Tenant/Invest), the Hono API layer with Prisma ORM, the Next.js admin dashboards, and the Posada's Schoonmaken invoice automation (Python + GitHub Actions). Codex is the primary executor, Sonnet handles code review, Gemini Pro reads long API docs when needed.

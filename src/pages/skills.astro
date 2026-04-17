@@ -68,7 +68,7 @@ const priorityLabels: Record<string, string> = {
 
 <BaseLayout
   title="Skill Library — HPS AI Hub"
-  description="12 domain-specific Claude Code skill files. Each configures models, MCPs, and conventions for a vertical."
+  description="72+ Claude Code skills installed — 12 HPS-native domain skills + 60+ community skills (SDD phases, frameworks, UI/UX, security, testing). Skills 2.0 taxonomy: Capability Uplift vs Workflow/Preference."
 >
   <Nav />
 
@@ -78,10 +78,263 @@ const priorityLabels: Record<string, string> = {
     <section class="hero" data-animate="fade-up">
       <div class="hero-inner">
         <p class="eyebrow">10 — Skill Files</p>
-        <h1 class="hero-title">12 HPS Skills</h1>
+        <h1 class="hero-title">72+ skills,<br/>12 HPS-native.</h1>
         <p class="hero-lede">
-          Domain-specific Claude Code skill files. Each configures models, MCPs,
-          and conventions for a vertical.
+          Claude Code skills are context-loaded at session start — each one packs
+          a domain's conventions, models, MCPs, and gotchas into one file. HPS
+          runs with 12 native skills (domain-specific) plus 60+ community skills
+          (SDD phases, frameworks, UI/UX, security, testing).
+        </p>
+      </div>
+    </section>
+
+    <!-- ── §1 Skills 2.0 Taxonomy ────────────────────────────────────── -->
+    <section class="taxonomy-section">
+      <div class="taxonomy-inner">
+        <h2 class="section-title" data-animate="fade-up">Skills 2.0 — Two Types</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Anthropic's Skills 2.0 taxonomy splits skills into two buckets. Both live
+          at <code>~/.claude/skills/&#123;name&#125;/SKILL.md</code> and trigger the
+          same way — but they have different lifecycles.
+        </p>
+
+        <div class="taxonomy-grid">
+          <div class="taxonomy-card" data-animate="fade-up">
+            <h3 class="taxonomy-type">Capability Uplift</h3>
+            <p class="taxonomy-desc">
+              Fills model gaps the base Claude cannot do well. Carries a
+              <strong>retirement hint</strong> — once the base model absorbs the
+              capability natively, the skill retires.
+            </p>
+            <p class="taxonomy-examples">
+              <strong>Examples in HPS</strong>: <code>pytest</code>,
+              <code>playwright</code>, <code>flutter-architecting-apps</code>,
+              <code>supabase-postgres-best-practices</code>. These teach Claude
+              framework-specific patterns that may eventually be in-weights.
+            </p>
+          </div>
+          <div class="taxonomy-card" data-animate="fade-up">
+            <h3 class="taxonomy-type">Workflow / Preference</h3>
+            <p class="taxonomy-desc">
+              Long-lived automation and project-specific conventions. These
+              <strong>do not retire</strong> — they encode how YOU work, not what
+              the model knows.
+            </p>
+            <p class="taxonomy-examples">
+              <strong>Examples in HPS</strong>: <code>sdd-explore</code> →
+              <code>sdd-archive</code> (8 SDD phases), <code>hps-sevilla-pms</code>,
+              <code>hps-casa-brunelli</code>, <code>hps-fiscal-es</code>,
+              <code>branch-pr</code>, <code>verification-before-completion</code>.
+              Encode conventions, gotchas, and compliance rules.
+            </p>
+          </div>
+        </div>
+
+        <div class="taxonomy-callout callout-info" data-animate="fade-up">
+          <strong>A/B testing:</strong> Skills 2.0 introduces structured evals. A
+          new skill ships with a draft eval suite; after enough real runs, promote
+          to <code>eval_status: tested</code>. HPS native skills are currently
+          <code>draft</code> — formal evals are a Phase 5 build item.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §2 Community Library ──────────────────────────────────────── -->
+    <section class="community-section">
+      <div class="community-inner">
+        <h2 class="section-title" data-animate="fade-up">Community Library (60+ skills)</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Installed globally at <code>~/.claude/skills/</code>. Auto-triggered by
+          keyword or file extension when Claude reads a matching context.
+        </p>
+
+        <div class="community-groups">
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">SDD &amp; Workflow (13)</h3>
+            <p class="community-group-list">
+              <code>sdd-init</code>, <code>sdd-explore</code>,
+              <code>sdd-propose</code>, <code>sdd-spec</code>,
+              <code>sdd-design</code>, <code>sdd-tasks</code>,
+              <code>sdd-apply</code>, <code>sdd-verify</code>,
+              <code>sdd-archive</code>, <code>branch-pr</code>,
+              <code>github-pr</code>, <code>issue-creation</code>,
+              <code>pr-review</code>
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">Web Frameworks (10)</h3>
+            <p class="community-group-list">
+              <code>react-19</code>, <code>nextjs-15</code>,
+              <code>typescript</code>, <code>zod-4</code>,
+              <code>zustand-5</code>, <code>tailwind-4</code>,
+              <code>hono</code>, <code>astro</code>,
+              <code>django-drf</code>, <code>ai-sdk-5</code>
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">Flutter (4)</h3>
+            <p class="community-group-list">
+              <code>flutter-architecting-apps</code>,
+              <code>flutter-building-layouts</code>,
+              <code>flutter-implementing-navigation-and-routing</code>,
+              <code>flutter-managing-state</code>
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">UI / UX &amp; Design (9)</h3>
+            <p class="community-group-list">
+              <code>frontend-design</code>, <code>product-designer</code>,
+              <code>ui-ux-pro-max</code>, <code>animation-designer</code>,
+              <code>atomic-design-fundamentals</code>,
+              <code>design-system-patterns</code>,
+              <code>tailwindcss-responsive-darkmode</code>,
+              <code>tailwind-css-patterns</code>,
+              <code>micro-interactions</code>
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">Testing (3)</h3>
+            <p class="community-group-list">
+              <code>pytest</code>, <code>playwright</code>,
+              <code>go-testing</code>
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">Security &amp; Accessibility (6)</h3>
+            <p class="community-group-list">
+              <code>owasp-security</code>, <code>web-accessibility</code>,
+              <code>fixing-accessibility</code>,
+              <code>accessibility-compliance</code>,
+              <code>web-design-guidelines</code>, <code>performance</code>
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">Databases &amp; Integrations (5)</h3>
+            <p class="community-group-list">
+              <code>supabase-postgres-best-practices</code>,
+              <code>prisma-database-setup</code>,
+              <code>nextjs-supabase-auth</code>,
+              <code>stripe-best-practices</code>,
+              <code>jira-task</code>
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">IoT &amp; Automation (2)</h3>
+            <p class="community-group-list">
+              <code>home-assistant-best-practices</code>,
+              <code>n8n-workflow-patterns</code>
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">Performance (2)</h3>
+            <p class="community-group-list">
+              <code>vercel-react-best-practices</code>,
+              <code>vercel-composition-patterns</code>
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">Meta &amp; Infrastructure (6)</h3>
+            <p class="community-group-list">
+              <code>claude-api</code>, <code>skill-creator</code>,
+              <code>update-config</code>, <code>less-permission-prompts</code>,
+              <code>keybindings-help</code>, <code>engram:memory</code>
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">Guardrails (new this week)</h3>
+            <p class="community-group-list">
+              <code>verification-before-completion</code> (SP1 — anti-hallucination),
+              <code>strategic-compact</code> (F2 — 50-call <code>/compact</code> suggest)
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">Utilities (5)</h3>
+            <p class="community-group-list">
+              <code>simplify</code>, <code>loop</code>, <code>schedule</code>,
+              <code>judgment-day</code>, <code>technical-review</code>
+            </p>
+          </div>
+
+          <div class="community-group" data-animate="fade-up">
+            <h3 class="community-group-title">Gentleman Ecosystem (6)</h3>
+            <p class="community-group-list">
+              <code>gentleman-trainer</code>, <code>gentleman-bubbletea</code>,
+              <code>gentleman-e2e</code>, <code>gentleman-installer</code>,
+              <code>gentleman-system</code>, <code>homebrew-release</code>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §3 Marketplace + skill-creator ────────────────────────────── -->
+    <section class="marketplace-section">
+      <div class="marketplace-inner">
+        <h2 class="section-title" data-animate="fade-up">Get More — Install or Create</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Skills are Markdown — they are easy to ship, easy to audit, easy to
+          share. Pull from the community or write your own.
+        </p>
+
+        <div class="marketplace-grid">
+          <div class="marketplace-card" data-animate="fade-up">
+            <h3 class="marketplace-title">Skills marketplace</h3>
+            <p class="marketplace-desc">
+              Community-curated skills with trigger metadata and install scripts.
+            </p>
+            <p class="marketplace-link">
+              <a class="inline-link" href="https://skills.sh" target="_blank" rel="noopener">skills.sh</a>
+              ·
+              <a class="inline-link" href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank" rel="noopener">awesome-claude-code</a>
+              (37.4K★)
+            </p>
+          </div>
+          <div class="marketplace-card" data-animate="fade-up">
+            <h3 class="marketplace-title">Create your own</h3>
+            <p class="marketplace-desc">
+              <code>skill-creator</code> scaffolds a new skill with the right
+              frontmatter, trigger phrases, and eval hooks. Run it, answer 6
+              questions, commit the <code>SKILL.md</code>.
+            </p>
+            <p class="marketplace-link">
+              Prompt: <code>use skill-creator</code>
+            </p>
+          </div>
+          <div class="marketplace-card" data-animate="fade-up">
+            <h3 class="marketplace-title">Gentleman ecosystem</h3>
+            <p class="marketplace-desc">
+              The 6 gentleman-* skills ship the installer, bubbletea TUI, E2E
+              suite, and system-detection patterns for Gentleman.Dots.
+            </p>
+            <p class="marketplace-link">
+              <a class="inline-link" href="https://github.com/Gentleman-Programming/gentle-ai" target="_blank" rel="noopener">github.com/Gentleman-Programming/gentle-ai</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §4 HPS-Native Skills by Domain ────────────────────────────── -->
+    <section class="native-section" id="native">
+      <div class="native-inner">
+        <h2 class="section-title" data-animate="fade-up">HPS-Native Skills by Domain</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Twelve skills that encode HPS-specific conventions, fiscal rules, and
+          domain knowledge. Each loads when its <code>/session-&#123;domain&#125;</code>
+          command fires.
         </p>
       </div>
     </section>
@@ -332,5 +585,205 @@ const priorityLabels: Record<string, string> = {
     font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     color: var(--color-text);
+  }
+
+  /* ── Shared new-section containers (taxonomy, community, marketplace, native) ─ */
+
+  .taxonomy-section,
+  .community-section,
+  .marketplace-section,
+  .native-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .taxonomy-inner,
+  .community-inner,
+  .marketplace-inner,
+  .native-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-lede {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-10);
+    line-height: 1.65;
+  }
+
+  .section-lede code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    background: var(--color-surface);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  .inline-link {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .inline-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* ── Taxonomy (Uplift vs Workflow) ─────────────────────────────────── */
+
+  .taxonomy-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .taxonomy-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .taxonomy-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-8);
+  }
+
+  .taxonomy-type {
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0 0 var(--space-4);
+  }
+
+  .taxonomy-desc,
+  .taxonomy-examples {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0 0 var(--space-4);
+  }
+
+  .taxonomy-desc strong,
+  .taxonomy-examples strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .taxonomy-card code,
+  .community-group code,
+  .marketplace-card code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-1);
+    color: var(--color-text);
+  }
+
+  .taxonomy-callout,
+  .callout-info {
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-border-strong);
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-6);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .taxonomy-callout strong {
+    color: var(--color-text);
+  }
+
+  /* ── Community groups ──────────────────────────────────────────────── */
+
+  .community-groups {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 768px) {
+    .community-groups {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .community-group {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+  }
+
+  .community-group-title {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-3);
+  }
+
+  .community-group-list {
+    font-size: var(--font-size-xs);
+    line-height: 1.9;
+    color: var(--color-text-muted);
+    margin: 0;
+    word-spacing: var(--space-1);
+  }
+
+  /* ── Marketplace cards ─────────────────────────────────────────────── */
+
+  .marketplace-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 768px) {
+    .marketplace-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .marketplace-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .marketplace-title {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .marketplace-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .marketplace-link {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    margin: auto 0 0;
+    padding-top: var(--space-3);
   }
 </style>
