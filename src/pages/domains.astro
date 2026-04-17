@@ -5,6 +5,9 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import DomainSection from '../components/DomainSection.astro';
 import Pill from '../components/Pill.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 import { buildSlugSet, assertXrefList } from '../lib/xref';
 
 const domains = (await getCollection('domains')).sort(
@@ -44,20 +47,18 @@ const realCount = domains.filter(d => !d.data.comingSoon).length;
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">07 — Domain Playbooks</p>
-        <h1 class="hero-title">Eight problems,<br />eight workflows.</h1>
-        <p class="hero-lede">
-          Each domain solves one concrete HPS problem end-to-end — rental automation,
-          smart homes, stack-consistent shipping, tenant-data GDPR, fiscal compliance.
-          {realCount} live workflows, {domainCount - realCount} coming soon. Switch between
-          problems with <code>/session-&#123;domain&#125;</code> — skills, models, and MCPs
-          auto-loaded per session.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="07 — Domain Playbooks" eyebrowIcon="lucide:layers">
+      <Fragment slot="title">
+        Eight problems, <span class="accent">eight workflows</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        Each domain solves one concrete HPS problem end-to-end — rental automation,
+        smart homes, stack-consistent shipping, tenant-data GDPR, fiscal compliance.
+        {realCount} live workflows, {domainCount - realCount} coming soon. Switch between
+        problems with <code>/session-&#123;domain&#125;</code> — skills, models, and MCPs
+        auto-loaded per session.
+      </Fragment>
+    </Hero>
 
     <!-- ── Anchor nav ───────────────────────────────────────────────── -->
     <section class="anchor-nav-section" data-animate="fade-up">
@@ -113,6 +114,16 @@ const realCount = domains.filter(d => !d.data.comingSoon).length;
         </ul>
       </div>
     </section>
+
+    <CTASection
+      title="One system, eight problem spaces."
+      lede="Start a domain session, load the right skills + models + MCPs automatically, and focus on the problem."
+    >
+      <Fragment slot="cta">
+        <Button href="/workflow" variant="primary" icon="lucide:arrow-right" iconPosition="end">Unified Workflow</Button>
+        <Button href="/skills" variant="ghost" icon="lucide:brain">Skill Library</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 

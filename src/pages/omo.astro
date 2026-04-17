@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 ---
 
 <BaseLayout
@@ -12,22 +15,31 @@ import Footer from '../components/Footer.astro';
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">11 — OmO Plugin</p>
-        <h1 class="hero-title">OmO.<br/>Orchestration brain.</h1>
-        <p class="hero-lede">
-          <strong>OmO</strong> (<code>oh-my-openagent</code>, 49.5K★) is the
-          OpenCode plugin that packs three layers
-          of orchestration, semantic category routing, hash-anchored editing, and
-          persistent execution loops into one install. This page is the single-page
-          reference — see <a class="inline-link" href="/workflow">/workflow</a> for
-          execution modes and <a class="inline-link" href="/agents">/agents</a> for
-          the full 3-layer roster.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="11 — OmO Plugin" eyebrowIcon="lucide:bot">
+      <Fragment slot="title">
+        OmO. <span class="accent">Orchestration brain</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        <strong>OmO</strong> (<code>oh-my-openagent</code>, 49.5K★) is the
+        OpenCode plugin that packs three layers
+        of orchestration, semantic category routing, hash-anchored editing, and
+        persistent execution loops into one install. This page is the single-page
+        reference — see <a class="inline-link" href="/workflow">/workflow</a> for
+        execution modes and <a class="inline-link" href="/agents">/agents</a> for
+        the full 3-layer roster.
+      </Fragment>
+      <Fragment slot="cta">
+        <Button
+          href="https://github.com/oh-my-openagent/oh-my-openagent"
+          variant="primary"
+          icon="lucide:github"
+          external
+        >
+          OmO on GitHub
+        </Button>
+        <Button href="/workflow" variant="ghost" icon="lucide:git-branch">Workflow</Button>
+      </Fragment>
+    </Hero>
 
     <!-- ── §1 What OmO Is + 3-Layer Overview ─────────────────────────── -->
     <section class="content-section">
@@ -447,6 +459,16 @@ bunx oh-my-openagent install
         </div>
       </div>
     </section>
+
+    <CTASection
+      title="OmO is one piece of the HPS ecosystem."
+      lede="See how it connects with gentle-ai, OpenCode, Engram, claw-code — the full orchestration stack."
+    >
+      <Fragment slot="cta">
+        <Button href="/ecosystem" variant="primary" icon="lucide:arrow-right" iconPosition="end">Full Ecosystem</Button>
+        <Button href="/agents" variant="ghost" icon="lucide:bot">3-Layer Roster</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 
