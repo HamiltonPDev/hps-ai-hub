@@ -1,0 +1,674 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="OmO — HPS AI Hub"
+  description="OmO (oh-my-openagent, 49.5K★) is the OpenCode plugin that adds category routing, 3-layer orchestration, hash-anchored editing, and Ralph Loop execution. This page is the single-page reference — /workflow and /agents cover behavioral and architectural detail."
+>
+  <Nav />
+
+  <main class="main">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="hero" data-animate="fade-up">
+      <div class="hero-inner">
+        <p class="eyebrow">11 — OmO Plugin</p>
+        <h1 class="hero-title">OmO.<br/>Orchestration brain.</h1>
+        <p class="hero-lede">
+          <strong>OmO</strong> (<code>oh-my-openagent</code>, 49.5K★) is the
+          OpenCode plugin that packs three layers
+          of orchestration, semantic category routing, hash-anchored editing, and
+          persistent execution loops into one install. This page is the single-page
+          reference — see <a class="inline-link" href="/workflow">/workflow</a> for
+          execution modes and <a class="inline-link" href="/agents">/agents</a> for
+          the full 3-layer roster.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── §1 What OmO Is + 3-Layer Overview ─────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">What OmO Is</h2>
+
+        <p class="prose">
+          OmO sits between OpenCode (the runtime) and your work (the intent). It
+          takes a single user prompt and decomposes it through three distinct
+          layers — each layer has different agents, different models, and
+          different allowed actions. No single agent does everything.
+        </p>
+
+        <pre class="diagram" data-animate="fade-up">USER prompt in OpenCode
+  │
+  ▼
+┌─ PLANNING LAYER ──────────────────────────────────────┐
+│  Prometheus / Metis / Momus — reads intent, produces  │
+│  spec + plan. Never writes code.                      │
+└───────────────────────┬───────────────────────────────┘
+                        ▼
+┌─ EXECUTION LAYER ─────────────────────────────────────┐
+│  Atlas (the conductor) — reads plan, dispatches by    │
+│  category. Never writes code either.                  │
+└───────────────────────┬───────────────────────────────┘
+                        ▼
+┌─ WORKER LAYER ────────────────────────────────────────┐
+│  Sisyphus / Hephaestus / Frontend / Librarian / ...   │
+│  — writes code, runs tools, owns its category.        │
+└───────────────────────────────────────────────────────┘</pre>
+
+        <p class="prose">
+          Full agent roster + layer discipline rules live at
+          <a class="inline-link" href="/agents#three-layer-architecture"><code>/agents §1 — 3-Layer Architecture</code></a>.
+          The <strong>IntentGate</strong> phase that runs BEFORE planning is
+          documented at
+          <a class="inline-link" href="/workflow#intentgate"><code>/workflow §1 — IntentGate (Phase 0)</code></a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── §2 Category Routing ───────────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">Category Routing</h2>
+
+        <p class="prose">
+          Instead of "what model should I use?", OmO flips the question:
+          <strong>"what category is this task?"</strong> You declare the category
+          (or IntentGate infers it) and OmO picks the right model from your config.
+          Six built-in categories, plus custom ones you can add.
+        </p>
+
+        <div class="table-wrap" data-animate="fade-up">
+          <table class="routing-table" role="table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Purpose</th>
+                <th>HPS-recommended model</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>quick</code></td>
+                <td>Trivial tasks — typo fixes, one-liner edits, lookups</td>
+                <td><code>opencode/gpt-5-nano</code> or Qwen 3 Coder (free)</td>
+              </tr>
+              <tr>
+                <td><code>unspecified-low</code></td>
+                <td>Default bucket for moderate work — small features, tweaks</td>
+                <td><code>anthropic/claude-sonnet-4-6</code></td>
+              </tr>
+              <tr>
+                <td><code>unspecified-high</code></td>
+                <td>Default bucket for complex work — architecture, multi-file changes</td>
+                <td><code>anthropic/claude-opus-4-7</code> <code>variant: max</code></td>
+              </tr>
+              <tr>
+                <td><code>writing</code></td>
+                <td>Docs, prose, commit messages, changelog entries</td>
+                <td><code>google/gemini-3-flash</code></td>
+              </tr>
+              <tr>
+                <td><code>visual-engineering</code></td>
+                <td>UI mockups, diagrams, design reasoning</td>
+                <td><code>google/gemini-3.1-pro</code> <code>variant: high</code></td>
+              </tr>
+              <tr>
+                <td><code>ultrabrain</code></td>
+                <td>Deep reasoning, debugging, architecture review</td>
+                <td><code>openai/gpt-5.4</code> <code>variant: high</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="prose">
+          <strong>Custom categories</strong> are first-class: add any label with a
+          model + optional <code>prompt_append</code>. HPS uses a <code>git</code>
+          category pinned to <code>opencode/gpt-5-nano</code> for all commit
+          operations — focused, cheap, safe.
+        </p>
+
+        <div class="callout callout-info" data-animate="fade-up">
+          <strong>Why category routing wins:</strong> when a new model ships you
+          swap one line in config and every task in that category upgrades. Without
+          categories you would grep the entire codebase to find every
+          <code>model: claude-sonnet-4-5</code> hardcode.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §3 Execution Modes (summary) ──────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">Execution Modes</h2>
+
+        <p class="prose">
+          OmO dispatches work under one of four modes. Full behavioral detail at
+          <a class="inline-link" href="/workflow#omo-execution-modes"><code>/workflow §3 — OmO Execution Modes</code></a>.
+          Quick summary:
+        </p>
+
+        <div class="table-wrap" data-animate="fade-up">
+          <table class="routing-table" role="table">
+            <thead>
+              <tr>
+                <th>Mode</th>
+                <th>Trigger</th>
+                <th>What it does</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>standard</code></td>
+                <td>default</td>
+                <td>One-shot dispatch; stop on first failure</td>
+              </tr>
+              <tr>
+                <td><code>ralph-loop</code></td>
+                <td>explicit flag or EMERGENCY</td>
+                <td>Retry until 100% done — no "failed once, give up"</td>
+              </tr>
+              <tr>
+                <td><code>ULTRAWORK</code></td>
+                <td><code>/ultrawork</code> or <code>ULW</code></td>
+                <td>Agent skips SDD planning, self-directs end-to-end</td>
+              </tr>
+              <tr>
+                <td><code>resume</code></td>
+                <td><code>/start-work</code></td>
+                <td>Reads <code>boulder.json</code> state, picks up mid-flow</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §4 Hash-Anchored Editing ──────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">Hash-Anchored Editing</h2>
+
+        <p class="prose">
+          The feature that alone justifies installing OmO. Standard LLM edits
+          (find-and-replace by content) succeed <strong>~6.7%</strong> on large
+          codebases. Wrong-file edits happen silently — the model "thinks" it is
+          in file A but actually targets file B, or the content has shifted
+          between read and write. OmO pins edits to content hashes and verifies
+          before every write.
+        </p>
+
+        <h3 class="subsection-title">How it works</h3>
+
+        <pre class="diagram" data-animate="fade-up">Every edit OmO dispatches carries:
+
+  {"{"}
+    "file": "src/api/tenants.ts",
+    "line_hash": "a3f1...",       // SHA of the target line
+    "context_hash": "bc72...",    // SHA of surrounding ±3 lines
+    "replacement": "..."
+  {"}"}
+
+Pre-write verification:
+
+  1. Read current file content
+  2. Compute line_hash + context_hash for the target region
+  3. Compare to the edit's expected hashes
+  4. If mismatch → reject edit, surface "file shifted since read"
+  5. If match → write, commit hash to session log
+
+No silent wrong-file edits. No silent stale-context edits.</pre>
+
+        <p class="prose">
+          Hashes normalize trimmed whitespace — so legit formatting changes do
+          not break edits. Result: <strong>68.3% success rate</strong> — a 10x
+          improvement — and every failure is diagnostic (you see exactly what
+          shifted) instead of a silent corruption.
+        </p>
+
+        <div class="callout callout-warning" data-animate="fade-up">
+          <strong>HPS implication:</strong> this is why the <code>apply</code>
+          phase in SDD remains safe under Scenario C (DeepSeek V3 for apply) —
+          DeepSeek V3 produces hash-anchored edits via the OmO protocol regardless
+          of the model behind it. The safety is in the harness, not the model.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §5 Config Schema (oh-my-openagent.jsonc) ──────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">Config Schema — <code>oh-my-openagent.jsonc</code></h2>
+
+        <p class="prose">
+          OmO config is loaded per session. User config at
+          <code>~/.config/opencode/oh-my-openagent.jsonc</code> loads first;
+          project config at <code>.opencode/oh-my-openagent.jsonc</code> overrides.
+          JSONC supports comments and trailing commas.
+        </p>
+
+        <h3 class="subsection-title">HPS recommended starter config</h3>
+
+        <pre class="diagram" data-animate="fade-up">{"{"}
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-openagent.schema.json",
+
+  "agents": {"{"}
+    // Main orchestrator: Claude Opus at max variant for architecture work
+    "sisyphus": {"{"}
+      "model": "anthropic/claude-sonnet-4-6",
+      "ultrawork": {"{"} "model": "anthropic/claude-opus-4-7", "variant": "max" {"}"},
+    {"}"},
+
+    // Research agents: cheap fast models are fine
+    "librarian": {"{"} "model": "google/gemini-3-flash" {"}"},
+    "explore":   {"{"} "model": "github-copilot/grok-code-fast-1" {"}"},
+
+    // Architecture consultation: GPT-5.4 high
+    "oracle":    {"{"} "model": "openai/gpt-5.4", "variant": "high" {"}"},
+
+    // Prometheus inherits sisyphus model; add HPS-specific prompt
+    "prometheus": {"{"}
+      "prompt_append": "Always use Engram mem_search before proposing — HPS has 235+ observations of prior decisions.",
+    {"}"},
+  {"}"},
+
+  "categories": {"{"}
+    "quick":              {"{"} "model": "opencode/gpt-5-nano" {"}"},
+    "unspecified-low":    {"{"} "model": "anthropic/claude-sonnet-4-6" {"}"},
+    "unspecified-high":   {"{"} "model": "anthropic/claude-opus-4-7", "variant": "max" {"}"},
+    "writing":            {"{"} "model": "google/gemini-3-flash" {"}"},
+    "visual-engineering": {"{"} "model": "google/gemini-3.1-pro", "variant": "high" {"}"},
+
+    // HPS custom category for git operations
+    "git": {"{"}
+      "model": "opencode/gpt-5-nano",
+      "description": "All git operations",
+      "prompt_append": "Atomic commits, conventional commit style, safe operations only.",
+    {"}"},
+  {"}"},
+
+  // Cap expensive providers; cheap ones run freely
+  "background_task": {"{"}
+    "providerConcurrency": {"{"}
+      "anthropic": 3,
+      "openai": 3,
+      "opencode": 10,
+    {"}"},
+    "modelConcurrency": {"{"}
+      "anthropic/claude-opus-4-7": 2,
+      "opencode/gpt-5-nano": 20,
+    {"}"},
+  {"}"},
+
+  "experimental": {"{"} "aggressive_truncation": true, "task_system": true {"}"},
+  "tmux": {"{"} "enabled": false {"}"},
+{"}"}</pre>
+
+        <p class="prose">
+          The <code>$schema</code> line enables JSON autocomplete in editors. The
+          <code>background_task</code> concurrency caps prevent Anthropic bill
+          runaway when Ralph Loop is active — 2 concurrent Opus calls is the
+          safety valve.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── §6 Install + CLI ──────────────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">Install &amp; CLI</h2>
+
+        <h3 class="subsection-title">Install</h3>
+
+        <pre class="diagram" data-animate="fade-up"># Guided setup — asks 6 questions, writes your config
+bunx oh-my-openagent install
+
+# Or install the OpenCode plugin directly
+/plugin install oh-my-openagent</pre>
+
+        <h3 class="subsection-title">CLI commands</h3>
+
+        <div class="table-wrap" data-animate="fade-up">
+          <table class="routing-table" role="table">
+            <thead>
+              <tr>
+                <th>Command</th>
+                <th>What it does</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>opencode models</code></td>
+                <td>Lists every model available across your connected providers</td>
+              </tr>
+              <tr>
+                <td><code>bunx oh-my-openagent install</code></td>
+                <td>Guided config setup (runs on first install or config migration)</td>
+              </tr>
+              <tr>
+                <td><code>bunx oh-my-openagent doctor</code></td>
+                <td>Diagnostic check — verifies config validity, provider auth, schema version</td>
+              </tr>
+              <tr>
+                <td><code>/start-work</code></td>
+                <td>Resume an interrupted session from <code>boulder.json</code></td>
+              </tr>
+              <tr>
+                <td><code>/ultrawork</code></td>
+                <td>Dispatch an ULTRAWORK session — agent self-directs without planning phases</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info" data-animate="fade-up">
+          <strong>Repo:</strong>
+          <a class="inline-link" href="https://github.com/code-yeongyu/oh-my-openagent" target="_blank" rel="noopener">github.com/code-yeongyu/oh-my-openagent</a>.
+          Config files at <code>~/.config/opencode/oh-my-openagent.jsonc</code> (user)
+          and <code>.opencode/oh-my-openagent.jsonc</code> (project override).
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §7 Enforcement Hooks + Background Tasks ──────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">Enforcement &amp; Background Tasks</h2>
+
+        <h3 class="subsection-title">Model enforcement hooks</h3>
+
+        <p class="prose">
+          OmO enforces agent↔model pairings at dispatch time. Verified hooks:
+          <code>no-sisyphus-gpt</code> (Sisyphus MUST use Claude),
+          <code>no-hephaestus-non-gpt</code> (Hephaestus MUST use GPT-5.4),
+          <code>model-fallback</code> (routes to pre-approved fallback when
+          preferred model is rate-limited). Full explanation at
+          <a class="inline-link" href="/agents#model-enforcement-hooks"><code>/agents §4 — Model Enforcement Hooks</code></a>.
+        </p>
+
+        <h3 class="subsection-title">Background task concurrency</h3>
+
+        <p class="prose">
+          Ralph Loop and ULTRAWORK can spawn many concurrent worker calls. OmO
+          caps them per-provider and per-model to prevent bill runaway:
+        </p>
+
+        <div class="table-wrap" data-animate="fade-up">
+          <table class="routing-table" role="table">
+            <thead>
+              <tr>
+                <th>Cap</th>
+                <th>HPS default</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>anthropic</code> (provider)</td>
+                <td>3 concurrent</td>
+                <td>Opus + Sonnet + Haiku bill fast; 3 caps monthly spend</td>
+              </tr>
+              <tr>
+                <td><code>openai</code> (provider)</td>
+                <td>3 concurrent</td>
+                <td>GPT-5.4 via ChatGPT Plus has rate limits per minute</td>
+              </tr>
+              <tr>
+                <td><code>opencode</code> (provider)</td>
+                <td>10 concurrent</td>
+                <td>Cheap nano models, can run wide</td>
+              </tr>
+              <tr>
+                <td><code>anthropic/claude-opus-4-7</code></td>
+                <td>2 concurrent</td>
+                <td>Opus is the most expensive; hard cap</td>
+              </tr>
+              <tr>
+                <td><code>opencode/gpt-5-nano</code></td>
+                <td>20 concurrent</td>
+                <td>Nano is near-free; parallelize freely</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info" data-animate="fade-up">
+          <strong>Related pages:</strong>
+          <a class="inline-link" href="/workflow">/workflow</a> for execution modes +
+          IntentGate + Wisdom Notepad.
+          <a class="inline-link" href="/agents">/agents</a> for the 3-layer roster +
+          agency-agents personas + enforcement hooks.
+          <a class="inline-link" href="/ecosystem">/ecosystem</a> for how OmO fits
+          with gentle-ai, OpenCode, Engram, claw-code.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+
+  .hero {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-6);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+    max-width: 20ch;
+  }
+
+  .hero-lede {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .hero-lede code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    background: var(--color-surface);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Content sections ──────────────────────────────────────────────── */
+
+  .content-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12);
+  }
+
+  .section-title code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xl);
+    background: var(--color-surface);
+    padding: var(--space-0-5) var(--space-2);
+    border-radius: var(--radius-sm);
+  }
+
+  .subsection-title {
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: var(--space-16) 0 var(--space-6);
+  }
+
+  /* ── Prose ─────────────────────────────────────────────────────────── */
+
+  .prose {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-8);
+    line-height: 1.7;
+  }
+
+  .prose strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    background: var(--color-surface);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  .inline-link {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .inline-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* ── ASCII Diagrams ────────────────────────────────────────────────── */
+
+  .diagram {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 0 var(--space-8);
+    white-space: pre;
+  }
+
+  /* ── Tables ─────────────────────────────────────────────────────────── */
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: var(--space-6);
+  }
+
+  .routing-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+  }
+
+  .routing-table th,
+  .routing-table td {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .routing-table thead th {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .routing-table td {
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .routing-table code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    background: var(--color-surface-raised);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Callouts ──────────────────────────────────────────────────────── */
+
+  .callout {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-6);
+    margin: var(--space-8) 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .callout strong {
+    color: var(--color-text);
+  }
+
+  .callout code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    background: var(--color-surface-raised);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  .callout-info {
+    border-left: 3px solid var(--color-border-strong);
+    background: var(--color-surface);
+  }
+
+  .callout-warning {
+    border-left: 3px solid var(--color-accent);
+    background: var(--color-accent-muted);
+  }
+</style>
