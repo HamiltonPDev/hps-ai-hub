@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 ---
 <BaseLayout
   title="Integrated Ecosystem — HPS AI Hub"
@@ -11,18 +14,16 @@ import Footer from '../components/Footer.astro';
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">04 — Integrated Ecosystem</p>
-        <h1 class="hero-title">Seven Tools, One Operating System</h1>
-        <p class="hero-lede">
-          Each tool does one thing exceptionally well. Together, they create something
-          no single tool can match — a unified AI operating system where the intelligence
-          is in the <strong>system</strong>, not individual agents.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="04 — Integrated Ecosystem" eyebrowIcon="lucide:network">
+      <Fragment slot="title">
+        Seven Tools, <span class="accent">One Operating System</span>
+      </Fragment>
+      <Fragment slot="lede">
+        Each tool does one thing exceptionally well. Together, they create something
+        no single tool can match — a unified AI operating system where the intelligence
+        is in the <strong>system</strong>, not individual agents.
+      </Fragment>
+    </Hero>
 
     <!-- ── Tool grid — 7 cards ──────────────────────────────────────── -->
     <section class="tools-section">
@@ -311,6 +312,16 @@ import Footer from '../components/Footer.astro';
         </div>
       </div>
     </section>
+
+    <CTASection
+      title="Each tool has its own deep-dive."
+      lede="See how OmO, Engram, gentle-ai, and the rest compose into one system."
+    >
+      <Fragment slot="cta">
+        <Button href="/omo" variant="primary" icon="lucide:arrow-right" iconPosition="end">OmO Plugin</Button>
+        <Button href="/architecture" variant="ghost" icon="lucide:layers">Architecture</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 

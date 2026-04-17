@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 ---
 
 <BaseLayout
@@ -12,17 +15,15 @@ import Footer from '../components/Footer.astro';
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">08 / 09 — Runtime</p>
-        <h1 class="hero-title">KAIROS Memory +<br/>The Daily Loop</h1>
-        <p class="hero-lede">
-          Cross-session memory that thinks overnight and loads itself every morning.
-          One terminal, one workflow, no manual context injection.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="08 / 09 — Runtime" eyebrowIcon="lucide:cpu">
+      <Fragment slot="title">
+        KAIROS Memory + <span class="accent">The Daily Loop</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        Cross-session memory that thinks overnight and loads itself every morning.
+        One terminal, one workflow, no manual context injection.
+      </Fragment>
+    </Hero>
 
     <!-- ── §08 KAIROS Memory ──────────────────────────────────────────── -->
     <section class="content-section">
@@ -169,6 +170,16 @@ fcm.notify(summary.excerpt)</code></pre>
 
       </div>
     </section>
+
+    <CTASection
+      title="Memory and execution, in one loop."
+      lede="Every session closes with a summary. Every morning starts with last night's context already loaded."
+    >
+      <Fragment slot="cta">
+        <Button href="/workflow" variant="primary" icon="lucide:arrow-right" iconPosition="end">Unified Workflow</Button>
+        <Button href="/reference" variant="ghost" icon="lucide:book-open">Commands</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 

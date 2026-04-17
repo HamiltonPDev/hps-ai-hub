@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 ---
 
 <BaseLayout
@@ -12,18 +15,16 @@ import Footer from '../components/Footer.astro';
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">04 — Explore</p>
-        <h1 class="hero-title">Explore.</h1>
-        <p class="hero-lede">
-          A live graph of the entire HPS AI ecosystem — agents connected to models,
-          models connected to domains, domains connected to tools. Every relationship
-          made visible and navigable.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="04 — Explore" eyebrowIcon="lucide:search">
+      <Fragment slot="title">
+        <span class="accent">Explore</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        A live graph of the entire HPS AI ecosystem — agents connected to models,
+        models connected to domains, domains connected to tools. Every relationship
+        made visible and navigable.
+      </Fragment>
+    </Hero>
 
     <!-- ── Placeholder ───────────────────────────────────────────────── -->
     <section class="placeholder-section">
@@ -43,6 +44,16 @@ import Footer from '../components/Footer.astro';
         </div>
       </div>
     </section>
+
+    <CTASection
+      title="While the graph is being built."
+      lede="Every relationship is already documented — agents, models, domains, skills — in the static reference."
+    >
+      <Fragment slot="cta">
+        <Button href="/architecture" variant="primary" icon="lucide:arrow-right" iconPosition="end">Architecture</Button>
+        <Button href="/agents" variant="ghost" icon="lucide:bot">Agent Roster</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 

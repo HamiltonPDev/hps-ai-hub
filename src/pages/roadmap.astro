@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 ---
 
 <BaseLayout
@@ -12,17 +15,15 @@ import Footer from '../components/Footer.astro';
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">05 / 12 — What's Coming</p>
-        <h1 class="hero-title">Roadmap</h1>
-        <p class="hero-lede">
-          What the March 2026 Claude Code source leak revealed, how HPS OS
-          replicated or diverged from each feature, and what's planned next.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="05 / 12 — What's Coming" eyebrowIcon="lucide:map">
+      <Fragment slot="title">
+        <span class="accent">Roadmap</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        What the March 2026 Claude Code source leak revealed, how HPS OS
+        replicated or diverged from each feature, and what's planned next.
+      </Fragment>
+    </Hero>
 
     <!-- ── §05 — What Leaked ───────────────────────────────────────── -->
     <section class="content-section" data-animate="fade-up">
@@ -270,6 +271,16 @@ import Footer from '../components/Footer.astro';
 
       </div>
     </section>
+
+    <CTASection
+      title="From leaks to shipped features."
+      lede="Every feature on the roadmap ties back to a concrete layer in the architecture."
+    >
+      <Fragment slot="cta">
+        <Button href="/architecture" variant="primary" icon="lucide:arrow-right" iconPosition="end">Architecture</Button>
+        <Button href="/news" variant="ghost" icon="lucide:newspaper">Changelog</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 

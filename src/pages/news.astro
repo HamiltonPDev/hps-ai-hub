@@ -3,6 +3,9 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 
 const entries = await getCollection('news');
 
@@ -24,17 +27,15 @@ function formatDate(d: Date): string {
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">05 — News</p>
-        <h1 class="hero-title">Changelog.</h1>
-        <p class="hero-lede">
-          Tech and cybersecurity developments, filtered through the HPS lens.
-          AI-summarized from curated sources. Updated when something actually matters.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="05 — News" eyebrowIcon="lucide:newspaper">
+      <Fragment slot="title">
+        <span class="accent">Changelog</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        Tech and cybersecurity developments, filtered through the HPS lens.
+        AI-summarized from curated sources. Updated when something actually matters.
+      </Fragment>
+    </Hero>
 
     <!-- ── Entry list ────────────────────────────────────────────────── -->
     <section class="entries-section">
@@ -73,6 +74,16 @@ function formatDate(d: Date): string {
 
       </div>
     </section>
+
+    <CTASection
+      title="Less noise, more signal."
+      lede="What matters gets summarized. What doesn't, stays out. The system is the filter."
+    >
+      <Fragment slot="cta">
+        <Button href="/architecture" variant="primary" icon="lucide:arrow-right" iconPosition="end">How It Works</Button>
+        <Button href="/workflow" variant="ghost" icon="lucide:git-branch">Pipeline</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 

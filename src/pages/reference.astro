@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 ---
 
 <BaseLayout
@@ -12,17 +15,15 @@ import Footer from '../components/Footer.astro';
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">14 — Reference</p>
-        <h1 class="hero-title">Quick Reference<br/>Card</h1>
-        <p class="hero-lede">
-          Every command you reach for in a working day — grouped by domain,
-          ready to scan in seconds.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="14 — Reference" eyebrowIcon="lucide:book-open">
+      <Fragment slot="title">
+        Quick <span class="accent">Reference Card</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        Every command you reach for in a working day — grouped by domain,
+        ready to scan in seconds.
+      </Fragment>
+    </Hero>
 
     <!-- ── Command Cards ─────────────────────────────────────────────── -->
     <section class="content-section">
@@ -180,6 +181,16 @@ import Footer from '../components/Footer.astro';
         </div>
       </div>
     </section>
+
+    <CTASection
+      title="Know the commands — now see them in action."
+      lede="Each command maps to a skill, an agent, or a runtime layer. Dig deeper wherever you want."
+    >
+      <Fragment slot="cta">
+        <Button href="/workflow" variant="primary" icon="lucide:arrow-right" iconPosition="end">Unified Workflow</Button>
+        <Button href="/runtime" variant="ghost" icon="lucide:cpu">Runtime</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 
