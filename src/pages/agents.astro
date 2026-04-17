@@ -4,6 +4,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Pill from '../components/Pill.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 import { buildSlugSet, assertXref, assertXrefList } from '../lib/xref';
 
 const agents = await getCollection('agents');
@@ -74,18 +77,16 @@ const sortedAgents = [...agents].sort(
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">02 — Agent Roster</p>
-        <h1 class="hero-title">The agents.</h1>
-        <p class="hero-lede">
-          19 specialized agents, each wired to a domain and a model tier.
-          Category routing means the right model fires for the right task —
-          no wasted tokens, no generic answers.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="02 — Agent Roster" eyebrowIcon="lucide:bot">
+      <Fragment slot="title">
+        The <span class="accent">agents</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        19 specialized agents, each wired to a domain and a model tier.
+        Category routing means the right model fires for the right task —
+        no wasted tokens, no generic answers.
+      </Fragment>
+    </Hero>
 
     <!-- ── §1 3-Layer Architecture ───────────────────────────────────── -->
     <section class="arch-section" id="three-layer-architecture">
@@ -362,6 +363,16 @@ CROSS-CUTTING:
         </ul>
       </div>
     </section>
+
+    <CTASection
+      title="See how agents route to models."
+      lede="Every agent maps to a model tier — Opus for architecture, Sonnet for implementation, Haiku for automation."
+    >
+      <Fragment slot="cta">
+        <Button href="/models" variant="primary" icon="lucide:arrow-right" iconPosition="end">Model Routing</Button>
+        <Button href="/explore" variant="ghost" icon="lucide:search">Explore Graph</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 

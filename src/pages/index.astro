@@ -3,6 +3,56 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Pill from '../components/Pill.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import StatsRow from '../components/organisms/StatsRow.astro';
+import FeatureGrid from '../components/organisms/FeatureGrid.astro';
+import CTASection from '../components/organisms/CTASection.astro';
+
+const stats = [
+  { label: 'Architecture Layers', value: '9' },
+  { label: 'AI Agents', value: '20+' },
+  { label: 'Skills Installed', value: '66' },
+  { label: 'Monthly Cost', value: '€68' },
+];
+
+const features = [
+  {
+    icon: 'lucide:layers',
+    title: 'Architecture',
+    body: '9-layer stack, unified workflow, domain sessions.',
+    href: '/architecture',
+  },
+  {
+    icon: 'lucide:bot',
+    title: 'Agent Roster',
+    body: '20 agents with category routing and model assignment.',
+    href: '/agents',
+  },
+  {
+    icon: 'lucide:route',
+    title: 'Model Routing',
+    body: 'Multi-model engine with paid + free tier optimization.',
+    href: '/models',
+  },
+  {
+    icon: 'lucide:search',
+    title: 'Explore',
+    body: 'Interactive graph: agents ↔ models ↔ tools ↔ domains.',
+    href: '/explore',
+  },
+  {
+    icon: 'lucide:newspaper',
+    title: 'News',
+    body: 'Tech + cybersecurity news with AI summaries.',
+    href: '/news',
+  },
+  {
+    icon: 'lucide:message-square',
+    title: 'Ask AI',
+    body: 'RAG-powered chat over the entire HPS OS knowledge base. Coming soon.',
+  },
+];
 ---
 
 <BaseLayout
@@ -13,107 +63,69 @@ import Pill from '../components/Pill.astro';
 
   <main class="main">
 
-    <!-- ── Hero ──────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="hero-eyebrow">HPS Proptech & Solutions B.V. · Amsterdam · 2026</p>
+    <Hero
+      eyebrow="HPS Proptech & Solutions B.V. · Amsterdam · 2026"
+      eyebrowIcon="lucide:sparkles"
+    >
+      <Fragment slot="title">
+        Notes from a solo developer building with <span class="accent">AI</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        A public record of how one developer combines AI tools across eight domains
+        without losing taste, budget, or sanity.
+      </Fragment>
+      <Fragment slot="cta">
+        <Button href="/architecture" variant="primary" icon="lucide:arrow-right" iconPosition="end">
+          Explore the System
+        </Button>
+        <Button
+          href="https://github.com/Gentleman-Programming"
+          variant="ghost"
+          icon="lucide:github"
+          external
+        >
+          Star on GitHub
+        </Button>
+      </Fragment>
 
-        {/* TODO(sdd-spec-Q3): Final hero copy pending user input.
-            Direction locked = Stripe Press-ish editorial essay tone.
-            Current line below is a stand-in matching the tone; user will replace before archive. */}
-        <h1 class="hero-title">Notes from a solo developer building with AI.</h1>
-
-        <p class="hero-lede">
-          A public record of how one developer combines AI tools across eight domains
-          without losing taste, budget, or sanity.
-        </p>
-
-        <div class="hero-pills">
-          <Pill domain="build">Full-Stack</Pill>
-          <Pill domain="build">IoT</Pill>
-          <Pill domain="build">ML / DL</Pill>
-          <Pill domain="operate">Proptech</Pill>
-          <Pill domain="operate">Business Ops</Pill>
-          <Pill domain="grow">Analytics</Pill>
-          <Pill domain="grow">Marketing</Pill>
-          <Pill domain="secure">Cybersecurity</Pill>
-        </div>
+      <div class="hero-pills">
+        <Pill domain="build">Full-Stack</Pill>
+        <Pill domain="build">IoT</Pill>
+        <Pill domain="build">ML / DL</Pill>
+        <Pill domain="operate">Proptech</Pill>
+        <Pill domain="operate">Business Ops</Pill>
+        <Pill domain="grow">Analytics</Pill>
+        <Pill domain="grow">Marketing</Pill>
+        <Pill domain="secure">Cybersecurity</Pill>
       </div>
-    </section>
+    </Hero>
 
-    <!-- ── Stats ──────────────────────────────────────────────────────── -->
-    <section class="stats-section">
-      <div class="stats-inner">
-        <h2 class="sr-only">System at a glance</h2>
-        <dl class="stats-grid">
-          <div class="stat-item" data-animate="fade-up">
-            <dt class="stat-label">Architecture Layers</dt>
-            <dd class="stat-value">9</dd>
-          </div>
-          <div class="stat-item" data-animate="fade-up">
-            <dt class="stat-label">AI Agents</dt>
-            <dd class="stat-value">20+</dd>
-          </div>
-          <div class="stat-item" data-animate="fade-up">
-            <dt class="stat-label">Skills Installed</dt>
-            <dd class="stat-value">66</dd>
-          </div>
-          <div class="stat-item" data-animate="fade-up">
-            <dt class="stat-label">Monthly Cost</dt>
-            <dd class="stat-value">€68</dd>
-          </div>
-        </dl>
-      </div>
-    </section>
+    <StatsRow stats={stats} />
 
-    <!-- ── Navigation cards ──────────────────────────────────────────── -->
-    <section class="nav-section">
-      <div class="nav-section-inner">
-        <h2 class="section-title" data-animate="fade-up">Full Architecture Deep-Dive</h2>
-        <p class="section-lede" data-animate="fade-up">
-          This site is being built from the master reference document. Each section becomes
-          its own page — interactive components, filterable tables, and an AI-powered assistant.
-        </p>
+    <FeatureGrid
+      title="Full architecture deep-dive."
+      lede="Each section becomes its own page — interactive components, filterable tables, and an AI-powered assistant."
+      features={features}
+    />
 
-        <div class="card-grid">
-          <a href="/architecture" class="card" data-animate="fade-up">
-            <span class="card-index">01</span>
-            <h3 class="card-title">Architecture</h3>
-            <p class="card-body">9-layer stack, unified workflow, domain sessions</p>
-          </a>
-
-          <a href="/agents" class="card" data-animate="fade-up">
-            <span class="card-index">02</span>
-            <h3 class="card-title">Agent Roster</h3>
-            <p class="card-body">20 agents with category routing and model assignment</p>
-          </a>
-
-          <a href="/models" class="card" data-animate="fade-up">
-            <span class="card-index">03</span>
-            <h3 class="card-title">Model Routing</h3>
-            <p class="card-body">Multi-model engine with paid + free tier optimization</p>
-          </a>
-
-          <a href="/explore" class="card" data-animate="fade-up">
-            <span class="card-index">04</span>
-            <h3 class="card-title">Explore</h3>
-            <p class="card-body">Interactive graph: agents ↔ models ↔ tools ↔ domains</p>
-          </a>
-
-          <a href="/news" class="card" data-animate="fade-up">
-            <span class="card-index">05</span>
-            <h3 class="card-title">News</h3>
-            <p class="card-body">Tech + cybersecurity news with AI summaries</p>
-          </a>
-
-          <div class="card card--pending" data-animate="fade-up">
-            <span class="card-index">06</span>
-            <h3 class="card-title card-title--pending">Ask AI</h3>
-            <p class="card-body">RAG-powered chat over the entire HPS OS knowledge base</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <CTASection
+      title="One terminal. Nine layers. Zero lock-in."
+      lede="Read the docs, fork the repo, run the system on your machine."
+    >
+      <Fragment slot="cta">
+        <Button href="/architecture" variant="primary" icon="lucide:arrow-right" iconPosition="end">
+          Start with Architecture
+        </Button>
+        <Button
+          href="https://github.com/Gentleman-Programming"
+          variant="ghost"
+          icon="lucide:github"
+          external
+        >
+          View Source
+        </Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 
@@ -121,242 +133,15 @@ import Pill from '../components/Pill.astro';
 </BaseLayout>
 
 <style>
-  /* ── Main wrapper ──────────────────────────────────────────────────── */
-
   .main {
     display: flex;
     flex-direction: column;
-  }
-
-  /* ── Hero ──────────────────────────────────────────────────────────── */
-
-  .hero {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .hero-inner {
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-block: var(--space-24);
-    padding-inline: var(--space-6);
-  }
-
-  .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-text-subtle);
-    margin: 0 0 var(--space-6);
-  }
-
-  .hero-title {
-    font-family: var(--font-display);
-    font-size: var(--font-size-5xl);
-    font-weight: 300;
-    letter-spacing: var(--tracking-tight);
-    line-height: 1.05;
-    color: var(--color-text);
-    margin: 0 0 var(--space-6);
-    font-optical-sizing: auto;
-    max-width: 20ch;
-  }
-
-  .hero-lede {
-    font-family: var(--font-body);
-    font-size: var(--font-size-md);
-    color: var(--color-text-muted);
-    max-width: var(--content-max);
-    margin: 0 0 var(--space-10);
-    line-height: 1.6;
   }
 
   .hero-pills {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
-  }
-
-  /* ── Stats ─────────────────────────────────────────────────────────── */
-
-  .stats-section {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .stats-inner {
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-block: var(--space-16);
-    padding-inline: var(--space-6);
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-4);
-    margin: 0;
-  }
-
-  @media (min-width: 640px) {
-    .stats-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .stat-item {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-8);
-    text-align: center;
-    transition: border-color var(--duration-quick) var(--ease-standard);
-  }
-
-  .stat-item:hover {
-    border-color: var(--color-border-strong);
-  }
-
-  .stat-label {
-    font-family: var(--font-body);
-    font-size: var(--font-size-xs);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-text-subtle);
-    display: block;
-    margin-bottom: var(--space-3);
-  }
-
-  .stat-value {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-2xl);
-    font-weight: 600;
-    color: var(--color-text);
-    display: block;
-    margin: 0;
-  }
-
-  /* ── Navigation section ─────────────────────────────────────────────── */
-
-  .nav-section {
-    /* last section — no border-bottom needed */
-  }
-
-  .nav-section-inner {
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-block: var(--space-24);
-    padding-inline: var(--space-6);
-  }
-
-  .section-title {
-    font-family: var(--font-display);
-    font-size: var(--font-size-2xl);
-    font-weight: 300;
-    letter-spacing: var(--tracking-snug);
-    line-height: 1.2;
-    color: var(--color-text);
-    margin: 0 0 var(--space-4);
-    font-optical-sizing: auto;
-  }
-
-  .section-lede {
-    font-family: var(--font-body);
-    font-size: var(--font-size-base);
-    color: var(--color-text-muted);
-    max-width: var(--content-max);
-    margin: 0 0 var(--space-12);
-    line-height: 1.65;
-  }
-
-  /* ── Card grid ──────────────────────────────────────────────────────── */
-
-  .card-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-
-  @media (min-width: 640px) {
-    .card-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 960px) {
-    .card-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-8);
-    text-decoration: none;
-    display: block;
-    transition: border-color var(--duration-quick) var(--ease-standard);
-  }
-
-  .card:hover {
-    border-color: var(--color-border-strong);
-  }
-
-  .card--pending {
-    border-style: dashed;
-    cursor: default;
-  }
-
-  .card--pending:hover {
-    border-color: var(--color-border);
-  }
-
-  .card-index {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    letter-spacing: var(--tracking-wider);
-    text-transform: uppercase;
-    color: var(--color-text-subtle);
-    margin-bottom: var(--space-3);
-  }
-
-  .card-title {
-    font-family: var(--font-body);
-    font-size: var(--font-size-base);
-    font-weight: 500;
-    color: var(--color-text);
-    margin: 0 0 var(--space-2);
-    line-height: 1.3;
-  }
-
-  .card-title--pending {
-    color: var(--color-text-muted);
-  }
-
-  .card-body {
-    font-family: var(--font-body);
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    margin: 0;
-    line-height: 1.65;
-  }
-
-  .card--pending .card-body {
-    color: var(--color-text-muted);
-  }
-
-  /* ── Accessibility utility ──────────────────────────────────────────── */
-
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
+    margin-top: var(--space-10);
   }
 </style>

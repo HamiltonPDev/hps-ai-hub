@@ -3,6 +3,9 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 import { buildSlugSet, assertXrefList } from '../lib/xref';
 
 const models = await getCollection('models');
@@ -65,18 +68,16 @@ const paidByTier = Object.entries(tierLabels).map(([tier, label]) => ({
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">03 — Model Routing</p>
-        <h1 class="hero-title">The decision engine.</h1>
-        <p class="hero-lede">
-          17 models across 4 tiers. 6 paid, 11 free/budget.
-          Category routing fires the right model for the right task —
-          maximizing quality where it matters, minimizing cost where it doesn't.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="03 — Model Routing" eyebrowIcon="lucide:route">
+      <Fragment slot="title">
+        The <span class="accent">decision engine</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        17 models across 4 tiers. 6 paid, 11 free/budget.
+        Category routing fires the right model for the right task —
+        maximizing quality where it matters, minimizing cost where it doesn't.
+      </Fragment>
+    </Hero>
 
     <!-- ── Routing strategy ──────────────────────────────────────────── -->
     <section class="strategy-section">
@@ -466,6 +467,16 @@ const paidByTier = Object.entries(tierLabels).map(([tier, label]) => ({
         </div>
       </div>
     </section>
+
+    <CTASection
+      title="See the agents behind each model."
+      lede="Every agent is wired to a model tier. Visit the roster to see who does what — and why."
+    >
+      <Fragment slot="cta">
+        <Button href="/agents" variant="primary" icon="lucide:arrow-right" iconPosition="end">Agent Roster</Button>
+        <Button href="/explore" variant="ghost" icon="lucide:search">Explore Graph</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 
