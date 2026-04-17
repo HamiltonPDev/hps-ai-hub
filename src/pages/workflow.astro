@@ -25,12 +25,61 @@ import Footer from '../components/Footer.astro';
       </div>
     </section>
 
-    <!-- ── §1 Main Workflow Routing ─────────────────────────────────── -->
+    <!-- ── §1 IntentGate (Phase 0) ──────────────────────────────────── -->
+    <section class="content-section" id="intentgate">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">IntentGate — Phase 0</h2>
+
+        <p class="prose">
+          Before any category routing happens, <strong>IntentGate</strong> runs a
+          lightweight classifier that reads user intent semantically — not lexically.
+          The output is a structured routing decision: intent class, size tier, and
+          suggested category. Only then does the category router pick a worker.
+        </p>
+
+        <pre class="diagram" data-animate="fade-up">USER types in OpenCode
+  │
+  ▼
+┌─────────────────────────────────────────────────┐
+│ IntentGate · fast classifier (Haiku or Mini)    │
+│   · semantic intent analysis                     │
+│   · size tier detection                          │
+│   · category suggestion                          │
+└─────────────────────────────────────────────────┘
+  │
+  ▼
+{"{ intent, size_tier, category, confidence }"}
+  │
+  ├── confidence ≥ 0.8   → direct to category router
+  ├── confidence 0.5–0.8 → brief Prometheus clarification
+  └── confidence &lt; 0.5   → full Prometheus interview</pre>
+
+        <p class="prose">
+          The gate is <strong>read-only</strong> — no side effects, no tool calls.
+          It exists to prevent OmO from routing code-gen work to the wrong category
+          (a typo fix going to <code>ultrabrain</code> when <code>quick</code>
+          would do) or triggering full SDD on work that should stay trivial.
+        </p>
+
+        <div class="callout callout-info" data-animate="fade-up">
+          <strong>Why Phase 0:</strong> previous versions of OmO routed by keyword
+          match. IntentGate adds semantic classification — the same phrase can mean
+          different things across project contexts, and the gate reads that context
+          from Engram before committing to a routing decision.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §2 Workflow Routing ──────────────────────────────────────── -->
     <section class="content-section">
       <div class="section-inner">
         <h2 class="section-title" data-animate="fade-up">Workflow Routing</h2>
 
         <pre class="diagram" data-animate="fade-up">USER types in OpenCode
+  │
+  ▼
+IntentGate (Phase 0 — see §1)
+  │ outputs: {"{ intent, size_tier, category }"}
   │
   ├─ /session-{"'{domain}'"}        ← Domain preset (skills + models + MCPs)
   │
@@ -64,7 +113,149 @@ import Footer from '../components/Footer.astro';
       </div>
     </section>
 
-    <!-- ── §2 Enhanced SDD Protocol ─────────────────────────────────── -->
+    <!-- ── §3 OmO Execution Modes ───────────────────────────────────── -->
+    <section class="content-section">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">OmO Execution Modes</h2>
+
+        <p class="prose">
+          Once tasks exist, OmO runs them under one of four execution modes. The
+          mode is picked at dispatch time based on size tier, risk level, and whether
+          the session is resuming previous work.
+        </p>
+
+        <div class="table-wrap" data-animate="fade-up">
+          <table class="routing-table" role="table">
+            <thead>
+              <tr>
+                <th>Mode</th>
+                <th>Trigger</th>
+                <th>Behavior</th>
+                <th>Size tier fit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>standard</code></td>
+                <td>default dispatch</td>
+                <td>Atlas delegates by category; workers run one-shot; stop on first failure</td>
+                <td>TRIVIAL, MEDIUM</td>
+              </tr>
+              <tr>
+                <td><code>ralph-loop</code></td>
+                <td>explicit flag or EMERGENCY intent</td>
+                <td>Persistent execution — retries until 100% done or hard-stop signal</td>
+                <td>LARGE, INITIATIVE, urgent fixes</td>
+              </tr>
+              <tr>
+                <td><code>ULTRAWORK (ULW)</code></td>
+                <td><code>/ultrawork</code> or <code>ULW</code> flag</td>
+                <td>Agent self-directs — skips SDD planning phases, picks decomposition itself</td>
+                <td>LARGE with settled architecture</td>
+              </tr>
+              <tr>
+                <td><code>resume</code></td>
+                <td><code>/start-work</code></td>
+                <td>Reads <code>boulder.json</code> state; picks up at last saved checkpoint</td>
+                <td>any tier after interruption</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subsection-title">Ralph Loop contract</h3>
+
+        <pre class="diagram" data-animate="fade-up">while task.status != "done":
+    attempt = worker.execute(task)
+    if attempt.failed:
+        analyze_failure(attempt)
+        adjust_approach()
+        # NO STOP — retry with new approach
+    elif attempt.partial:
+        complete_remaining_work()
+    else:  # attempt.done
+        task.status = "done"
+        update wisdom_notepad</pre>
+
+        <p class="prose">
+          Ralph Loop refuses to stop until work is 100% complete. Used for emergencies
+          (prod down) or LARGE changes where partial completion is worse than retry
+          cost. The agent analyzes each failure, adjusts approach, and tries again —
+          no "failed once, give up" behavior.
+        </p>
+
+        <h3 class="subsection-title">ULTRAWORK (ULW)</h3>
+
+        <p class="prose">
+          <code>ULTRAWORK</code> is the mode where the agent skips planning phases
+          entirely and self-directs from intent to completion. Appropriate when the
+          architecture is settled and the task is large but internally coherent —
+          for example, implementing a well-understood pattern across many files. The
+          agent owns the decomposition; SDD skips <code>explore</code> →
+          <code>propose</code> → <code>design</code> and goes straight to
+          <code>apply</code> with continuous wisdom accumulation.
+        </p>
+
+        <h3 class="subsection-title">Wisdom Notepad</h3>
+
+        <p class="prose">
+          Every completed task appends to <code>.sisyphus/notepads/</code> — a
+          per-project journal containing learnings (what worked, what failed),
+          decisions (what was chosen and why), and open issues (deferred problems,
+          known edge cases). Each subsequent task reads previous notepads before
+          starting — wisdom accumulates forward across the project.
+        </p>
+
+        <p class="prose">
+          Notepads coexist with Engram, not compete: <strong>Engram</strong> holds
+          queryable structured facts (topic keys, semantic search);
+          <strong>Wisdom Notepad</strong> holds narrative journal entries. Both feed
+          context to the next agent.
+        </p>
+
+        <h3 class="subsection-title">Hash-anchored edits</h3>
+
+        <p class="prose">
+          Standard LLM edits (find-and-replace by content) succeed ~6.7% of the
+          time on large codebases. OmO pins edits to content hashes instead —
+          <strong>68.3% success rate</strong>. Wrong-file or stale-context edits
+          become detectable and revertible before they execute.
+        </p>
+
+        <h3 class="subsection-title">Resume via /start-work</h3>
+
+        <p class="prose">
+          Long-running OmO sessions checkpoint state to <code>boulder.json</code>
+          at every phase transition. Running <code>/start-work</code> in a fresh
+          session reads this file, restores context, and resumes at the last
+          checkpoint. No need to re-run SDD from scratch when you come back after
+          lunch.
+        </p>
+
+        <pre class="diagram" data-animate="fade-up">boulder.json (checkpoint schema):
+{"{"}
+  "change": "hps-feature-name",
+  "phase": "apply",
+  "last_checkpoint": "2026-04-17T14:32:10Z",
+  "completed_tasks": [1, 2, 3],
+  "current_task": 4,
+  "engram_refs": ["sdd/hps-feature-name/apply-progress"],
+  "wisdom_notepad_cursor": 127
+{"}"}</pre>
+
+        <div class="callout callout-info" data-animate="fade-up">
+          <strong>External references (benchmark only, NOT adopted):</strong>
+          <code>Kyros</code> (CC Leak — 15-second background polling) and
+          <code>Ultra Plan</code> (CC Leak — 30-minute continuous processing tier)
+          share architectural DNA with Ralph Loop and ULTRAWORK respectively. HPS
+          OS does not adopt the 15s polling model (conflicts with IntentGate's
+          intent-gated philosophy) nor the 30min ceiling (OmO has no hard session
+          limit). Listed here for comparison, not as features to adopt.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §4 Enhanced SDD Protocol ─────────────────────────────────── -->
     <section class="content-section">
       <div class="section-inner">
         <h2 class="section-title" data-animate="fade-up">Enhanced SDD for OpenCode — Opt-in Quality Gates</h2>
@@ -230,7 +421,7 @@ apply → verify → archive</pre>
       </div>
     </section>
 
-    <!-- ── §3 Domain Sessions ───────────────────────────────────────── -->
+    <!-- ── §5 Domain Sessions ───────────────────────────────────────── -->
     <section class="content-section">
       <div class="section-inner">
         <h2 class="section-title" data-animate="fade-up">Domain Sessions</h2>
@@ -268,7 +459,9 @@ apply → verify → archive</pre>
           <strong>Connecting sessions:</strong> <code>SWITCH</code> — change session mid-project,
           Engram persists between. <code>COMPOSE</code> — load multiple domains at once for
           cross-cutting work. <code>PARALLEL</code> — background agent runs in a different domain
-          session via tmux while you work in another.
+          session via tmux while you work in another. <code>RESUME</code> — run
+          <code>/start-work</code> in any domain to restore a prior session from
+          <code>boulder.json</code> (see §3).
         </div>
       </div>
     </section>
