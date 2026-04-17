@@ -2,7 +2,7 @@
 name: "Cybersecurity"
 icon: "🔐"
 color: secure
-subtitle: "HBO Cybersecurity studies · OWASP · GDPR · Secret scanning · Penetration testing · GGA"
+subtitle: "GDPR-safe tenant data, OWASP audits on real HPS code, HBO Cyber study using your own codebase"
 stack:
   - OWASP
   - GDPR
@@ -47,6 +47,6 @@ workflowSteps:
       - hps-security
 ---
 
-The cybersecurity domain protects every other domain. It enforces the HPS-YOLO pre-tool classifier (inspired by the CC leak), handles GDPR compliance for sensitive tenant data, supports Hamilton's HBO Cybersecurity studies, and runs automated security reviews before every deployment.
+**Problem**: 24 tenants include people in immigration-regularization processes — highly sensitive PII that cannot leak via console logs, unprotected API routes, or unpatched OWASP vulnerabilities. Meanwhile, HBO Cybersecurity study needs real case material and synthetic textbook examples don't build intuition like auditing production code does. **Solution**: `/session-cybersecurity` enforces HPS-YOLO pre-tool classification (<100ms Haiku check before any file write), runs OWASP + GDPR audits on HPS code itself (turning study material into production hardening), and blocks PII leaks at commit time via GGA.
 
-The `/session-cybersecurity` command loads hps-security and hps-devops skills, activates the GGA git hook for secret scanning, and configures Oracle as the security reviewer with Haiku as the fast pre-tool classifier.
+The session loads `hps-security` and `hps-devops` skills, activates the GGA git hook for secret scanning, and configures Oracle as the security reviewer with Haiku as the fast pre-tool classifier.
