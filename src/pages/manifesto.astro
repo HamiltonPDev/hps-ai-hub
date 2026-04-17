@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 ---
 
 <BaseLayout
@@ -12,17 +15,15 @@ import Footer from '../components/Footer.astro';
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">Manifesto</p>
-        <h1 class="hero-title">AI is a tool.<br/>You are the architect.</h1>
-        <p class="hero-lede">
-          This is not a framework. This is not a product. This is how
-          one architect builds software in 2026.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="Manifesto" eyebrowIcon="lucide:lightbulb">
+      <Fragment slot="title">
+        AI is a tool. <span class="accent">You are the architect</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        This is not a framework. This is not a product. This is how
+        one architect builds software in 2026.
+      </Fragment>
+    </Hero>
 
     <!-- ── §1 What This Is ─────────────────────────────────────────── -->
     <section class="content-section">
@@ -205,6 +206,16 @@ import Footer from '../components/Footer.astro';
         </div>
       </div>
     </section>
+
+    <CTASection
+      title="Read how the manifesto turns into architecture."
+      lede="From philosophy to 9 layers, 20 agents, 66 skills — the whole thing is public and reproducible."
+    >
+      <Fragment slot="cta">
+        <Button href="/architecture" variant="primary" icon="lucide:arrow-right" iconPosition="end">Architecture</Button>
+        <Button href="/agents" variant="ghost" icon="lucide:bot">Agent Roster</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 

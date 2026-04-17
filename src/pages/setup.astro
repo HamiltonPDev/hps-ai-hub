@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
 
 const step01 = `brew install anomalyco/tap/opencode
 opencode auth login
@@ -89,17 +92,15 @@ const step10 = `# OpenCode pre-tool hook: ~/.config/opencode/hooks/pre-tool.ts
 
   <main class="main">
 
-    <!-- ── Hero ─────────────────────────────────────────────────────── -->
-    <section class="hero" data-animate="fade-up">
-      <div class="hero-inner">
-        <p class="eyebrow">15 — Setup</p>
-        <h1 class="hero-title">Installation<br/>Sequence</h1>
-        <p class="hero-lede">
-          In order. Each step builds on the previous. Estimated total:
-          <strong>4–6 hours</strong> to a fully operational stack.
-        </p>
-      </div>
-    </section>
+    <Hero eyebrow="15 — Setup" eyebrowIcon="lucide:download">
+      <Fragment slot="title">
+        <span class="accent">Installation</span> Sequence.
+      </Fragment>
+      <Fragment slot="lede">
+        In order. Each step builds on the previous. Estimated total:
+        <strong>4–6 hours</strong> to a fully operational stack.
+      </Fragment>
+    </Hero>
 
     <!-- ── Steps ─────────────────────────────────────────────────────── -->
     <section class="content-section">
@@ -241,6 +242,16 @@ const step10 = `# OpenCode pre-tool hook: ~/.config/opencode/hooks/pre-tool.ts
 
       </div>
     </section>
+
+    <CTASection
+      title="Install done — now explore the system."
+      lede="From the agent roster to the model routing engine, everything is wired and ready."
+    >
+      <Fragment slot="cta">
+        <Button href="/architecture" variant="primary" icon="lucide:arrow-right" iconPosition="end">Architecture</Button>
+        <Button href="/reference" variant="ghost" icon="lucide:book-open">Quick Reference</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 
