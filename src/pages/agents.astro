@@ -87,6 +87,55 @@ const sortedAgents = [...agents].sort(
       </div>
     </section>
 
+    <!-- ── §1 3-Layer Architecture ───────────────────────────────────── -->
+    <section class="arch-section">
+      <div class="arch-inner">
+        <h2 class="section-title" data-animate="fade-up">3-Layer Architecture</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Agents are organized in three operational layers — Planning, Execution, and Worker —
+          plus cross-cutting layers for domain specialists and read-only oracles. Layer
+          discipline is enforced: planners never write code, conductors never write code,
+          workers never orchestrate.
+        </p>
+
+        <pre class="arch-diagram" data-animate="fade-up">┌─ PLANNING LAYER ──────────────────────────────────────────┐
+│  Prometheus (Opus)    — interview, scope, verified plan   │
+│  Metis      (Opus)    — gap analysis, AI-slop detection   │
+│  Momus      (GPT-5.4) — quality gate, OKAY/REJECT loop    │
+└────────────────────────────┬──────────────────────────────┘
+                             │ produces: plan, spec, design
+                             ▼
+┌─ EXECUTION LAYER ─────────────────────────────────────────┐
+│  Atlas (Sonnet)       — conductor, delegates by category, │
+│                         NEVER writes code                 │
+└────────────────────────────┬──────────────────────────────┘
+                             │ delegates to: workers
+                             ▼
+┌─ WORKER LAYER (routed by OmO category) ───────────────────┐
+│  Sisyphus             — ultrabrain  (Claude, never GPT)   │
+│  Hephaestus           — visual-eng. (GPT, never Claude)   │
+│  Frontend             — UI/UX code  (Sonnet)              │
+│  Multimodal-Looker    — visual analysis (Gemini Pro)      │
+│  Librarian            — search + docs (Haiku)             │
+│  Explore              — fast grep  (Haiku, READ-ONLY)     │
+│  Sisyphus-Junior      — trivial ops (Haiku)               │
+└───────────────────────────────────────────────────────────┘
+
+CROSS-CUTTING:
+  Domain specialists — hps-proptech, hps-iot, hps-ml, hps-security,
+                       hps-fullstack, hps-analytics, hps-marketing,
+                       hps-business
+  Read-only oracles  — Oracle (GPT-5.4, architecture decisions → Engram)</pre>
+
+        <p class="prose">
+          Each layer has hard rules. Planners produce artifacts (specs, gaps, reviews) but
+          never touch files. Atlas reads the artifacts and delegates — it can't code. Workers
+          execute their category and don't decompose the task. This prevents role collisions
+          (Sisyphus trying to plan, Atlas trying to write) that degrade session quality.
+        </p>
+      </div>
+    </section>
+
     <!-- ── Agent grid ────────────────────────────────────────────────── -->
     <section class="agents-section">
       <div class="agents-inner">
@@ -123,6 +172,166 @@ const sortedAgents = [...agents].sort(
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+
+    <!-- ── §2 Agency-Agents Personas ─────────────────────────────────── -->
+    <section class="personas-section">
+      <div class="personas-inner">
+        <h2 class="section-title" data-animate="fade-up">Agency-Agents Personas</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Ten specialists cherry-picked from the 147-agent agency-agents library (75.2K★)
+          to extend the HPS roster where native agents don't go. Installed via
+          <code>cp /tmp/agency-agents/&lt;category&gt;/*.md ~/.claude/agents/</code> and
+          registered in the collection under <code>source: agency-agents</code>.
+        </p>
+
+        <div class="personas-table-wrap">
+          <table class="personas-table" role="table">
+            <thead>
+              <tr>
+                <th>Persona</th>
+                <th>Role</th>
+                <th>HPS Fit</th>
+                <th>Model</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Embedded Firmware Engineer</td>
+                <td>Low-level hardware, RTOS, firmware flashing</td>
+                <td>hps-iot (Aqara, SmartThings)</td>
+                <td>Sonnet 4.6</td>
+              </tr>
+              <tr>
+                <td>Threat Detection Engineer</td>
+                <td>Anomaly detection, attack pattern analysis</td>
+                <td>hps-security</td>
+                <td>Opus 4.7</td>
+              </tr>
+              <tr>
+                <td>Autonomous Optimization Architect</td>
+                <td>Perf profiling, systems design</td>
+                <td>hps-fullstack</td>
+                <td>Opus 4.7</td>
+              </tr>
+              <tr>
+                <td>MCP Builder</td>
+                <td>Custom MCP server development</td>
+                <td>infrastructure (cross-domain)</td>
+                <td>Sonnet 4.6</td>
+              </tr>
+              <tr>
+                <td>Real Estate Buyer &amp; Seller</td>
+                <td>Property market analysis, deal modeling</td>
+                <td>hps-proptech</td>
+                <td>Sonnet 4.6</td>
+              </tr>
+              <tr>
+                <td>Automation Governance Architect</td>
+                <td>RPA policy, compliance automation</td>
+                <td>hps-business-ops</td>
+                <td>Opus 4.7</td>
+              </tr>
+              <tr>
+                <td>Workflow Architect</td>
+                <td>Business process modeling</td>
+                <td>hps-fullstack</td>
+                <td>Opus 4.7</td>
+              </tr>
+              <tr>
+                <td>SRE</td>
+                <td>Reliability, observability, incident response</td>
+                <td>hps-fullstack / hps-security</td>
+                <td>Sonnet 4.6</td>
+              </tr>
+              <tr>
+                <td>FP&amp;A Analyst</td>
+                <td>Financial planning, cash-flow modeling</td>
+                <td>hps-business-ops</td>
+                <td>Sonnet 4.6</td>
+              </tr>
+              <tr>
+                <td>Tax Strategist</td>
+                <td>International fiscal (ES IRPF + NL BV)</td>
+                <td>hps-business-ops</td>
+                <td>Opus 4.7</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="agents-callout callout-info" data-animate="fade-up">
+          <strong>Install path:</strong> per-category subdirectories in
+          <code>msitarzewski/agency-agents</code>. These personas appear in the full roster
+          above once <code>~/.claude/agents/</code> exists — see backlog item <code>C1</code>.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §3 IntentGate Routing ─────────────────────────────────────── -->
+    <section class="intent-section">
+      <div class="intent-inner">
+        <h2 class="section-title" data-animate="fade-up">IntentGate Routing</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Every agent dispatch flows through IntentGate (Phase 0) before reaching the
+          category router. The gate classifies user intent semantically, picks a size tier
+          and category, then hands off to Atlas (execution) or directly to a worker.
+        </p>
+
+        <p class="prose">
+          See <a class="inline-link" href="/workflow#intentgate"><code>/workflow §1 — IntentGate</code></a>
+          for the full diagram, confidence thresholds, and Prometheus clarification loop.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── §4 Model Enforcement Hooks ────────────────────────────────── -->
+    <section class="hooks-section">
+      <div class="hooks-inner">
+        <h2 class="section-title" data-animate="fade-up">Model Enforcement Hooks</h2>
+        <p class="section-lede" data-animate="fade-up">
+          OmO enforces agent↔model pairings at dispatch time. If you try to route Sisyphus
+          to GPT-5.4, the hook blocks the call before any tokens are spent. Same for
+          Hephaestus with Claude. This keeps the category routing predictable and prevents
+          silent quality degradation.
+        </p>
+
+        <div class="hooks-table-wrap">
+          <table class="hooks-table" role="table">
+            <thead>
+              <tr>
+                <th>Hook</th>
+                <th>Enforces</th>
+                <th>Rationale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>no-sisyphus-gpt</code></td>
+                <td>Sisyphus MUST use Claude (Opus or Sonnet), never GPT</td>
+                <td>Sisyphus is the main worker; consistent Claude reasoning across sessions</td>
+              </tr>
+              <tr>
+                <td><code>no-hephaestus-non-gpt</code></td>
+                <td>Hephaestus MUST use GPT-5.4, never Claude or Gemini</td>
+                <td>Hephaestus is the visual-engineering specialist; GPT is its chosen category</td>
+              </tr>
+              <tr>
+                <td><code>model-fallback</code></td>
+                <td>Routes to pre-approved fallback when preferred model is rate-limited or down</td>
+                <td>Keeps sessions unblocked without silently degrading quality</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="prose">
+          Source: <code>code-yeongyu/oh-my-openagent/src/hooks/</code>. Hook definitions live
+          in the OmO plugin — HPS does not override them. Add custom hooks (e.g.
+          <code>no-oracle-haiku</code>) by creating a new file in the same directory and
+          restarting the plugin.
+        </p>
       </div>
     </section>
 
@@ -396,5 +605,154 @@ const sortedAgents = [...agents].sort(
   .legend-desc {
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
+  }
+
+  /* ── Info sections (arch, personas, intent, hooks) ─────────────────── */
+
+  .arch-section,
+  .personas-section,
+  .intent-section,
+  .hooks-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .arch-inner,
+  .personas-inner,
+  .intent-inner,
+  .hooks-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  /* ── ASCII Diagram ─────────────────────────────────────────────────── */
+
+  .arch-diagram {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 0 var(--space-8);
+    white-space: pre;
+  }
+
+  /* ── Prose + inline link ───────────────────────────────────────────── */
+
+  .prose {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-8);
+    line-height: 1.7;
+  }
+
+  .prose strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .prose code,
+  .section-lede code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    background: var(--color-surface);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  .inline-link {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .inline-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* ── Data tables (personas, hooks) ─────────────────────────────────── */
+
+  .personas-table-wrap,
+  .hooks-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: var(--space-6);
+  }
+
+  .personas-table,
+  .hooks-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+  }
+
+  .personas-table th,
+  .personas-table td,
+  .hooks-table th,
+  .hooks-table td {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .personas-table thead th,
+  .hooks-table thead th {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .personas-table td,
+  .hooks-table td {
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .personas-table code,
+  .hooks-table code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    background: var(--color-surface-raised);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Callouts ──────────────────────────────────────────────────────── */
+
+  .agents-callout {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-6);
+    margin: var(--space-8) 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .agents-callout strong {
+    color: var(--color-text);
+  }
+
+  .agents-callout code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    background: var(--color-surface-raised);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  .callout-info {
+    border-left: 3px solid var(--color-border-strong);
+    background: var(--color-surface);
   }
 </style>
