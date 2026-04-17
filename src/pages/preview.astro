@@ -2,7 +2,19 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import { Icon } from 'astro-icon/components';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import StatsRow from '../components/organisms/StatsRow.astro';
+import Terminal from '../components/organisms/Terminal.astro';
+import FeatureGrid from '../components/organisms/FeatureGrid.astro';
+import CTASection from '../components/organisms/CTASection.astro';
+
+const stats = [
+  { label: 'Architecture Layers', value: '9' },
+  { label: 'AI Agents', value: '20+' },
+  { label: 'Skills Installed', value: '66' },
+  { label: 'Monthly Cost', value: '€68' },
+];
 
 const features = [
   {
@@ -36,13 +48,6 @@ const features = [
     body: 'Public record, open-source docs, reproducible workflows. One repo, one terminal.',
   },
 ];
-
-const stats = [
-  { label: 'Architecture Layers', value: '9' },
-  { label: 'AI Agents', value: '20+' },
-  { label: 'Skills Installed', value: '66' },
-  { label: 'Monthly Cost', value: '€68' },
-];
 ---
 
 <BaseLayout
@@ -53,125 +58,53 @@ const stats = [
 
   <main class="main">
 
-    <!-- ── Hero ──────────────────────────────────────────────────────── -->
-    <section class="hero">
-      <div class="hero-glow" aria-hidden="true"></div>
-      <div class="hero-inner" data-animate="fade-up">
-        <span class="hero-eyebrow">
-          <Icon name="lucide:sparkles" />
-          <span>HPS Proptech &amp; Solutions B.V. · Amsterdam · 2026</span>
-        </span>
+    <Hero
+      eyebrow="HPS Proptech & Solutions B.V. · Amsterdam · 2026"
+      eyebrowIcon="lucide:sparkles"
+    >
+      <Fragment slot="title">
+        The <span class="accent">AI Operating System</span> for solo developers.
+      </Fragment>
+      <Fragment slot="lede">
+        One terminal. Nine architecture layers. Twenty agents. Sixty-six skills.
+        A public record of how one developer combines AI tools across eight domains
+        without losing taste, budget, or sanity.
+      </Fragment>
+      <Fragment slot="cta">
+        <Button href="#install" variant="primary" icon="lucide:download">Install HPS AI</Button>
+        <Button href="https://github.com/Gentleman-Programming" variant="ghost" icon="lucide:github" external>Star on GitHub</Button>
+      </Fragment>
+    </Hero>
 
-        <h1 class="hero-title">
-          The <span class="hero-accent">AI Operating System</span> for solo developers.
-        </h1>
+    <StatsRow stats={stats} />
 
-        <p class="hero-lede">
-          One terminal. Nine architecture layers. Twenty agents. Sixty-six skills.
-          A public record of how one developer combines AI tools across eight domains
-          without losing taste, budget, or sanity.
-        </p>
-
-        <div class="hero-cta">
-          <a href="#install" class="btn btn--primary">
-            <Icon name="lucide:download" />
-            <span>Install HPS AI</span>
-          </a>
-          <a href="https://github.com/Gentleman-Programming" class="btn btn--ghost">
-            <Icon name="lucide:github" />
-            <span>Star on GitHub</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Stats ──────────────────────────────────────────────────────── -->
-    <section class="stats-section">
-      <div class="stats-inner">
-        <h2 class="sr-only">System at a glance</h2>
-        <dl class="stats-grid">
-          {stats.map((stat) => (
-            <div class="stat-item" data-animate="fade-up">
-              <dt class="stat-label">{stat.label}</dt>
-              <dd class="stat-value">{stat.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-    </section>
-
-    <!-- ── Terminal mock ──────────────────────────────────────────────── -->
-    <section class="terminal-section" id="install">
-      <div class="terminal-inner">
-        <h2 class="section-title" data-animate="fade-up">
-          One command, nine layers.
-        </h2>
-        <p class="section-lede" data-animate="fade-up">
-          Install the entire HPS AI Operating System in your terminal.
-          No subscriptions to coordinate, no accounts to chain.
-        </p>
-
-        <div class="terminal" data-animate="fade-up">
-          <div class="terminal-chrome">
-            <span class="terminal-dot terminal-dot--red"></span>
-            <span class="terminal-dot terminal-dot--yellow"></span>
-            <span class="terminal-dot terminal-dot--green"></span>
-            <span class="terminal-title">sisyphus — -zsh — 80×24</span>
-          </div>
-          <pre class="terminal-body"><span class="term-prompt">$</span> <span class="term-cmd">bunx hps-ai install</span>
+    <Terminal
+      id="install"
+      title="One command, nine layers."
+      lede="Install the entire HPS AI Operating System in your terminal. No subscriptions to coordinate, no accounts to chain."
+    ><span class="term-prompt">$</span> <span class="term-cmd">bunx hps-ai install</span>
 <span class="term-ok">✓</span> <span class="term-muted">Detected:</span> macOS 15.3 · fish · bun 1.1.x
 <span class="term-ok">✓</span> <span class="term-muted">Installing:</span> 9 layers · 20 agents · 66 skills
 <span class="term-ok">✓</span> <span class="term-muted">Configuring:</span> model routing · security hooks
 <span class="term-ok">✓</span> <span class="term-muted">Ready in</span> 3.2s
 
-<span class="term-accent">→</span> run <span class="term-cmd">hps start</span> to open your terminal.
-</pre>
-        </div>
-      </div>
-    </section>
+<span class="term-accent">→</span> run <span class="term-cmd">hps start</span> to open your terminal.</Terminal>
 
-    <!-- ── Feature grid ───────────────────────────────────────────────── -->
-    <section class="features-section">
-      <div class="features-inner">
-        <h2 class="section-title" data-animate="fade-up">Everything wired from day one.</h2>
-        <p class="section-lede" data-animate="fade-up">
-          Each layer is documented, testable, and composable. Nothing is magic.
-          Every decision has a why, a cost, and a rollback path.
-        </p>
+    <FeatureGrid
+      title="Everything wired from day one."
+      lede="Each layer is documented, testable, and composable. Nothing is magic. Every decision has a why, a cost, and a rollback path."
+      features={features}
+    />
 
-        <div class="feature-grid">
-          {features.map((feature) => (
-            <article class="feature-card" data-animate="fade-up">
-              <div class="feature-icon">
-                <Icon name={feature.icon} />
-              </div>
-              <h3 class="feature-title">{feature.title}</h3>
-              <p class="feature-body">{feature.body}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Big CTA ────────────────────────────────────────────────────── -->
-    <section class="cta-section">
-      <div class="cta-inner" data-animate="fade-up">
-        <h2 class="cta-title">Ready to ship with AI that actually works?</h2>
-        <p class="cta-lede">
-          Join the public record. Read the docs, fork the repo, install the system.
-        </p>
-        <div class="hero-cta">
-          <a href="#install" class="btn btn--primary">
-            <Icon name="lucide:download" />
-            <span>Install Now</span>
-          </a>
-          <a href="https://github.com/Gentleman-Programming" class="btn btn--ghost">
-            <Icon name="lucide:arrow-right" />
-            <span>Read the Docs</span>
-          </a>
-        </div>
-      </div>
-    </section>
+    <CTASection
+      title="Ready to ship with AI that actually works?"
+      lede="Join the public record. Read the docs, fork the repo, install the system."
+    >
+      <Fragment slot="cta">
+        <Button href="#install" variant="primary" icon="lucide:download">Install Now</Button>
+        <Button href="https://github.com/Gentleman-Programming" variant="ghost" icon="lucide:arrow-right" iconPosition="end" external>Read the Docs</Button>
+      </Fragment>
+    </CTASection>
 
   </main>
 
@@ -179,438 +112,8 @@ const stats = [
 </BaseLayout>
 
 <style>
-  /* ── Main wrapper ──────────────────────────────────────────────────── */
-
   .main {
     display: flex;
     flex-direction: column;
-  }
-
-  /* ── Shared section utilities ─────────────────────────────────────── */
-
-  .section-title {
-    font-family: var(--font-display);
-    font-size: var(--font-size-4xl);
-    font-weight: 300;
-    letter-spacing: var(--tracking-tight);
-    line-height: 1.1;
-    color: var(--color-text);
-    margin: 0 0 var(--space-4);
-    font-optical-sizing: auto;
-    max-width: 22ch;
-  }
-
-  .section-lede {
-    font-family: var(--font-body);
-    font-size: var(--font-size-md);
-    color: var(--color-text-muted);
-    max-width: var(--content-max);
-    margin: 0 0 var(--space-12);
-    line-height: 1.6;
-  }
-
-  /* ── Hero ──────────────────────────────────────────────────────────── */
-
-  .hero {
-    position: relative;
-    overflow: hidden;
-    border-bottom: 1px solid var(--color-border);
-    isolation: isolate;
-  }
-
-  .hero-glow {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background:
-      radial-gradient(
-        ellipse 80% 60% at 50% 0%,
-        color-mix(in oklch, var(--color-accent) 12%, transparent),
-        transparent 70%
-      );
-    pointer-events: none;
-  }
-
-  .hero-inner {
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-block: var(--space-32) var(--space-24);
-    padding-inline: var(--space-6);
-  }
-
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-accent);
-    background: color-mix(in oklch, var(--color-accent) 8%, transparent);
-    border: 1px solid color-mix(in oklch, var(--color-accent) 25%, transparent);
-    border-radius: var(--radius-full);
-    padding: var(--space-1) var(--space-3);
-    margin: 0 0 var(--space-8);
-  }
-
-  .hero-eyebrow [data-icon] {
-    width: 14px;
-    height: 14px;
-  }
-
-  .hero-title {
-    font-family: var(--font-display);
-    font-size: var(--font-size-5xl);
-    font-weight: 300;
-    letter-spacing: var(--tracking-tight);
-    line-height: 1.02;
-    color: var(--color-text);
-    margin: 0 0 var(--space-8);
-    font-optical-sizing: auto;
-    max-width: 18ch;
-  }
-
-  .hero-accent {
-    color: var(--color-accent);
-    font-style: italic;
-  }
-
-  .hero-lede {
-    font-family: var(--font-body);
-    font-size: var(--font-size-md);
-    color: var(--color-text-muted);
-    max-width: var(--content-max);
-    margin: 0 0 var(--space-10);
-    line-height: 1.6;
-  }
-
-  .hero-cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-  }
-
-  /* ── Buttons ───────────────────────────────────────────────────────── */
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-    height: 3rem;
-    padding-inline: var(--space-6);
-    border-radius: var(--radius-md);
-    font-family: var(--font-body);
-    font-size: var(--font-size-base);
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-    border: 1px solid transparent;
-    transition:
-      background-color var(--duration-quick) var(--ease-standard),
-      border-color var(--duration-quick) var(--ease-standard),
-      color var(--duration-quick) var(--ease-standard);
-  }
-
-  .btn [data-icon] {
-    width: 18px;
-    height: 18px;
-  }
-
-  .btn--primary {
-    background: var(--color-accent);
-    color: var(--primitive-neutral-0);
-  }
-
-  .btn--primary:hover {
-    background: var(--color-accent-hover);
-    color: var(--primitive-neutral-0);
-  }
-
-  .btn--ghost {
-    background: transparent;
-    color: var(--color-text);
-    border-color: var(--color-border-strong);
-  }
-
-  .btn--ghost:hover {
-    background: var(--color-surface);
-    color: var(--color-text);
-    border-color: var(--color-accent);
-  }
-
-  /* ── Stats ─────────────────────────────────────────────────────────── */
-
-  .stats-section {
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-surface);
-  }
-
-  .stats-inner {
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-block: var(--space-16);
-    padding-inline: var(--space-6);
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-4);
-    margin: 0;
-  }
-
-  @media (min-width: 640px) {
-    .stats-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .stat-item {
-    background: var(--color-background);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-8);
-    text-align: center;
-    transition: border-color var(--duration-quick) var(--ease-standard);
-  }
-
-  .stat-item:hover {
-    border-color: var(--color-accent);
-  }
-
-  .stat-label {
-    font-family: var(--font-body);
-    font-size: var(--font-size-xs);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-text-subtle);
-    display: block;
-    margin-bottom: var(--space-3);
-  }
-
-  .stat-value {
-    font-family: var(--font-display);
-    font-size: var(--font-size-3xl);
-    font-weight: 400;
-    color: var(--color-accent);
-    display: block;
-    margin: 0;
-    letter-spacing: var(--tracking-tight);
-  }
-
-  /* ── Terminal section ──────────────────────────────────────────────── */
-
-  .terminal-section {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .terminal-inner {
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-block: var(--space-24);
-    padding-inline: var(--space-6);
-  }
-
-  .terminal {
-    background: var(--color-surface-raised);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    max-width: 48rem;
-  }
-
-  .terminal-chrome {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-3) var(--space-4);
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .terminal-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: var(--radius-full);
-    display: inline-block;
-  }
-
-  .terminal-dot--red    { background: oklch(60% 0.18 25); }
-  .terminal-dot--yellow { background: oklch(75% 0.15 80); }
-  .terminal-dot--green  { background: oklch(65% 0.15 145); }
-
-  .terminal-title {
-    flex: 1;
-    text-align: center;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    color: var(--color-text-subtle);
-  }
-
-  .terminal-body {
-    margin: 0;
-    padding: var(--space-6);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
-    line-height: 1.7;
-    color: var(--color-text);
-    background: var(--color-surface-raised);
-    border: none;
-    border-radius: 0;
-    overflow-x: auto;
-  }
-
-  .term-prompt { color: var(--color-text-subtle); }
-  .term-cmd    { color: var(--color-accent); }
-  .term-ok     { color: var(--primitive-green-500); }
-  .term-muted  { color: var(--color-text-muted); }
-  .term-accent { color: var(--color-accent); font-weight: 600; }
-
-  /* ── Feature grid ──────────────────────────────────────────────────── */
-
-  .features-section {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .features-inner {
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-block: var(--space-24);
-    padding-inline: var(--space-6);
-  }
-
-  .feature-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-
-  @media (min-width: 640px) {
-    .feature-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 960px) {
-    .feature-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .feature-card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-8);
-    transition: border-color var(--duration-quick) var(--ease-standard);
-  }
-
-  .feature-card:hover {
-    border-color: var(--color-accent);
-  }
-
-  .feature-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: var(--radius-md);
-    background: color-mix(in oklch, var(--color-accent) 10%, transparent);
-    color: var(--color-accent);
-    margin-bottom: var(--space-6);
-  }
-
-  .feature-icon [data-icon] {
-    width: 22px;
-    height: 22px;
-  }
-
-  .feature-title {
-    font-family: var(--font-display);
-    font-size: var(--font-size-lg);
-    font-weight: 400;
-    color: var(--color-text);
-    margin: 0 0 var(--space-2);
-    letter-spacing: var(--tracking-snug);
-    line-height: 1.3;
-  }
-
-  .feature-body {
-    font-family: var(--font-body);
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    margin: 0;
-    line-height: 1.65;
-  }
-
-  /* ── Big CTA ───────────────────────────────────────────────────────── */
-
-  .cta-section {
-    background: var(--color-surface);
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background:
-      radial-gradient(
-        ellipse 60% 50% at 50% 50%,
-        color-mix(in oklch, var(--color-accent) 10%, transparent),
-        transparent 70%
-      );
-  }
-
-  .cta-inner {
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-block: var(--space-32);
-    padding-inline: var(--space-6);
-    text-align: center;
-  }
-
-  .cta-title {
-    font-family: var(--font-display);
-    font-size: var(--font-size-4xl);
-    font-weight: 300;
-    letter-spacing: var(--tracking-tight);
-    line-height: 1.1;
-    color: var(--color-text);
-    margin: 0 auto var(--space-6);
-    max-width: 22ch;
-  }
-
-  .cta-lede {
-    font-family: var(--font-body);
-    font-size: var(--font-size-md);
-    color: var(--color-text-muted);
-    margin: 0 auto var(--space-10);
-    max-width: 40ch;
-    line-height: 1.6;
-  }
-
-  .cta-section .hero-cta {
-    justify-content: center;
-  }
-
-  /* ── Accessibility utility ─────────────────────────────────────────── */
-
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
   }
 </style>

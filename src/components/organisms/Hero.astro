@@ -1,0 +1,101 @@
+---
+import Eyebrow from '../atoms/Eyebrow.astro';
+
+interface Props {
+  eyebrow?: string;
+  eyebrowIcon?: string;
+  glow?: boolean;
+}
+
+const { eyebrow, eyebrowIcon, glow = true } = Astro.props;
+---
+
+<section class:list={['hero', { 'hero--glow': glow }]}>
+  {glow && <div class="hero-glow" aria-hidden="true"></div>}
+  <div class="hero-inner" data-animate="fade-up">
+    {eyebrow && (
+      <div class="hero-eyebrow-wrap">
+        <Eyebrow icon={eyebrowIcon}>{eyebrow}</Eyebrow>
+      </div>
+    )}
+
+    <h1 class="hero-title">
+      <slot name="title" />
+    </h1>
+
+    {Astro.slots.has('lede') && (
+      <p class="hero-lede"><slot name="lede" /></p>
+    )}
+
+    {Astro.slots.has('cta') && (
+      <div class="hero-cta"><slot name="cta" /></div>
+    )}
+
+    {Astro.slots.has('default') && <slot />}
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-border);
+    isolation: isolate;
+  }
+
+  .hero-glow {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(
+        ellipse 80% 60% at 50% 0%,
+        color-mix(in oklch, var(--color-accent) 12%, transparent),
+        transparent 70%
+      );
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-32) var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .hero-eyebrow-wrap {
+    margin-bottom: var(--space-8);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-5xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.02;
+    color: var(--color-text);
+    margin: 0 0 var(--space-8);
+    font-optical-sizing: auto;
+    max-width: 20ch;
+  }
+
+  .hero-title :global(.accent) {
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  .hero-lede {
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-10);
+    line-height: 1.6;
+  }
+
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

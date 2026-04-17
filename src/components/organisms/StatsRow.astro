@@ -1,0 +1,63 @@
+---
+import StatCard from '../molecules/StatCard.astro';
+
+interface Stat {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  stats: Stat[];
+  srTitle?: string;
+}
+
+const { stats, srTitle = 'System at a glance' } = Astro.props;
+---
+
+<section class="stats-section">
+  <div class="stats-inner">
+    <h2 class="sr-only">{srTitle}</h2>
+    <dl class="stats-grid">
+      {stats.map((stat) => <StatCard label={stat.label} value={stat.value} />)}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .stats-section {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .stats-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-16);
+    padding-inline: var(--space-6);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .stats-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+</style>
