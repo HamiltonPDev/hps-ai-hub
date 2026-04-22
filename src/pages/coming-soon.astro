@@ -1,0 +1,462 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import CTASection from '../components/organisms/CTASection.astro';
+import { Icon } from 'astro-icon/components';
+
+type Priority = 'P0' | 'P1' | 'P2';
+type Status = 'in-progress' | 'planned' | 'gated';
+
+interface Item {
+  id: string;
+  icon: string;
+  title: string;
+  tagline: string;
+  body: string;
+  priority: Priority;
+  status: Status;
+  target?: string;
+  blocks?: string;
+}
+
+const items: Item[] = [
+  {
+    id: 'B1',
+    icon: 'lucide:moon-star',
+    title: 'HPS-Dream / KAIROS Memory Loop',
+    tagline: 'Nightly memory consolidation.',
+    body: 'Cron job that runs after your last session — clusters Engram observations, promotes high-confidence patterns to skills, and preloads the morning context. You wake up, the terminal already knows.',
+    priority: 'P0',
+    status: 'planned',
+    target: 'This month',
+  },
+  {
+    id: 'C1',
+    icon: 'lucide:users',
+    title: 'Agency-Agents Install',
+    tagline: '10 cherry-picked personas.',
+    body: 'Selected additions to the native HPS roster from the 147-agent agency-agents library — engineering, marketing, sales, product, specialized. Installed under source: agency-agents.',
+    priority: 'P1',
+    status: 'planned',
+    blocks: 'Blocks X1 (model: field on HPS agent frontmatter)',
+  },
+  {
+    id: 'C2',
+    icon: 'lucide:route',
+    title: 'OmO Routing Table Config',
+    tagline: 'Category → model wiring.',
+    body: 'Explicit routing table mapping OmO categories (ultrabrain, visual-eng, worker, etc.) to the canonical model tier per agent. Closes the gap between the documented 3-layer architecture and the runtime.',
+    priority: 'P1',
+    status: 'planned',
+  },
+  {
+    id: 'F1',
+    icon: 'lucide:brain-circuit',
+    title: 'Instinct-Based Continuous Learning',
+    tagline: 'PostToolUse → Engram → skills.',
+    body: 'Hook that writes confidence-weighted instincts to Engram on every tool call. HPS-Dream nightly promotes high-confidence instincts into reusable skills. The system gets better while you sleep.',
+    priority: 'P1',
+    status: 'planned',
+  },
+  {
+    id: 'S2',
+    icon: 'lucide:shield',
+    title: 'HPS-Security Skills',
+    tagline: '8 skills: oracle, yolo, owasp, gdpr, pentest, binary-re, incident, ctf.',
+    body: 'Domain-specific security skills shipped before September 2026 for HBO cybersecurity program. Each skill is an hps-security-* file with conventions, MCPs, and gotchas.',
+    priority: 'P1',
+    status: 'gated',
+    target: 'Before Sep 2026',
+  },
+  {
+    id: 'S4',
+    icon: 'lucide:cpu',
+    title: 'hps-security-gemma4 Fine-tune',
+    tagline: 'Local Gemma 4 E4B on MLX.',
+    body: 'First fine-tune on 310-pair curated dataset (Engram exports + NVD CVE + OWASP × HPS + GDPR patterns). Cost-reduction and privacy play — eventually replaces Haiku for HPS-YOLO classifier.',
+    priority: 'P0',
+    status: 'gated',
+    target: 'Sep 1 2026',
+  },
+  {
+    id: 'ASK',
+    icon: 'lucide:message-square',
+    title: 'Ask HPS OS',
+    tagline: 'RAG chat over the whole stack.',
+    body: 'Conversational AI over the entire knowledge base — agents, models, skills, domains, runtime docs. Ask "which agent should plan a Proptech rental automation?" and get a sourced, accurate answer.',
+    priority: 'P2',
+    status: 'planned',
+  },
+  {
+    id: 'OPENCLAW',
+    icon: 'lucide:webhook',
+    title: 'OpenClaw',
+    tagline: 'Communication & automation layer.',
+    body: 'Replaces the Flutter HPS Owner app and the custom HPS-Dream cron with a robust daemon. Webhooks, scheduled jobs, and a proper comms bus between the HPS ecosystem and external services.',
+    priority: 'P2',
+    status: 'planned',
+  },
+  {
+    id: 'GRAPH',
+    icon: 'lucide:git-fork',
+    title: 'Interactive Explore Graph',
+    tagline: 'Agents ↔ models ↔ tools ↔ domains.',
+    body: 'React island visualizing every relationship in the HPS ecosystem. Filterable by domain, clickable for detail panels. Replaces the static placeholder on /explore.',
+    priority: 'P1',
+    status: 'planned',
+    target: 'End of site phase',
+  },
+];
+
+const priorityLabel: Record<Priority, string> = {
+  P0: 'Priority 0',
+  P1: 'Priority 1',
+  P2: 'Priority 2',
+};
+
+const statusLabel: Record<Status, string> = {
+  'in-progress': 'In progress',
+  planned: 'Planned',
+  gated: 'Gated',
+};
+---
+
+<BaseLayout
+  title="Coming Soon — HPS AI Hub"
+  description="What's planned next for the HPS AI Operating System. Priority-tagged roadmap of memory loops, agents, security, and tooling."
+>
+  <Nav />
+
+  <main class="main">
+
+    <Hero eyebrow="What's coming" eyebrowIcon="lucide:rocket">
+      <Fragment slot="title">
+        Planned, <span class="accent">priority-tagged</span>, reproducible.
+      </Fragment>
+      <Fragment slot="lede">
+        Not a wish list — a queue. Every card is a concrete backlog item with a
+        priority (P0/P1/P2), a status, and a dependency chain. Nothing ships
+        until it's documented here.
+      </Fragment>
+      <Fragment slot="cta">
+        <Button href="/roadmap" variant="primary" icon="lucide:arrow-right" iconPosition="end">
+          Full Roadmap
+        </Button>
+        <Button href="/architecture" variant="ghost" icon="lucide:layers">Architecture</Button>
+      </Fragment>
+    </Hero>
+
+    <section class="cards-section">
+      <div class="cards-inner">
+        <h2 class="section-title" data-animate="fade-up">In the queue</h2>
+        <p class="section-lede" data-animate="fade-up">
+          P0 ships first. Gated items wait on a concrete unblock (deadline,
+          dependency, or research). Everything traces back to a line item in
+          <code>AGENTS.md</code>.
+        </p>
+
+        <ul class="card-grid" role="list">
+          {items.map((item) => (
+            <li class="waitlist-card" data-animate="fade-up">
+              <div class="card-head">
+                <div class="card-icon">
+                  <Icon name={item.icon} />
+                </div>
+                <div class="card-badges">
+                  <span class:list={['badge', 'badge--priority', `badge--${item.priority.toLowerCase()}`]}>
+                    {priorityLabel[item.priority]}
+                  </span>
+                  <span class:list={['badge', 'badge--status', `badge--${item.status}`]}>
+                    {statusLabel[item.status]}
+                  </span>
+                </div>
+              </div>
+
+              <h3 class="card-title">{item.title}</h3>
+              <p class="card-tagline">{item.tagline}</p>
+              <p class="card-body">{item.body}</p>
+
+              <dl class="card-meta">
+                <div class="meta-row">
+                  <dt>Backlog ID</dt>
+                  <dd><code>{item.id}</code></dd>
+                </div>
+                {item.target && (
+                  <div class="meta-row">
+                    <dt>Target</dt>
+                    <dd>{item.target}</dd>
+                  </div>
+                )}
+                {item.blocks && (
+                  <div class="meta-row">
+                    <dt>Note</dt>
+                    <dd>{item.blocks}</dd>
+                  </div>
+                )}
+              </dl>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <CTASection
+      title="Want to see what's live today?"
+      lede="The roster, the routing, the skills, the runtime — all already wired and documented."
+    >
+      <Fragment slot="cta">
+        <Button href="/agents" variant="primary" icon="lucide:arrow-right" iconPosition="end">Agent Roster</Button>
+        <Button href="/skills" variant="ghost" icon="lucide:brain">Skills</Button>
+      </Fragment>
+    </CTASection>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cards-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cards-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.1;
+    color: var(--color-text);
+    margin: 0 0 var(--space-4);
+    max-width: 22ch;
+  }
+
+  .section-lede {
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-12);
+    line-height: 1.6;
+  }
+
+  .section-lede code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+    color: var(--color-accent);
+  }
+
+  /* ── Grid ─────────────────────────────────────────────────────────── */
+
+  .card-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .card-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ── Card ─────────────────────────────────────────────────────────── */
+
+  .waitlist-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--duration-quick) var(--ease-standard);
+  }
+
+  .waitlist-card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+
+  .card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+    background: color-mix(in oklch, var(--color-accent) 10%, transparent);
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .card-icon :global([data-icon]) {
+    width: 22px;
+    height: 22px;
+  }
+
+  .card-badges {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-1);
+  }
+
+  /* ── Badges ───────────────────────────────────────────────────────── */
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: var(--space-0-5) var(--space-2);
+    border-radius: var(--radius-full);
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .badge--p0 {
+    color: var(--primitive-crimson-500);
+    background: color-mix(in oklch, var(--primitive-crimson-500) 12%, transparent);
+    border-color: color-mix(in oklch, var(--primitive-crimson-500) 30%, transparent);
+  }
+
+  .badge--p1 {
+    color: var(--color-accent);
+    background: color-mix(in oklch, var(--color-accent) 10%, transparent);
+    border-color: color-mix(in oklch, var(--color-accent) 25%, transparent);
+  }
+
+  .badge--p2 {
+    color: var(--color-text-muted);
+    background: var(--color-surface-raised);
+    border-color: var(--color-border);
+  }
+
+  .badge--planned {
+    color: var(--color-text-subtle);
+    background: transparent;
+    border-color: var(--color-border);
+  }
+
+  .badge--in-progress {
+    color: var(--primitive-green-500);
+    background: color-mix(in oklch, var(--primitive-green-500) 10%, transparent);
+    border-color: color-mix(in oklch, var(--primitive-green-500) 25%, transparent);
+  }
+
+  .badge--gated {
+    color: var(--primitive-warm-500);
+    background: color-mix(in oklch, var(--primitive-warm-500) 10%, transparent);
+    border-color: color-mix(in oklch, var(--primitive-warm-500) 25%, transparent);
+  }
+
+  /* ── Card body ────────────────────────────────────────────────────── */
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    color: var(--color-text);
+    margin: 0 0 var(--space-1);
+    letter-spacing: var(--tracking-snug);
+    line-height: 1.3;
+  }
+
+  .card-tagline {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent);
+    margin: 0 0 var(--space-4);
+    line-height: 1.4;
+  }
+
+  .card-body {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-6);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  /* ── Card meta ────────────────────────────────────────────────────── */
+
+  .card-meta {
+    margin: 0;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .meta-row {
+    display: flex;
+    gap: var(--space-3);
+    align-items: baseline;
+    font-size: var(--font-size-xs);
+    line-height: 1.5;
+  }
+
+  .meta-row dt {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-subtle);
+    flex-shrink: 0;
+    min-width: 5.5em;
+  }
+
+  .meta-row dd {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+  }
+
+  .meta-row dd code {
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: 0 var(--space-1);
+    border-radius: var(--radius-sm);
+    font-size: 0.95em;
+  }
+</style>
