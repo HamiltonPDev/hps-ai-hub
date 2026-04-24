@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import StatsRow from '../components/organisms/StatsRow.astro';
+import Terminal from '../components/organisms/Terminal.astro';
+import FeatureGrid from '../components/organisms/FeatureGrid.astro';
+import CTASection from '../components/organisms/CTASection.astro';
+
+const stats = [
+  { label: 'GitHub Stars', value: '1K+' },
+  { label: 'Sub-agents', value: '9' },
+  { label: 'SDD Phases', value: '8' },
+  { label: 'Dependencies', value: '0' },
+];
+
+const features = [
+  {
+    icon: 'lucide:git-merge',
+    title: 'Spec-Driven Development',
+    body: 'Structured 8-phase workflow: explore → propose → spec ∥ design → tasks → apply → verify → archive. Each phase has explicit read/write rules and a dependency graph. A 9th adversarial reviewer (judgment-day) can be invoked outside the DAG.',
+  },
+  {
+    icon: 'lucide:users',
+    title: '9 specialized sub-agents',
+    body: 'One orchestrator delegates to 9 phase-specific agents. Each agent reads only what it needs and writes only to its artifact. Zero context bleed between phases.',
+  },
+  {
+    icon: 'lucide:file-text',
+    title: 'Pure Markdown. Zero deps',
+    body: 'No binaries, no installers, no package managers. Drop the skill files into your agent and the SDD framework activates. Works anywhere Markdown is read.',
+  },
+  {
+    icon: 'lucide:cpu',
+    title: 'Per-phase model routing',
+    body: 'Assign Opus to architecture decisions, Sonnet to implementation, Haiku to archiving. The orchestrator passes the right model alias per phase — pay for what each step needs.',
+  },
+  {
+    icon: 'lucide:book-open',
+    title: 'Skill registry + compact rules',
+    body: 'Centralized registry maps triggers to compact rules. Orchestrator resolves skills once per session, injects pre-digested rules into sub-agents. No file reads at delegation time.',
+  },
+  {
+    icon: 'lucide:share-2',
+    title: 'Multi-agent support',
+    body: 'Works with Claude Code (Task tool), OpenCode (multi-mode), Cursor (inline), VS Code Copilot, Gemini CLI, Codex, Antigravity, and Windsurf — full or solo-agent mode.',
+  },
+];
+
+const subAgents = [
+  { name: 'sdd-explore',  role: 'Investigates ideas and codebase; writes exploration artifact' },
+  { name: 'sdd-propose',  role: 'Drafts intent, scope, and approach; reads exploration if available' },
+  { name: 'sdd-spec',     role: 'Writes structured requirements and scenarios from proposal' },
+  { name: 'sdd-design',   role: 'Creates technical design and architecture decisions' },
+  { name: 'sdd-tasks',    role: 'Breaks down spec + design into implementation checklist' },
+  { name: 'sdd-apply',    role: 'Implements tasks in batches; tracks apply-progress artifact' },
+  { name: 'sdd-verify',   role: 'Validates implementation against spec; reports CRITICAL / WARNING / SUGGESTION' },
+  { name: 'sdd-archive',  role: 'Syncs delta specs to main and closes the change' },
+  { name: 'judgment-day', role: 'Adversarial review — two agents argue for and against; orchestrator decides' },
+];
+---
+
+<BaseLayout
+  title="agent-teams-lite — HPS AI Hub"
+  description="The original Spec-Driven Development framework with 9 specialized sub-agents. Zero dependencies, pure Markdown. The predecessor that became gentle-ai."
+>
+  <Nav />
+
+  <main class="main">
+
+    <Hero eyebrow="Tool · Spec-Driven Development" eyebrowIcon="lucide:git-merge">
+      <Fragment slot="title">
+        9 agents. One <span class="accent">SDD loop</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        Agent Teams Lite is the original SDD framework — an orchestrator that delegates
+        to 9 specialized sub-agents across a structured explore → spec → apply → verify
+        pipeline. Pure Markdown, zero dependencies, works with any agent that reads
+        skill files. Now superseded by gentle-ai, which ships everything ATL established
+        plus persistent memory, TUI installer, and automatic updates.
+      </Fragment>
+      <Fragment slot="cta">
+        <Button
+          href="https://github.com/Gentleman-Programming/agent-teams-lite"
+          variant="primary"
+          icon="lucide:github"
+          external
+        >
+          agent-teams-lite on GitHub
+        </Button>
+        <Button href="/gentle-ai" variant="ghost" icon="lucide:arrow-right" iconPosition="end">
+          See gentle-ai (successor)
+        </Button>
+      </Fragment>
+    </Hero>
+
+    <StatsRow stats={stats} />
+
+    <Terminal
+      title="Install via shell script."
+      lede="No binary, no tap. Clone or curl the skill files into your agent's config directory. That's the entire install surface."
+      chromeTitle="agent-teams-lite — install"
+    ><span class="term-comment"># Option A — clone directly</span>
+<span class="term-prompt">$</span> <span class="term-cmd">git clone https://github.com/Gentleman-Programming/agent-teams-lite</span>
+<span class="term-ok">✓</span> <span class="term-muted">Cloned to:</span> ./agent-teams-lite
+
+<span class="term-comment"># Option B — migrate to gentle-ai (recommended)</span>
+<span class="term-prompt">$</span> <span class="term-cmd">brew tap Gentleman-Programming/homebrew-tap</span>
+<span class="term-prompt">$</span> <span class="term-cmd">brew install gentle-ai</span>
+<span class="term-ok">✓</span> <span class="term-muted">Detected existing ATL setup — migrating in place</span>
+<span class="term-ok">✓</span> <span class="term-muted">Provisioned:</span> engram · SDD · skills · MCP · persona
+
+<span class="term-accent">→</span> <span class="term-muted">existing skills, orchestrator, and MCP servers migrated</span>
+</Terminal>
+
+    <FeatureGrid
+      title="What ATL introduced."
+      lede="The patterns that ATL established — SDD phases, skill registry, compact rules, per-phase model routing — are what gentle-ai builds on today."
+      features={features}
+    />
+
+    <section class="agents-section">
+      <div class="agents-inner">
+        <h2 class="section-title" data-animate="fade-up">9 sub-agents. One pipeline.</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Each agent has a single responsibility: read only the artifacts it needs,
+          write only its own artifact, and return a result contract with
+          <code>status</code>, <code>artifacts</code>, and <code>next_recommended</code>.
+          The orchestrator coordinates — it never does the work itself.
+        </p>
+
+        <div class="agents-table-wrap">
+          <table class="agents-table" role="table">
+            <thead>
+              <tr>
+                <th>Sub-agent</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {subAgents.map((a) => (
+                <tr>
+                  <td class="agent-name"><code>{a.name}</code></td>
+                  <td class="agent-role">{a.role}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <CTASection
+      title="ATL became gentle-ai."
+      lede="Everything ATL built — plus Engram memory, TUI installer, config sync, and automatic updates across 10 agents — ships in one brew install."
+    >
+      <Fragment slot="cta">
+        <Button href="/gentle-ai" variant="primary" icon="lucide:arrow-right" iconPosition="end">gentle-ai</Button>
+        <Button href="/workflow" variant="ghost" icon="lucide:git-branch">SDD Workflow</Button>
+      </Fragment>
+    </CTASection>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .agents-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .agents-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.1;
+    color: var(--color-text);
+    margin: 0 0 var(--space-4);
+    max-width: 22ch;
+  }
+
+  .section-lede {
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-12);
+    line-height: 1.6;
+  }
+
+  .section-lede code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: 0 var(--space-1-5);
+    border-radius: var(--radius-sm);
+  }
+
+  .agents-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .agents-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+  }
+
+  .agents-table thead {
+    background: var(--color-surface-raised);
+  }
+
+  .agents-table th {
+    text-align: left;
+    font-family: var(--font-body);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .agents-table td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  .agents-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .agent-name code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: var(--space-0-5) var(--space-2);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  .agent-role {
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+</style>
