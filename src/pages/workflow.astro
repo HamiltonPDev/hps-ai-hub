@@ -85,7 +85,7 @@ IntentGate (Phase 0 — see §1)
   ├─ /session-{"'{domain}'"}        ← Domain preset (skills + models + MCPs)
   │
   ├─ TRIVIAL ("fix typo")    → Direct execution (category: quick)
-  │                              Model: GPT-5.4 Mini or Qwen 3 Coder (FREE)
+  │                              Model: GPT-5.5 Mini or Qwen 3 Coder (FREE)
   │
   ├─ MEDIUM ("add button")   → SDD-lite: explore → apply → verify
   │                              Model: Sonnet for all phases
@@ -98,9 +98,9 @@ IntentGate (Phase 0 — see §1)
   │   ├── EXECUTE (OmO): Atlas reads tasks → category-routes workers
   │   │   ├── UI task         → Gemini 3.1 Pro (visual-engineering)
   │   │   ├── API task        → Sonnet / Qwen 3 Coder (FREE)
-  │   │   ├── Architecture    → GPT-5.4 (ultrabrain)
+  │   │   ├── Architecture    → GPT-5.5 (ultrabrain)
   │   │   ├── Docs task       → Gemini Flash (writing)
-  │   │   └── Trivial task    → GPT-5.4 Mini (quick)
+  │   │   └── Trivial task    → GPT-5.5 Mini (quick)
   │   │   + Hash-anchored edits (68.3% success)
   │   │   + Wisdom accumulation (learnings pass forward)
   │   │   + Ralph Loop: refuses to stop until 100% done
@@ -334,7 +334,7 @@ apply → verify → archive</pre>
                 <td><code>sdd-plan-review</code></td>
                 <td>Quality gate before tasks. Validates plan vs 4 criteria: clarity, verification, context, big picture. OKAY/REJECT loop with NO max retry.</td>
                 <td>Momus</td>
-                <td>GPT-5.4 xhigh</td>
+                <td>GPT-5.5 xhigh</td>
                 <td><code>{"sdd/{change}/plan-review"}</code></td>
               </tr>
             </tbody>
