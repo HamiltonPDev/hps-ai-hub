@@ -1,0 +1,271 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import StatsRow from '../components/organisms/StatsRow.astro';
+import Terminal from '../components/organisms/Terminal.astro';
+import FeatureGrid from '../components/organisms/FeatureGrid.astro';
+import CTASection from '../components/organisms/CTASection.astro';
+
+const stats = [
+  { label: 'GitHub Stars', value: '2K+' },
+  { label: 'Supported Agents', value: '10' },
+  { label: 'SDD Sub-Agents', value: '9' },
+  { label: 'Go Version', value: '1.24+' },
+];
+
+const features = [
+  {
+    icon: 'lucide:layers',
+    title: 'Ecosystem configurator',
+    body: 'Not an agent installer. Takes your existing agent (any of 10) and bolts on memory, SDD, skills, MCP servers, persona, and per-phase model routing.',
+  },
+  {
+    icon: 'lucide:git-branch',
+    title: 'Spec-Driven Development core',
+    body: '`/sdd-init` detects stack + testing capabilities and activates Strict TDD Mode if available. The SDD orchestrator auto-runs when no context is present.',
+  },
+  {
+    icon: 'lucide:route',
+    title: 'OpenCode SDD Profiles',
+    body: 'Assign different models to different SDD phases — powerful for design, fast for implementation, cheap for exploration. Switch profiles with Tab in OpenCode.',
+  },
+  {
+    icon: 'lucide:database',
+    title: 'Engram integration',
+    body: 'Persistent memory across sessions wired in automatically. mem_save, mem_search, session summaries — your agent remembers decisions after context dies.',
+  },
+  {
+    icon: 'lucide:shield',
+    title: 'Security-first persona',
+    body: 'Teaching-oriented persona with least-privilege permissions. Agent explains WHY, not just WHAT — and asks before destructive operations.',
+  },
+  {
+    icon: 'lucide:archive',
+    title: 'Automatic backups',
+    body: 'Every install, sync, and upgrade snapshots your configs. Compressed (tar.gz), deduplicated, auto-pruned to 5 most recent. Pin any backup from the TUI.',
+  },
+];
+
+const agents = [
+  { name: 'Claude Code',    model: 'Full (Task tool)',                  note: 'Sub-agents, output styles' },
+  { name: 'OpenCode',       model: 'Full (multi-mode overlay)',         note: 'Per-phase model routing' },
+  { name: 'Gemini CLI',     model: 'Full (experimental)',               note: 'Custom agents in ~/.gemini/agents/' },
+  { name: 'Cursor',         model: 'Full (native subagents)',           note: '9 SDD agents in ~/.cursor/agents/' },
+  { name: 'VS Code Copilot',model: 'Full (runSubagent)',                note: 'Parallel execution' },
+  { name: 'Codex',          model: 'Solo-agent',                        note: 'CLI-native, TOML config' },
+  { name: 'Windsurf',       model: 'Solo-agent',                        note: 'Plan Mode, Code Mode, native workflows' },
+  { name: 'Antigravity',    model: 'Solo-agent + Mission Control',      note: 'Built-in Browser/Terminal sub-agents' },
+  { name: 'Kiro IDE',       model: 'Full (native subagents)',           note: 'Native ~/.kiro/agents/ + steering' },
+  { name: 'Others',         model: 'Varies',                            note: 'Plugin surface grows — check docs' },
+];
+---
+
+<BaseLayout
+  title="gentle-ai — HPS AI Hub"
+  description="Ecosystem configurator for the Gentleman AI stack. Persistent memory, SDD workflow, curated skills, MCP servers, per-phase model assignment across 10 supported agents."
+>
+  <Nav />
+
+  <main class="main">
+
+    <Hero eyebrow="Tool · Ecosystem Configurator" eyebrowIcon="lucide:layers">
+      <Fragment slot="title">
+        One command. Any agent. <span class="accent">Any OS</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        Not another AI agent. Gentle-ai is the configurator that takes whatever
+        agent you use — Claude Code, OpenCode, Cursor, Kiro, and 6 others — and
+        adds persistent memory, Spec-Driven Development workflow, curated skills,
+        MCP servers, and per-phase model routing. The stack that turns a chatbot
+        into a coworker.
+      </Fragment>
+      <Fragment slot="cta">
+        <Button
+          href="https://github.com/Gentleman-Programming/gentle-ai"
+          variant="primary"
+          icon="lucide:github"
+          external
+        >
+          gentle-ai on GitHub
+        </Button>
+        <Button href="/workflow" variant="ghost" icon="lucide:git-branch">
+          Workflow
+        </Button>
+      </Fragment>
+    </Hero>
+
+    <StatsRow stats={stats} />
+
+    <Terminal
+      title="Two lines, full stack."
+      lede="Homebrew tap + install. Then sync your agent with the full ecosystem — memory, SDD, skills, MCP, persona."
+      chromeTitle="gentle-ai — install"
+    ><span class="term-prompt">$</span> <span class="term-cmd">brew tap Gentleman-Programming/homebrew-tap</span>
+<span class="term-ok">✓</span> <span class="term-muted">Tap added</span>
+
+<span class="term-prompt">$</span> <span class="term-cmd">brew install gentle-ai</span>
+<span class="term-ok">✓</span> <span class="term-muted">Installed:</span> gentle-ai (Go 1.24+)
+
+<span class="term-prompt">$</span> <span class="term-cmd">gentle-ai sync</span>
+<span class="term-ok">✓</span> <span class="term-muted">Detected agent:</span> opencode
+<span class="term-ok">✓</span> <span class="term-muted">Provisioned:</span> engram · SDD · skills · MCP · persona
+<span class="term-ok">✓</span> <span class="term-muted">Backup:</span> tar.gz snapshot saved
+
+<span class="term-accent">→</span> <span class="term-muted">next:</span> open your agent and press Tab for SDD profiles
+</Terminal>
+
+    <FeatureGrid
+      title="What gentle-ai actually bolts on."
+      lede="No magic, no lock-in. Every component is documented, optional, and works with the agent you already chose."
+      features={features}
+    />
+
+    <section class="agents-section">
+      <div class="agents-inner">
+        <h2 class="section-title" data-animate="fade-up">10 supported agents.</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Full delegation (Task tool, sub-agents, parallel execution) where the
+          agent supports it. Solo-agent fallback for CLI-native tools. Gentle-ai
+          detects the runtime and provisions accordingly.
+        </p>
+
+        <div class="agents-table-wrap">
+          <table class="agents-table" role="table">
+            <thead>
+              <tr>
+                <th>Agent</th>
+                <th>Delegation Model</th>
+                <th>Key Feature</th>
+              </tr>
+            </thead>
+            <tbody>
+              {agents.map((a) => (
+                <tr>
+                  <td class="agent-name">{a.name}</td>
+                  <td class="agent-mode"><code>{a.model}</code></td>
+                  <td class="agent-note">{a.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <CTASection
+      title="Pair it with the rest of the stack."
+      lede="Gentle-ai configures. Engram remembers. OmO orchestrates. Agent-Teams-Lite structures the SDD flow."
+    >
+      <Fragment slot="cta">
+        <Button href="/engram" variant="primary" icon="lucide:arrow-right" iconPosition="end">Engram</Button>
+        <Button href="/agent-teams-lite" variant="ghost" icon="lucide:users">Agent Teams Lite</Button>
+      </Fragment>
+    </CTASection>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .agents-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .agents-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.1;
+    color: var(--color-text);
+    margin: 0 0 var(--space-4);
+    max-width: 22ch;
+  }
+
+  .section-lede {
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-12);
+    line-height: 1.6;
+  }
+
+  .agents-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .agents-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+  }
+
+  .agents-table thead {
+    background: var(--color-surface-raised);
+  }
+
+  .agents-table th {
+    text-align: left;
+    font-family: var(--font-body);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .agents-table td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  .agents-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .agent-name {
+    color: var(--color-text);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .agent-mode code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: var(--space-0-5) var(--space-2);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  .agent-note {
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+</style>
