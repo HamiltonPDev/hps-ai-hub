@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import StatsRow from '../components/organisms/StatsRow.astro';
+import Terminal from '../components/organisms/Terminal.astro';
+import FeatureGrid from '../components/organisms/FeatureGrid.astro';
+import CTASection from '../components/organisms/CTASection.astro';
+
+const stats = [
+  { label: 'AI Providers', value: '7+' },
+  { label: 'GitHub Stars', value: '900+' },
+  { label: 'Hook Type', value: 'git-native' },
+  { label: 'License', value: 'MIT' },
+];
+
+const features = [
+  {
+    icon: 'lucide:plug',
+    title: 'Provider-agnostic',
+    body: 'Runs against Claude, Gemini, Codex, OpenCode, Ollama, LM Studio, or GitHub Models. Swap providers in one config line — no code changes, no migration.',
+  },
+  {
+    icon: 'lucide:git-commit-horizontal',
+    title: 'Git-native hook',
+    body: 'Standard pre-commit hook. No Node, no Python, no Go required — Pure Bash. Installs in seconds, works everywhere git does, zero runtime overhead when passing.',
+  },
+  {
+    icon: 'lucide:file-text',
+    title: 'AGENTS.md enforced',
+    body: 'Your coding standards live in AGENTS.md. Every commit validates staged files against those rules — not generic lint rules, YOUR rules written once.',
+  },
+  {
+    icon: 'lucide:git-pull-request',
+    title: 'PR review mode',
+    body: 'Run `gga run --pr-mode` to review full pull request diffs, not just the last commit. CI mode with `gga run --ci` covers the last commit in automated pipelines.',
+  },
+  {
+    icon: 'lucide:zap',
+    title: 'Smart cache system',
+    body: 'Unchanged files are skipped automatically. Cache invalidates when content changes. Use `gga run --no-cache` to force a full review when needed.',
+  },
+  {
+    icon: 'lucide:terminal',
+    title: 'CI mode',
+    body: 'Run `gga run --ci` in any CI/CD pipeline to review the last commit. Works in GitHub Actions, GitLab CI, and any environment where bash runs.',
+  },
+];
+
+const providers = [
+  { name: 'Claude',         config: 'claude',            href: 'https://claude.ai/code' },
+  { name: 'Gemini',         config: 'gemini',            href: 'https://github.com/google-gemini/gemini-cli' },
+  { name: 'Codex',          config: 'codex',             href: 'https://github.com/openai/codex' },
+  { name: 'OpenCode',       config: 'opencode',          href: 'https://opencode.ai' },
+  { name: 'Ollama',         config: 'ollama:<model>',    href: 'https://ollama.ai' },
+  { name: 'LM Studio',      config: 'lmstudio',          href: 'https://lmstudio.ai' },
+  { name: 'GitHub Models',  config: 'github:<model>',    href: 'https://github.com/marketplace/models' },
+];
+---
+
+<BaseLayout
+  title="GGA — HPS AI Hub"
+  description="Gentleman Guardian Angel: provider-agnostic AI code review that runs on every git commit. Enforce your AGENTS.md standards with Claude, Gemini, Codex, Ollama, and more."
+>
+  <Nav />
+
+  <main class="main">
+
+    <Hero eyebrow="Tool · AI Code Review Hook" eyebrowIcon="lucide:shield-check">
+      <Fragment slot="title">
+        Every commit. <span class="accent">Any AI</span>. Zero excuses.
+      </Fragment>
+      <Fragment slot="lede">
+        Gentleman Guardian Angel runs on every git commit as a standard pre-commit hook.
+        It validates your staged files against your own AGENTS.md coding standards using
+        whatever AI provider you already have — Claude, Gemini, Ollama, GitHub Models, and
+        more. Pure Bash, zero dependencies, git-native.
+      </Fragment>
+      <Fragment slot="cta">
+        <Button
+          href="https://github.com/Gentleman-Programming/gentleman-guardian-angel"
+          variant="primary"
+          icon="lucide:github"
+          external
+        >
+          gentleman-guardian-angel on GitHub
+        </Button>
+        <Button href="/workflow" variant="ghost" icon="lucide:git-branch">
+          Workflow
+        </Button>
+      </Fragment>
+    </Hero>
+
+    <StatsRow stats={stats} />
+
+    <Terminal
+      title="From zero to enforced in four commands."
+      lede="Install GGA, configure your provider, write your AGENTS.md rules, and every subsequent commit gets AI-reviewed automatically."
+      chromeTitle="gga — install and first review"
+    ><span class="term-prompt">$</span> <span class="term-cmd">brew install gentleman-programming/tap/gga</span>
+<span class="term-ok">✓</span> <span class="term-muted">Installed:</span> gga
+
+<span class="term-prompt">$</span> <span class="term-cmd">gga init</span>
+<span class="term-ok">✓</span> <span class="term-muted">Created:</span> .gga config file
+
+<span class="term-muted"># Edit .gga — set PROVIDER=claude (or gemini, ollama, github:…)</span>
+
+<span class="term-prompt">$</span> <span class="term-cmd">gga install</span>
+<span class="term-ok">✓</span> <span class="term-muted">Installed:</span> pre-commit hook
+
+<span class="term-prompt">$</span> <span class="term-cmd">git commit -m "feat: add payment flow"</span>
+<span class="term-accent">→</span> <span class="term-muted">GGA running AI review…</span>
+<span class="term-ok">✓</span> <span class="term-muted">Reviewing staged files against AGENTS.md</span>
+<span class="term-ok">✓</span> <span class="term-muted">No violations found</span>
+<span class="term-ok">✓</span> <span class="term-muted">Commit approved — hook passed</span>
+</Terminal>
+
+    <FeatureGrid
+      title="What GGA actually does."
+      lede="No magic, no lock-in. A git hook that calls an AI with your standards and blocks commits that violate them."
+      features={features}
+    />
+
+    <section class="providers-section">
+      <div class="providers-inner">
+        <h2 class="section-title" data-animate="fade-up">7 providers supported.</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Set <code>PROVIDER</code> in your <code>.gga</code> config and GGA routes
+          the review to that runtime. Local models, cloud APIs, or anything in between —
+          your team's setup, your choice.
+        </p>
+
+        <div class="providers-grid">
+          {providers.map((p) => (
+            <a
+              href={p.href}
+              class="provider-card"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="provider-name">{p.name}</span>
+              <code class="provider-config">{p.config}</code>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <CTASection
+      title="Pair it with the rest of the stack."
+      lede="GGA enforces your standards at commit time. Gentle-ai configures your agent. Engram keeps the memory. The full stack works together."
+    >
+      <Fragment slot="cta">
+        <Button href="/workflow" variant="primary" icon="lucide:arrow-right" iconPosition="end">Workflow</Button>
+        <Button href="/ecosystem" variant="ghost" icon="lucide:layers">Ecosystem</Button>
+      </Fragment>
+    </CTASection>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .providers-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .providers-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.1;
+    color: var(--color-text);
+    margin: 0 0 var(--space-4);
+    max-width: 22ch;
+  }
+
+  .section-lede {
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-12);
+    line-height: 1.6;
+  }
+
+  .section-lede code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--color-accent);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: 0.1em var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  .providers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .providers-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .providers-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .provider-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition:
+      border-color var(--duration-quick) var(--ease-standard),
+      background var(--duration-quick) var(--ease-standard);
+  }
+
+  .provider-card:hover {
+    border-color: var(--color-accent);
+    background: var(--color-surface-raised);
+  }
+
+  .provider-card:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 4px;
+  }
+
+  .provider-name {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .provider-config {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: var(--space-0-5) var(--space-2);
+    border-radius: var(--radius-sm);
+    align-self: flex-start;
+  }
+</style>
