@@ -1,0 +1,244 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/atoms/Button.astro';
+import Hero from '../components/organisms/Hero.astro';
+import StatsRow from '../components/organisms/StatsRow.astro';
+import Terminal from '../components/organisms/Terminal.astro';
+import FeatureGrid from '../components/organisms/FeatureGrid.astro';
+import CTASection from '../components/organisms/CTASection.astro';
+
+const stats = [
+  { label: 'GitHub Stars', value: '2,749' },
+  { label: 'Binary', value: 'Single Go' },
+  { label: 'Storage', value: 'SQLite + FTS5' },
+  { label: 'MCP Tools', value: '15' },
+];
+
+const features = [
+  {
+    icon: 'lucide:database',
+    title: 'Agent-agnostic MCP',
+    body: 'Works with Claude Code, OpenCode, Gemini CLI, Codex, VS Code, Cursor, Windsurf — any MCP-capable agent.',
+  },
+  {
+    icon: 'lucide:search',
+    title: 'FTS5 full-text search',
+    body: 'SQLite with FTS5 indexing means sub-millisecond search across thousands of observations.',
+  },
+  {
+    icon: 'lucide:hard-drive',
+    title: 'Zero dependencies',
+    body: 'Single Go binary. No Node, no Python, no Docker. One file, one SQLite DB at ~/.engram/engram.db.',
+  },
+  {
+    icon: 'lucide:layers',
+    title: 'Four access surfaces',
+    body: 'CLI for quick saves, HTTP API (:7437), MCP server over stdio, and an interactive TUI with vim keys.',
+  },
+  {
+    icon: 'lucide:git-branch',
+    title: 'Git sync across machines',
+    body: 'Compressed memory chunks — no merge conflicts, no huge files. Push and pull memories like code.',
+  },
+  {
+    icon: 'lucide:eye',
+    title: 'Topic key organization',
+    body: 'Memories grouped by stable topic keys like architecture/auth-model — evolve facts without overwriting history.',
+  },
+];
+
+const tools = [
+  { category: 'Save & Update',      items: ['mem_save', 'mem_update', 'mem_delete', 'mem_suggest_topic_key'] },
+  { category: 'Search & Retrieve',  items: ['mem_search', 'mem_context', 'mem_timeline', 'mem_get_observation'] },
+  { category: 'Session Lifecycle',  items: ['mem_session_start', 'mem_session_end', 'mem_session_summary'] },
+  { category: 'Utilities',          items: ['mem_save_prompt', 'mem_stats', 'mem_capture_passive', 'mem_merge_projects'] },
+];
+---
+
+<BaseLayout
+  title="Engram — HPS AI Hub"
+  description="Persistent memory for AI coding agents. Agent-agnostic Go binary with SQLite + FTS5, MCP server, HTTP API, CLI, and TUI."
+>
+  <Nav />
+
+  <main class="main">
+
+    <Hero eyebrow="Tool · Memory Layer" eyebrowIcon="lucide:database">
+      <Fragment slot="title">
+        Your agent forgets. <span class="accent">Engram remembers</span>.
+      </Fragment>
+      <Fragment slot="lede">
+        A single Go binary with SQLite + FTS5 full-text search, exposed via CLI,
+        HTTP API, MCP server, and interactive TUI. Works with any MCP-capable agent
+        — Claude Code, OpenCode, Gemini CLI, Codex, VS Code, Cursor, Windsurf.
+        One binary, zero dependencies.
+      </Fragment>
+      <Fragment slot="cta">
+        <Button
+          href="https://github.com/Gentleman-Programming/engram"
+          variant="primary"
+          icon="lucide:github"
+          external
+        >
+          Engram on GitHub
+        </Button>
+        <Button href="/workflow" variant="ghost" icon="lucide:git-branch">
+          Workflow
+        </Button>
+      </Fragment>
+    </Hero>
+
+    <StatsRow stats={stats} />
+
+    <Terminal
+      title="One brew, one binary."
+      lede="Install with Homebrew, register with any MCP-capable agent, and start saving decisions immediately."
+      chromeTitle="engram — install"
+    ><span class="term-prompt">$</span> <span class="term-cmd">brew install gentleman-programming/tap/engram</span>
+<span class="term-ok">✓</span> <span class="term-muted">Installed:</span> engram v2.x (single Go binary)
+<span class="term-ok">✓</span> <span class="term-muted">DB ready at</span> ~/.engram/engram.db
+
+<span class="term-prompt">$</span> <span class="term-cmd">engram setup opencode</span>
+<span class="term-ok">✓</span> <span class="term-muted">MCP server registered in OpenCode</span>
+
+<span class="term-accent">→</span> <span class="term-muted">next:</span> mem_save, mem_search, mem_session_summary
+</Terminal>
+
+    <FeatureGrid
+      title="Six things Engram gets right."
+      lede="Every design decision optimized for one goal: never lose context between sessions."
+      features={features}
+    />
+
+    <section class="tools-section">
+      <div class="tools-inner">
+        <h2 class="section-title" data-animate="fade-up">15 MCP tools, grouped.</h2>
+        <p class="section-lede" data-animate="fade-up">
+          Every tool an agent reaches for — save, search, recover, summarize — exposed
+          as a structured MCP call. No custom protocols, no SDKs to wrap.
+        </p>
+
+        <div class="tools-grid">
+          {tools.map((group) => (
+            <article class="tool-group" data-animate="fade-up">
+              <h3 class="tool-group-title">{group.category}</h3>
+              <ul class="tool-list" role="list">
+                {group.items.map((tool) => (
+                  <li class="tool-item"><code>{tool}</code></li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <CTASection
+      title="See how Engram fits the HPS workflow."
+      lede="Session summaries, decision persistence, gotcha capture — all wired into the unified workflow."
+    >
+      <Fragment slot="cta">
+        <Button href="/workflow" variant="primary" icon="lucide:arrow-right" iconPosition="end">Unified Workflow</Button>
+        <Button href="/ecosystem" variant="ghost" icon="lucide:network">Full Ecosystem</Button>
+      </Fragment>
+    </CTASection>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tools-section {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .tools-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-block: var(--space-24);
+    padding-inline: var(--space-6);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.1;
+    color: var(--color-text);
+    margin: 0 0 var(--space-4);
+    max-width: 22ch;
+  }
+
+  .section-lede {
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-12);
+    line-height: 1.6;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .tools-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .tools-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .tool-group {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+  }
+
+  .tool-group-title {
+    font-family: var(--font-body);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-4);
+  }
+
+  .tool-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .tool-item code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    display: block;
+  }
+</style>
