@@ -102,7 +102,7 @@ const sortedAgents = [...agents].sort(
         <pre class="arch-diagram" data-animate="fade-up">┌─ PLANNING LAYER ──────────────────────────────────────────┐
 │  Prometheus (Opus)    — interview, scope, verified plan   │
 │  Metis      (Opus)    — gap analysis, AI-slop detection   │
-│  Momus      (GPT-5.4) — quality gate, OKAY/REJECT loop    │
+│  Momus      (GPT-5.5) — quality gate, OKAY/REJECT loop    │
 └────────────────────────────┬──────────────────────────────┘
                              │ produces: plan, spec, design
                              ▼
@@ -126,7 +126,7 @@ CROSS-CUTTING:
   Domain specialists — hps-proptech, hps-iot, hps-ml, hps-security,
                        hps-fullstack, hps-analytics, hps-marketing,
                        hps-business
-  Read-only oracles  — Oracle (GPT-5.4, architecture decisions → Engram)</pre>
+  Read-only oracles  — Oracle (GPT-5.5, architecture decisions → Engram)</pre>
 
         <p class="prose">
           Each layer has hard rules. Planners produce artifacts (specs, gaps, reviews) but
@@ -293,7 +293,7 @@ CROSS-CUTTING:
         <h2 class="section-title" data-animate="fade-up">Model Enforcement Hooks</h2>
         <p class="section-lede" data-animate="fade-up">
           OmO enforces agent↔model pairings at dispatch time. If you try to route Sisyphus
-          to GPT-5.4, the hook blocks the call before any tokens are spent. Same for
+          to GPT-5.5, the hook blocks the call before any tokens are spent. Same for
           Hephaestus with Claude. This keeps the category routing predictable and prevents
           silent quality degradation.
         </p>
@@ -315,7 +315,7 @@ CROSS-CUTTING:
               </tr>
               <tr>
                 <td><code>no-hephaestus-non-gpt</code></td>
-                <td>Hephaestus MUST use GPT-5.4, never Claude or Gemini</td>
+                <td>Hephaestus MUST use GPT-5.5, never Claude or Gemini</td>
                 <td>Hephaestus is the visual-engineering specialist; GPT is its chosen category</td>
               </tr>
               <tr>

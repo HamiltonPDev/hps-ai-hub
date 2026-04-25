@@ -28,7 +28,7 @@ diagramAscii: |
     PLANNING:
     ├── Prometheus    Strategic planner    → Claude Opus
     ├── Metis         Gap analyzer         → Claude Opus
-    └── Momus         Plan reviewer        → GPT-5.4
+    └── Momus         Plan reviewer        → GPT-5.5
 
     EXECUTION:
     └── Atlas         Conductor            → Claude Sonnet
@@ -36,7 +36,7 @@ diagramAscii: |
 
     WORKERS (category-routed):
     ├── Sisyphus-Jr   Task executor        → Claude Sonnet
-    ├── Oracle        Architecture         → GPT-5.4
+    ├── Oracle        Architecture         → GPT-5.5
     ├── Explore       Codebase grep        → Grok Code
     ├── Librarian     Docs / OSS           → Gemini 3 Flash
     └── Frontend      UI/UX specialist     → Gemini 3.1 Pro

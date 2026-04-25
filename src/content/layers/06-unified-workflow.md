@@ -30,10 +30,10 @@ diagramAscii: |
     EXECUTION (OmO — category routing):
     /sdd-apply → Atlas reads tasks → delegates by category:
     ├── visual-engineering → Gemini 3.1 Pro
-    ├── ultrabrain         → GPT-5.4
-    ├── deep               → GPT-5.4 / Codex
+    ├── ultrabrain         → GPT-5.5
+    ├── deep               → GPT-5.5 / Codex
     ├── writing            → Gemini Flash
-    ├── quick              → Qwen 3 / GPT-5.4 Mini (FREE)
+    ├── quick              → Qwen 3 / GPT-5.5 Mini (FREE)
     └── unspecified        → Sonnet 4.6
     + Hash-anchored edits (68.3% success) + Wisdom accumulation
 

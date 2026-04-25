@@ -34,7 +34,7 @@ const agents = defineCollection({
     description: z.string(),
 
     // Model wiring
-    model: z.string(),                                   // human-readable e.g. "Claude Opus 4.6"
+    model: z.string(),                                   // human-readable e.g. "Claude Opus 4.7"
     modelSlug: z.string().optional(),                    // slug xref -> models
     modelAlternative: z.string().optional(),             // slug OR human-readable fallback
 

@@ -3,9 +3,9 @@ index: 0
 name: "Models"
 responsibility: "6 providers, auto-routed by category"
 components:
-  - "Claude Opus 4.6"
+  - "Claude Opus 4.7"
   - "Claude Sonnet 4.6"
-  - "GPT-5.4"
+  - "GPT-5.5"
   - "Gemini 3.1 Pro"
   - "Gemini 3 Flash"
   - "Claude Haiku 3.5"
@@ -18,9 +18,9 @@ components:
 relatedAgents: []
 diagramAscii: |
   LAYER 0 — MODELS (6 providers, auto-routed by category)
-  Claude Opus 4.6      Architecture, orchestration, planning
+  Claude Opus 4.7      Architecture, orchestration, planning
   Claude Sonnet 4.6    Implementation, specs, validation, conducting
-  GPT-5.4              Deep autonomous work, ultrabrain, plan review
+  GPT-5.5              Deep autonomous work, ultrabrain, plan review
   Gemini 3.1 Pro       Visual-engineering, research, 1M context
   Gemini 3 Flash       Writing, docs, quick lookups
   Claude Haiku 3.5     Fast search, triage, YOLO classifier

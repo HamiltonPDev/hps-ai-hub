@@ -1,5 +1,5 @@
 ---
-name: "Claude Opus 4.6"
+name: "Claude Opus 4.7"
 provider: "Anthropic"
 cost: "$15 / 1M in, $75 / 1M out"
 bestFor: "Architecture, deep reasoning, complex analysis"
@@ -9,7 +9,7 @@ isFree: false
 omoCategory:
   - ultrabrain
   - deep
-comparable: "GPT-5.4 for reasoning depth"
+comparable: "GPT-5.5 for reasoning depth"
 speed: "~70 tok/s"
 contextWindow: "1M"
 usedBy:
