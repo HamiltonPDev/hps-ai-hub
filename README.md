@@ -1,8 +1,15 @@
-> [!IMPORTANT]
-> This repository is a **portfolio showcase** of Hamilton's personal AI operating workflow. The site code is MIT-licensed — fork the scaffolding, adapt the components, use the design system freely. What is **not** up for grabs: the HPS AI Operating System methodology, the agent naming and hierarchy (Sisyphus, Atlas, Prometheus, Metis, Momus, Oracle, Hephaestus, etc.), the domain-session architecture, the OmO orchestration config, and the proprietary skill/config files. These represent years of workflow engineering and are Hamilton's personal intellectual property. The distinction is simple: **take the site, not the system**.
+> [!NOTE]
+> This is a **portfolio showcase** of my personal AI Operating System — a public
+> record of how I combine AI tools across eight domains. The site scaffolding is
+> MIT-licensed — fork it, learn from it, remix it. The methodology, agent names,
+> and configs are my personal workflow documented openly so others can adapt
+> ideas, not copy wholesale.
 
-> [!CAUTION]
-> **Impostor sites.** The only canonical reference for this methodology is this repository + [hps-ai-hub.vercel.app](https://hps-ai-hub.vercel.app). If you see another site claiming to be "HPS AI Operating System" at a different URL or selling it as a product, it is **not authorised**. Report to `hamilton@hps-solutions.nl`.
+> [!TIP]
+> Want to build your own? Start with the [Architecture](/architecture) overview,
+> then read the [Workflow](/workflow) and [Agent Roster](/agents). Everything is
+> sourced from public tools (Engram, gentle-ai, agent-teams-lite, OmO) you can
+> install yourself.
 
 # hps-ai-hub
 
