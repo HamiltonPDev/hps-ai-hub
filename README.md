@@ -15,7 +15,7 @@
 
 The published reference for the **HPS AI Operating System** — a unified workflow for one solo developer managing eight professional domains with multi-model routing, 100+ specialist agents, and persistent memory across sessions.
 
-This site is the *plano* — the blueprint. It's not the product. When the real work starts (OmO config, HPS domain skills, KAIROS cron, domain sessions, MCP integrations), this is where you come back to remember what you decided and why.
+This site is the _plano_ — the blueprint. It's not the product. When the real work starts (OmO config, HPS domain skills, KAIROS cron, domain sessions, MCP integrations), this is where you come back to remember what you decided and why.
 
 Reference aesthetics: [ccleaks.com](https://ccleaks.com), Stripe Press, Paul Graham essays, [sive.rs](https://sive.rs).
 
@@ -54,69 +54,6 @@ npm run dev          # dev server at localhost:4321
 npm run astro check  # type + component validation
 ```
 
-`npm run build` is intentionally left to the deploy target. Not part of the local workflow.
-
-## Project structure
-
-```
-src/
-├── layouts/
-│   └── BaseLayout.astro           page shell: Google Fonts, IntersectionObserver
-├── components/
-│   ├── atoms/
-│   │   ├── Button.astro           CTA button atom
-│   │   ├── Eyebrow.astro          section label / eyebrow text
-│   │   ├── FeatureCard.astro      icon + title + body card atom
-│   │   ├── StatCard.astro         metric display atom
-│   │   └── TerminalChrome.astro   terminal frame chrome
-│   ├── molecules/
-│   │   ├── CTASection.astro       call-to-action section
-│   │   ├── FeatureGrid.astro      grid of FeatureCards
-│   │   ├── Hero.astro             page hero with eyebrow + headline
-│   │   └── StatsRow.astro         row of StatCards
-│   ├── organisms/
-│   │   ├── Terminal.astro         full terminal block with content
-│   │   ├── DomainSection.astro    domain-tagged content section
-│   │   └── WorkflowDiagram.astro  SDD pipeline visual
-│   ├── Nav.astro                  sticky hairline nav with backdrop blur
-│   ├── Footer.astro               flat hairline footer
-│   ├── Icon.astro                 astro-icon wrapper
-│   └── Pill.astro                 9-line domain label atom
-├── pages/
-│   ├── index.astro                landing manifesto
-│   ├── architecture.astro         9-layer HPS OS architecture
-│   ├── agents.astro               100+ specialist agents
-│   ├── models.astro               multi-model routing strategy
-│   ├── manifesto.astro            principles and philosophy
-│   ├── ecosystem.astro            tool ecosystem overview
-│   ├── setup.astro                environment setup guide
-│   ├── runtime.astro              daily runtime loop
-│   ├── reference.astro            quick reference
-│   ├── roadmap.astro              roadmap + changelog
-│   ├── skills.astro               skill system overview
-│   ├── workflow.astro             SDD + OmO unified workflow
-│   ├── domains.astro              8 professional domains
-│   ├── omo.astro                  OmO (oh-my-openagent) deep-dive
-│   ├── engram.astro               Engram persistent memory deep-dive
-│   ├── gentle-ai.astro            gentle-ai ecosystem configurator deep-dive
-│   ├── agent-teams-lite.astro     Agent Teams Lite orchestration deep-dive
-│   ├── gga.astro                  GGA (Gentleman Guardian Angel) deep-dive
-│   ├── coming-soon.astro          priority waitlist for upcoming features
-│   ├── explore.astro              interactive ecosystem graph
-│   ├── news.astro                 changelog
-│   └── 404.astro
-├── content/
-│   ├── agents/                    content collection — 100+ agent definitions
-│   ├── domains/                   content collection — 8 domain descriptors
-│   ├── layers/                    content collection — 9 architecture layers
-│   ├── models/                    content collection — model metadata + routing
-│   ├── news/                      content collection — changelog entries
-│   └── skills/                    content collection — skill definitions
-├── styles/
-│   └── global.css                 3-layer Tailwind 4 @theme token system
-└── content.config.ts              Zod schemas for content collections
-```
-
 ## How this site is built — Spec-Driven Development
 
 Every change goes through a seven-phase pipeline before any code is written:
@@ -129,16 +66,16 @@ Each phase is a fresh-context sub-agent with a specific role and read/write cont
 
 **Model routing per phase** (from `hpsAiOperationSystem.html` §06 Unified Workflow):
 
-| Phase | Model | Why |
-|---|---|---|
-| explore | Sonnet | Reads code, structural not architectural |
-| propose | **Opus** | Architectural decisions, scope, tradeoffs |
-| spec | Sonnet | Given/When/Then acceptance criteria |
-| design | **Opus** | Architecture decisions, token values, contrast math |
-| tasks | Sonnet | Mechanical breakdown |
-| apply | Sonnet (Claude Code) / OmO category-routed (OpenCode) | Implementation |
-| verify | Sonnet | Implementation vs spec validation |
-| archive | Haiku | Copy and close |
+| Phase   | Model                                                 | Why                                                 |
+| ------- | ----------------------------------------------------- | --------------------------------------------------- |
+| explore | Sonnet                                                | Reads code, structural not architectural            |
+| propose | **Opus**                                              | Architectural decisions, scope, tradeoffs           |
+| spec    | Sonnet                                                | Given/When/Then acceptance criteria                 |
+| design  | **Opus**                                              | Architecture decisions, token values, contrast math |
+| tasks   | Sonnet                                                | Mechanical breakdown                                |
+| apply   | Sonnet (Claude Code) / OmO category-routed (OpenCode) | Implementation                                      |
+| verify  | Sonnet                                                | Implementation vs spec validation                   |
+| archive | Haiku                                                 | Copy and close                                      |
 
 In OpenCode + OmO, the `apply` phase delegates to Atlas who category-routes work to specialist workers (Gemini 3.1 Pro for visual-engineering, GPT-5.5 for deep, Codex for execution, Gemini Flash for writing, Qwen 3 Coder 480B FREE for quick).
 
