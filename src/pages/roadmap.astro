@@ -5,11 +5,12 @@ import Footer from '../components/Footer.astro';
 import Button from '../components/atoms/Button.astro';
 import Hero from '../components/organisms/Hero.astro';
 import CTASection from '../components/organisms/CTASection.astro';
+import { Icon } from 'astro-icon/components';
 ---
 
 <BaseLayout
   title="Roadmap — HPS AI Hub"
-  description="What leaked from the Claude Code source, what HPS OS replicated, and what's coming next."
+  description="The real build backlog by phase, plus the March 2026 Claude Code source leak — what HPS OS replicated and what's coming next."
 >
   <Nav />
 
@@ -20,13 +21,167 @@ import CTASection from '../components/organisms/CTASection.astro';
         <span class="accent">Roadmap</span>.
       </Fragment>
       <Fragment slot="lede">
-        What the March 2026 Claude Code source leak revealed, how HPS OS
-        replicated or diverged from each feature, and what's planned next.
+        The real build backlog organized by phase — infrastructure, cybersecurity,
+        and site tooling — plus the historical record of the March 2026 Claude Code
+        source leak and how HPS OS replicated or diverged from each feature.
+      </Fragment>
+      <Fragment slot="cta">
+        <Button href="/coming-soon" variant="primary" icon="lucide:rocket" iconPosition="end">Priority view</Button>
+        <Button href="#cc-leaks" variant="ghost" icon="lucide:scroll">CC Leaks</Button>
       </Fragment>
     </Hero>
 
+    <!-- ── §01 — Build Backlog by Phase ──────────────────────────────── -->
+    <section class="content-section" data-animate="fade-up" id="build-backlog">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">Build backlog by phase</h2>
+        <p class="prose">
+          Items sourced directly from <code>AGENTS.md</code> — the authority for all
+          backlog decisions. For the priority-tagged view (P0/P1/P2 with status badges),
+          see <a href="/coming-soon">/coming-soon</a>. This section organizes the same
+          items by build phase so the sequence is clear.
+        </p>
+
+        <!-- Phase 5 — Infrastructure Builds -->
+        <h3 class="subsection-title" data-animate="fade-up">Phase 5 — Infrastructure builds</h3>
+        <p class="prose prose-sm">
+          Core OS capabilities that make the rest of the system function in daily production.
+        </p>
+        <ul class="backlog-list" role="list" data-animate="fade-up">
+
+          <li class="backlog-item">
+            <span class="backlog-icon" aria-hidden="true">
+              <Icon name="lucide:moon-star" />
+            </span>
+            <div class="backlog-body">
+              <span class="backlog-id">B1</span>
+              <span class="backlog-name">HPS-Dream / KAIROS Memory Loop</span>
+              <span class="backlog-desc">Nightly cron at 03:00 — orient, gather, consolidate, prune. Promotes high-confidence patterns to skills. Replicates the KAIROS pipeline from the CC source leak.</span>
+            </div>
+          </li>
+
+          <li class="backlog-item">
+            <span class="backlog-icon" aria-hidden="true">
+              <Icon name="lucide:users" />
+            </span>
+            <div class="backlog-body">
+              <span class="backlog-id">C1</span>
+              <span class="backlog-name">Agency-Agents Install</span>
+              <span class="backlog-desc">Cherry-pick from the 147-agent agency-agents library — engineering, marketing, sales, product, specialized. Installed under <code>source: agency-agents</code>.</span>
+            </div>
+          </li>
+
+          <li class="backlog-item">
+            <span class="backlog-icon" aria-hidden="true">
+              <Icon name="lucide:route" />
+            </span>
+            <div class="backlog-body">
+              <span class="backlog-id">C2</span>
+              <span class="backlog-name">OmO Routing Table Config</span>
+              <span class="backlog-desc">Explicit routing table mapping OmO categories (ultrabrain, visual-eng, worker, etc.) to the canonical model tier per agent. Closes the gap between documented architecture and runtime.</span>
+            </div>
+          </li>
+
+          <li class="backlog-item">
+            <span class="backlog-icon" aria-hidden="true">
+              <Icon name="lucide:brain-circuit" />
+            </span>
+            <div class="backlog-body">
+              <span class="backlog-id">F1</span>
+              <span class="backlog-name">Instinct-Based Continuous Learning</span>
+              <span class="backlog-desc">PostToolUse hook writes confidence-weighted instincts to Engram on every tool call. HPS-Dream nightly promotes high-confidence instincts into reusable skills.</span>
+            </div>
+          </li>
+
+        </ul>
+
+        <!-- Cybersecurity Track -->
+        <h3 class="subsection-title" data-animate="fade-up">Cybersecurity track — HBO September 2026</h3>
+        <p class="prose prose-sm">
+          Gated items tied to the HBO cybersecurity program starting September 2026. Full design in
+          <code>research/cost-security-analysis-2026-04-17/cybersecurity-strategy.md</code>.
+        </p>
+        <ul class="backlog-list" role="list" data-animate="fade-up">
+
+          <li class="backlog-item">
+            <span class="backlog-icon" aria-hidden="true">
+              <Icon name="lucide:shield" />
+            </span>
+            <div class="backlog-body">
+              <span class="backlog-id">S2</span>
+              <span class="backlog-name">HPS-Security Skills</span>
+              <span class="backlog-desc">Eight domain-specific skills: oracle, yolo, owasp, gdpr, pentest-study, binary-re, incident, ctf. Each ships before September 2026 with conventions, MCPs, and known gotchas.</span>
+            </div>
+          </li>
+
+          <li class="backlog-item">
+            <span class="backlog-icon" aria-hidden="true">
+              <Icon name="lucide:cpu" />
+            </span>
+            <div class="backlog-body">
+              <span class="backlog-id">S4</span>
+              <span class="backlog-name">hps-security-gemma4 Fine-tune</span>
+              <span class="backlog-desc">First fine-tune on a 310-pair curated dataset (Engram exports + NVD CVE + OWASP × HPS + GDPR patterns). Targets Gemma 4 E4B on MLX. Cost-reduction and privacy play — eventually replaces Haiku for HPS-YOLO.</span>
+            </div>
+          </li>
+
+        </ul>
+
+        <!-- Site & Tooling -->
+        <h3 class="subsection-title" data-animate="fade-up">Site &amp; tooling</h3>
+        <p class="prose prose-sm">
+          Additions to this site and the HPS communication layer.
+        </p>
+        <ul class="backlog-list" role="list" data-animate="fade-up">
+
+          <li class="backlog-item">
+            <span class="backlog-icon" aria-hidden="true">
+              <Icon name="lucide:message-square" />
+            </span>
+            <div class="backlog-body">
+              <span class="backlog-id">ASK</span>
+              <span class="backlog-name">Ask HPS OS</span>
+              <span class="backlog-desc">RAG chat over the entire knowledge base — agents, models, skills, domains, runtime docs. Conversational AI embedded in this site that gives sourced, accurate answers.</span>
+            </div>
+          </li>
+
+          <li class="backlog-item">
+            <span class="backlog-icon" aria-hidden="true">
+              <Icon name="lucide:webhook" />
+            </span>
+            <div class="backlog-body">
+              <span class="backlog-id">OPENCLAW</span>
+              <span class="backlog-name">OpenClaw</span>
+              <span class="backlog-desc">Communication and automation layer. Replaces the Flutter HPS Owner app and the custom HPS-Dream cron with a robust daemon — webhooks, scheduled jobs, and a comms bus between HPS and external services.</span>
+            </div>
+          </li>
+
+          <li class="backlog-item">
+            <span class="backlog-icon" aria-hidden="true">
+              <Icon name="lucide:git-fork" />
+            </span>
+            <div class="backlog-body">
+              <span class="backlog-id">GRAPH</span>
+              <span class="backlog-name">Interactive Explore Graph</span>
+              <span class="backlog-desc">React island visualizing every relationship in the HPS ecosystem — agents ↔ models ↔ tools ↔ domains. Filterable by domain, clickable for detail panels. Replaces the static placeholder on /explore.</span>
+            </div>
+          </li>
+
+        </ul>
+
+        <div class="callout callout-evergreen" data-animate="fade-up">
+          <p>
+            Want the priority-tagged view? <a href="/coming-soon">/coming-soon</a> lists
+            all nine items above with P0/P1/P2 badges, status, targets, and dependency
+            chains.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
     <!-- ── §05 — What Leaked ───────────────────────────────────────── -->
-    <section class="content-section" data-animate="fade-up">
+    <section class="content-section" data-animate="fade-up" id="cc-leaks">
       <div class="section-inner">
         <h2 class="section-title" data-animate="fade-up">What Leaked</h2>
         <p class="prose">
@@ -273,11 +428,12 @@ import CTASection from '../components/organisms/CTASection.astro';
     </section>
 
     <CTASection
-      title="From leaks to shipped features."
-      lede="Every feature on the roadmap ties back to a concrete layer in the architecture."
+      title="From backlog to shipped features."
+      lede="Every item traces back to AGENTS.md. The architecture documents every layer the backlog builds on."
     >
       <Fragment slot="cta">
-        <Button href="/architecture" variant="primary" icon="lucide:arrow-right" iconPosition="end">Architecture</Button>
+        <Button href="/coming-soon" variant="primary" icon="lucide:rocket" iconPosition="end">Priority queue</Button>
+        <Button href="/architecture" variant="ghost" icon="lucide:layers">Architecture</Button>
         <Button href="/news" variant="ghost" icon="lucide:newspaper">Changelog</Button>
       </Fragment>
     </CTASection>
@@ -289,6 +445,108 @@ import CTASection from '../components/organisms/CTASection.astro';
 
 <style>
   /* ── Main wrapper ──────────────────────────────────────────────────── */
+
+  /* ── Build backlog list ────────────────────────────────────────────── */
+
+  .backlog-list {
+    list-style: none;
+    margin: 0 0 var(--space-8);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .backlog-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--duration-quick) var(--ease-standard);
+  }
+
+  .backlog-item:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .backlog-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-sm);
+    background: color-mix(in oklch, var(--color-accent) 10%, transparent);
+    color: var(--color-accent);
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .backlog-icon :global([data-icon]) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .backlog-body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2);
+    flex: 1;
+  }
+
+  .backlog-id {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    background: color-mix(in oklch, var(--color-accent) 10%, transparent);
+    border: 1px solid color-mix(in oklch, var(--color-accent) 25%, transparent);
+    padding: var(--space-0-5) var(--space-2);
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .backlog-name {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text);
+    flex-shrink: 0;
+  }
+
+  .backlog-desc {
+    width: 100%;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-top: var(--space-1);
+  }
+
+  .backlog-desc code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: 0.1em 0.3em;
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+  }
+
+  .prose-sm {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-4);
+  }
+
+  .prose a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
 
   .main {
     display: flex;
