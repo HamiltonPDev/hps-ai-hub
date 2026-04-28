@@ -14,14 +14,6 @@ const layers = (await getCollection('layers')).sort((a, b) => a.data.index - b.d
 const agents = await getCollection('agents');
 const models = await getCollection('models');
 
-// Domains — empty until Wave-3; guard with try/catch
-let domains: Awaited<ReturnType<typeof getCollection>> = [];
-try {
-  domains = await getCollection('domains');
-} catch {
-  // domains collection empty until Wave-3
-}
-
 // ── Cross-reference validation ───────────────────────────────────────────
 const agentSet = buildSlugSet(agents);
 const modelSet = buildSlugSet(models);
@@ -72,6 +64,12 @@ ${unifiedDiagram}`;
 
         <h2 class="section-title" data-animate="fade-up">The nine layers</h2>
 
+        <p class="section-lede" data-animate="fade-up">
+          The same principle applies to the site itself: this page is built from
+          atoms, molecules, and organisms — the same atomic design component
+          system used across every page of the HPS AI Hub.
+        </p>
+
         <ol class="layer-list" role="list">
           {layers.map((layer) => (
             <li class="layer-item" data-animate="fade-up">
@@ -118,6 +116,7 @@ ${unifiedDiagram}`;
       <Fragment slot="cta">
         <Button href="/agents" variant="primary" icon="lucide:arrow-right" iconPosition="end">Agent Roster</Button>
         <Button href="/models" variant="ghost" icon="lucide:route">Model Routing</Button>
+        <Button href="/omo" variant="ghost" icon="lucide:bot">OmO — Orchestration</Button>
         <Button href="/explore" variant="ghost" icon="lucide:search">Explore Graph</Button>
       </Fragment>
     </CTASection>
@@ -137,10 +136,6 @@ ${unifiedDiagram}`;
 
   /* ── Content sections ──────────────────────────────────────────────── */
 
-  .content-section {
-    /* prose — content-max width */
-  }
-
   .content-section--bordered {
     border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
@@ -159,6 +154,16 @@ ${unifiedDiagram}`;
     letter-spacing: var(--tracking-snug);
     color: var(--color-text);
     margin: 0 0 var(--space-10);
+  }
+
+  /* ── Section lede (below title, above list) ─────────────────────────── */
+
+  .section-lede {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-8);
+    max-width: var(--content-max);
+    line-height: 1.65;
   }
 
   /* ── Layer list ─────────────────────────────────────────────────────── */
@@ -249,18 +254,4 @@ ${unifiedDiagram}`;
     white-space: nowrap;
   }
 
-  /* ── Nav list ───────────────────────────────────────────────────────── */
-
-  .nav-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  .nav-list li {
-    font-size: var(--font-size-base);
-  }
 </style>
