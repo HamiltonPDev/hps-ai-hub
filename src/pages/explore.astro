@@ -1,10 +1,46 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Button from '../components/atoms/Button.astro';
 import Hero from '../components/organisms/Hero.astro';
 import CTASection from '../components/organisms/CTASection.astro';
+import ExploreGraph from '../components/explore/ExploreGraph';
+import { buildGraphData } from '../components/explore/buildGraphData';
+import type { RawAgent, RawModel } from '../components/explore/buildGraphData';
+
+// ── Read content collections at build time ────────────────────────────────────
+const agentEntries = await getCollection('agents');
+const modelEntries = await getCollection('models');
+
+const rawAgents: RawAgent[] = agentEntries.map((entry) => ({
+  slug: entry.id,
+  name: entry.data.name,
+  category: entry.data.category,
+  role: entry.data.role,
+  description: entry.data.description,
+  model: entry.data.model,
+  modelSlug: entry.data.modelSlug,
+  source: entry.data.source,
+  domains: entry.data.domains,
+  tools: entry.data.tools,
+  readOnly: entry.data.readOnly,
+}));
+
+const rawModels: RawModel[] = modelEntries.map((entry) => ({
+  slug: entry.id,
+  name: entry.data.name,
+  provider: entry.data.provider,
+  tier: entry.data.tier,
+  cost: entry.data.cost,
+  bestFor: entry.data.bestFor,
+  isFree: entry.data.isFree,
+  usedBy: entry.data.usedBy,
+}));
+
+// ── Compute graph data at build time — island receives serialized props ───────
+const { nodes, edges } = buildGraphData(rawAgents, rawModels);
 ---
 
 <BaseLayout
@@ -26,23 +62,9 @@ import CTASection from '../components/organisms/CTASection.astro';
       </Fragment>
     </Hero>
 
-    <!-- ── Placeholder ───────────────────────────────────────────────── -->
-    <section class="placeholder-section">
-      <div class="placeholder-inner">
-        <div class="placeholder-card" data-animate="fade-up">
-          <p class="placeholder-label">Coming soon</p>
-          <h2 class="placeholder-title">Interactive graph</h2>
-          <p class="placeholder-body">
-            The ecosystem graph is being built as a React island component.
-            It will render agents, models, tools, and domains as interactive nodes —
-            filterable by domain, clickable for detail panels.
-          </p>
-          <p class="placeholder-cta">
-            In the meantime, the static reference is in the{' '}
-            <a href="/architecture">architecture overview</a>.
-          </p>
-        </div>
-      </div>
+    <!-- ── Interactive Graph island ─────────────────────────────────────── -->
+    <section class="graph-section" aria-label="Interactive ecosystem graph">
+      <ExploreGraph nodes={nodes} edges={edges} client:visible />
     </section>
 
     <CTASection
@@ -61,62 +83,12 @@ import CTASection from '../components/organisms/CTASection.astro';
 </BaseLayout>
 
 <style>
-  /* ── Main wrapper ──────────────────────────────────────────────────── */
-
   .main {
     display: flex;
     flex-direction: column;
   }
 
-  /* ── Placeholder section ────────────────────────────────────────────── */
-
-  .placeholder-section {
-    /* single content area */
-  }
-
-  .placeholder-inner {
-    max-width: var(--content-max);
-    margin-inline: auto;
-    padding-block: var(--space-24);
-    padding-inline: var(--space-6);
-  }
-
-  .placeholder-card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-12);
-  }
-
-  .placeholder-label {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-text-subtle);
-    margin: 0 0 var(--space-4);
-  }
-
-  .placeholder-title {
-    font-size: var(--font-size-2xl);
-    font-weight: 300;
-    letter-spacing: var(--tracking-snug);
-    color: var(--color-text);
-    margin: 0 0 var(--space-6);
-  }
-
-  .placeholder-body {
-    font-size: var(--font-size-base);
-    color: var(--color-text-muted);
-    line-height: 1.75;
-    margin: 0 0 var(--space-4);
-    max-width: var(--content-max);
-  }
-
-  .placeholder-cta {
-    font-size: var(--font-size-base);
-    color: var(--color-text-muted);
-    line-height: 1.65;
-    margin: 0;
+  .graph-section {
+    width: 100%;
   }
 </style>
