@@ -1,0 +1,66 @@
+/* ExploreGraph layout shells — scoped to the React island */
+
+.root {
+  position: relative;
+  min-height: 75vh;
+  background: var(--color-background);
+  border-top: 1px solid var(--color-border);
+}
+
+.canvas {
+  height: 75vh;
+}
+
+.filterPills {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+}
+
+.legend {
+  position: absolute;
+  top: 16px;
+  z-index: 10;
+  transition: right var(--duration-medium, 300ms) var(--ease-standard, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.detail {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 320px;
+  z-index: 15;
+  animation: slideInRight var(--duration-medium, 300ms) var(--ease-enter, cubic-bezier(0, 0, 0.2, 1));
+}
+
+/* ── Detail panel slide-in animation ─────────────────────────────────── */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ── Node hover border accent ─────────────────────────────────────────── */
+/* :focus-visible ring is provided globally by global.css for all focusable */
+.root :global(.graph-node):hover {
+  border-color: var(--color-accent) !important;
+}
+
+/* ── React Flow control button base styling ────────────────────────────── */
+.root :global(.react-flow__controls-button) {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+  fill: var(--color-text-muted);
+}
+
+.root :global(.react-flow__controls-button:hover) {
+  background: var(--color-surface-raised);
+}

@@ -16,11 +16,14 @@
     "xref:check": "bash scripts/xref-check.sh"
   },
   "dependencies": {
-    "@astrojs/react": "^4.2.1",
+    "@astrojs/react": "^5.0.4",
     "@iconify-json/lucide": "^1.2.102",
     "@tailwindcss/vite": "^4.0.0",
+    "@types/dagre": "^0.7.54",
+    "@xyflow/react": "^12.10.2",
     "astro": "^6.1.4",
     "astro-icon": "^1.1.5",
+    "dagre": "^0.8.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.0.0"
