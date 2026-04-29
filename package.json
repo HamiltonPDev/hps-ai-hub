@@ -16,7 +16,7 @@
     "xref:check": "bash scripts/xref-check.sh"
   },
   "dependencies": {
-    "@astrojs/react": "^4.2.1",
+    "@astrojs/react": "^5.0.4",
     "@iconify-json/lucide": "^1.2.102",
     "@tailwindcss/vite": "^4.0.0",
     "@types/dagre": "^0.7.54",
