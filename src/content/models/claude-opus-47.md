@@ -1,7 +1,7 @@
 ---
 name: "Claude Opus 4.7"
 provider: "Anthropic"
-cost: "$15 / 1M in, $75 / 1M out"
+cost: "$5 / 1M in, $25 / 1M out"
 bestFor: "Architecture, deep reasoning, complex analysis"
 tier: architecture
 category: "flagship"

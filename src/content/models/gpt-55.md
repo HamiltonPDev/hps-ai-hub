@@ -1,7 +1,7 @@
 ---
 name: "GPT-5.5"
 provider: "OpenAI"
-cost: "ChatGPT Plus €23/mo"
+cost: "$5 / 1M in, $30 / 1M out"
 bestFor: "Multi-modal reasoning, code generation, research synthesis"
 tier: architecture
 category: "flagship"
@@ -11,7 +11,7 @@ omoCategory:
   - deep
 comparable: "Claude Opus 4.7 for reasoning"
 speed: "~90 tok/s"
-contextWindow: "200k"
+contextWindow: "1M"
 usedBy:
   - oracle
   - hephaestus

@@ -3,7 +3,7 @@ name: Sisyphus
 role: orchestrator
 description: Main orchestrator. Receives your prompt, decides which agents to spawn in parallel, drives to completion. Never stops mid-task.
 model: Claude Opus 4.7
-modelSlug: claude-opus-46
+modelSlug: claude-opus-47
 category: orchestration
 source: omo
 domains: []
