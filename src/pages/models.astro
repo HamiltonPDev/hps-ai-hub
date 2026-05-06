@@ -62,7 +62,7 @@ const paidByTier = Object.entries(tierLabels).map(([tier, label]) => ({
 
 <BaseLayout
   title="Model Routing — HPS AI Hub"
-  description="Multi-model decision engine powering HPS AI Hub. 17 models across 4 tiers. Opus for architecture, Sonnet for implementation, Haiku for automation, free tiers for non-critical tasks."
+  description="Multi-model decision engine powering HPS AI Hub. 18 models across 4 tiers. Opus 4.7 for architecture, Sonnet 4.6 for implementation, Haiku 4.5 / GPT-5.4-mini-fast for fast read paths, free tiers for non-critical tasks."
 >
   <Nav />
 
@@ -73,7 +73,7 @@ const paidByTier = Object.entries(tierLabels).map(([tier, label]) => ({
         The <span class="accent">decision engine</span>.
       </Fragment>
       <Fragment slot="lede">
-        17 models across 4 tiers. 6 paid, 11 free/budget.
+        18 models across 4 tiers. 10 paid/subscription, 8 free/budget.
         Category routing fires the right model for the right task —
         maximizing quality where it matters, minimizing cost where it doesn't.
       </Fragment>
@@ -289,9 +289,9 @@ const paidByTier = Object.entries(tierLabels).map(([tier, label]) => ({
               </tr>
               <tr>
                 <td>"Find in codebase…"</td>
-                <td>Grok Code Fast</td>
+                <td>GPT-5.4-mini-fast</td>
                 <td>Explore</td>
-                <td>Quick code navigation</td>
+                <td>Fast codebase grep — primary read path</td>
               </tr>
               <tr>
                 <td>"Security / vulnerability…"</td>
@@ -446,15 +446,15 @@ const paidByTier = Object.entries(tierLabels).map(([tier, label]) => ({
               </tr>
               <tr>
                 <td>Librarian</td>
-                <td>Claude Haiku 4.5</td>
-                <td>MiniMax M2.7</td>
+                <td>GPT-5.4-mini-fast</td>
+                <td>MiniMax M2.7 / Haiku 4.5</td>
                 <td>Routine doc curation</td>
               </tr>
               <tr>
                 <td>Explore (READ-ONLY)</td>
-                <td>Claude Haiku 4.5</td>
-                <td>Grok Code Fast</td>
-                <td>Quick codebase navigation</td>
+                <td>GPT-5.4-mini-fast</td>
+                <td>MiniMax M2.7 / Haiku 4.5</td>
+                <td>Quick codebase grep</td>
               </tr>
               <tr>
                 <td>HPS-Security</td>

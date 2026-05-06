@@ -422,6 +422,90 @@ apply → verify → archive</pre>
       </div>
     </section>
 
+    <!-- ── §4b Hyperplan — adversarial council (OmO v3.18+) ──────────── -->
+    <section class="content-section" id="hyperplan">
+      <div class="section-inner">
+        <h2 class="section-title" data-animate="fade-up">Hyperplan — Adversarial Council (OmO v3.18+)</h2>
+
+        <p class="prose">
+          Hyperplan is an OmO-native adversarial planning council that ships in
+          v3.18 (currently in <code>feat/team-mode</code>, +25k LOC, most active
+          branch in the repo). HPS treats Hyperplan as <strong>a tool invoked
+          inside a phase</strong>, not as a workflow replacement — specifically
+          for <code>sdd-plan-review</code> on INITIATIVE-tier work, where the
+          council's 5-perspective debate catches more class of bugs than a
+          single-shot Momus review.
+        </p>
+
+        <h3 class="subsection-title">SDD vs Hyperplan — the difference</h3>
+
+        <div class="table-wrap" data-animate="fade-up">
+          <table class="routing-table" role="table">
+            <thead>
+              <tr>
+                <th>Dimension</th>
+                <th>SDD canonical (gentle-ai)</th>
+                <th>Hyperplan (OmO v3.18+)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Shape</td><td>Linear pipeline — sequential phases</td><td>Adversarial council — parallel debate</td></tr>
+              <tr><td>Agent count</td><td>One per phase</td><td>Five simultaneous, 3 rounds</td></tr>
+              <tr><td>Iteration</td><td>One pass per phase + retry on failure</td><td>3 rounds of cross-criticism</td></tr>
+              <tr><td>Output</td><td>Successive artifacts (proposal → spec → design → tasks)</td><td>One consensus plan after debate</td></tr>
+              <tr><td>Persistence</td><td>Each artifact persisted to Engram</td><td>Debate transcript</td></tr>
+              <tr><td>When it fits</td><td>You know what to build, you want rigor</td><td>You don't know what to build, you want contrast</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subsection-title">The 5-agent council</h3>
+
+        <pre class="diagram" data-animate="fade-up">  ┌─ skeptic    (Claude Sonnet 4.6)        ─┐
+  ├─ validator  (Claude Opus 4.7 max)      ─┤
+  ├─ researcher (GPT-5.5 medium)           ─┼──► 3 rounds debate ──► consensus
+  ├─ architect  (GPT-5.5 xhigh)            ─┤                       │
+  └─ creative   (Gemini 3.1 Pro)           ─┘                       ▼
+                                                              mandatory handoff
+                                                                to `plan` agent</pre>
+
+        <p class="prose">
+          Each role has an intentional model bias: skeptic gets Sonnet for
+          balanced critique, validator gets Opus 4.7 max for rigor, researcher
+          gets GPT-5.5 medium for breadth, architect gets GPT-5.5 xhigh for
+          depth, creative gets Gemini 3.1 Pro for divergent thinking. Three
+          rounds force each agent to engage with the others' arguments before
+          convergence.
+        </p>
+
+        <h3 class="subsection-title">How HPS Enhanced SDD wires Hyperplan</h3>
+
+        <p class="prose">
+          The <code>sdd-plan-review</code> phase delegates differently based on
+          tier — on LARGE work, it calls Momus (single-shot review with [OKAY]/[REJECT]
+          verdict, max 3 blockers). On INITIATIVE work, it calls Hyperplan
+          instead. One conditional in the orchestrator skill, no other code
+          changes:
+        </p>
+
+        <pre class="diagram" data-animate="fade-up">sdd-plan-review.md (HPS skill):
+  if change.tier == "INITIATIVE":
+      delegate to Hyperplan (5-agent council, 3 rounds)  # OmO v3.18+
+  else:  # LARGE
+      delegate to Momus (single-shot review)             # OmO ≤3.17.x</pre>
+
+        <div class="callout callout-info" data-animate="fade-up">
+          <strong>Default state:</strong> Hyperplan is OFF by default
+          (<code>team_mode.enabled: false</code>). You opt in per-change via
+          <code>/hyperplan</code> or by setting tier=INITIATIVE on a change.
+          The 5-agent council costs significantly more than Momus single-shot —
+          ~6× the tokens — but catches a different class of bugs (perspective
+          gaps, hidden assumptions, disagreements on scope) that single-reviewer
+          gates miss.
+        </div>
+      </div>
+    </section>
+
     <!-- ── §5 Domain Sessions ───────────────────────────────────────── -->
     <section class="content-section">
       <div class="section-inner">
