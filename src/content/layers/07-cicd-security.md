@@ -7,7 +7,7 @@ components:
   - "HPS-YOLO"
   - "Dippy"
   - "GitHub Actions"
-model: "claude-haiku-46"
+model: "claude-haiku-45"
 relatedAgents:
   - "hps-security"
 diagramAscii: |

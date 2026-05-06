@@ -7,7 +7,7 @@ components:
   - "HPS-Dream"
   - "AGENTS.md"
   - "Wisdom Notepad"
-model: "claude-haiku-46"
+model: "claude-haiku-45"
 relatedAgents: []
 diagramAscii: |
   LAYER 4 — MEMORY SYSTEM (KAIROS replication)
