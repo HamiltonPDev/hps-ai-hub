@@ -106,7 +106,7 @@ import CTASection from '../components/organisms/CTASection.astro';
               <tr>
                 <td><code>quick</code></td>
                 <td>Trivial tasks — typo fixes, one-liner edits, lookups</td>
-                <td><code>opencode/gpt-5-nano</code> or Qwen 3 Coder (free)</td>
+                <td><code>openai/gpt-5.4-mini</code> (Haiku 4.5 / Gemini Flash / MiniMax / nano fallback)</td>
               </tr>
               <tr>
                 <td><code>unspecified-low</code></td>
@@ -129,9 +129,19 @@ import CTASection from '../components/organisms/CTASection.astro';
                 <td><code>google/gemini-3.1-pro</code> <code>variant: high</code></td>
               </tr>
               <tr>
+                <td><code>artistry</code></td>
+                <td>Creative visual work, image generation guidance, gated</td>
+                <td><code>google/gemini-3.1-pro</code> <code>variant: high</code></td>
+              </tr>
+              <tr>
+                <td><code>deep</code></td>
+                <td>Autonomous research and execution — Hephaestus territory</td>
+                <td><code>openai/gpt-5.5</code> <code>variant: medium</code></td>
+              </tr>
+              <tr>
                 <td><code>ultrabrain</code></td>
-                <td>Deep reasoning, debugging, architecture review</td>
-                <td><code>openai/gpt-5.5</code> <code>variant: high</code></td>
+                <td>Deep reasoning, debugging, architecture review, plan-review gates</td>
+                <td><code>openai/gpt-5.5</code> <code>variant: xhigh</code></td>
               </tr>
             </tbody>
           </table>
@@ -194,8 +204,22 @@ import CTASection from '../components/organisms/CTASection.astro';
                 <td><code>/start-work</code></td>
                 <td>Reads <code>boulder.json</code> state, picks up mid-flow</td>
               </tr>
+              <tr>
+                <td><code>hyperplan</code> <span class="callout-tag">v3.18+</span></td>
+                <td><code>/hyperplan</code> on INITIATIVE-tier work</td>
+                <td>5-agent adversarial council (skeptic/Sonnet, validator/Opus 4.7, researcher/GPT-5.5, architect/GPT-5.5 xhigh, creative/Gemini 3.1 Pro), 3 debate rounds, mandatory handoff to <code>plan</code> agent</td>
+              </tr>
             </tbody>
           </table>
+        </div>
+
+        <div class="callout callout-info" data-animate="fade-up">
+          <strong>Hyperplan vs SDD:</strong> Hyperplan is NOT a replacement for SDD.
+          SDD is a <em>linear pipeline</em> (one agent per phase: explore → propose →
+          spec → design → tasks). Hyperplan is an <em>adversarial council</em>
+          (5 agents in parallel, 3 rounds) invoked <em>inside</em> a phase
+          (typically <code>propose</code> or <code>plan-review</code>) when the
+          tier justifies the cost. They complement, they do not compete.
         </div>
       </div>
     </section>
@@ -269,35 +293,41 @@ No silent wrong-file edits. No silent stale-context edits.</pre>
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-openagent.schema.json",
 
   "agents": {"{"}
-    // Main orchestrator: Claude Opus at max variant for architecture work
+    // Main orchestrator: Opus 4.7 max for architecture
     "sisyphus": {"{"}
-      "model": "anthropic/claude-sonnet-4-6",
-      "ultrawork": {"{"} "model": "anthropic/claude-opus-4-7", "variant": "max" {"}"},
+      "model": "anthropic/claude-opus-4-7",
+      "variant": "max",
     {"}"},
 
-    // Research agents: cheap fast models are fine
-    "librarian": {"{"} "model": "google/gemini-3-flash" {"}"},
-    "explore":   {"{"} "model": "github-copilot/grok-code-fast-1" {"}"},
+    // Read-fast agents: GPT-5.4-mini-fast primary, MiniMax + Haiku fallback
+    "librarian": {"{"} "model": "openai/gpt-5.4-mini-fast" {"}"},
+    "explore":   {"{"} "model": "openai/gpt-5.4-mini-fast" {"}"},
 
     // Architecture consultation: GPT-5.5 high
     "oracle":    {"{"} "model": "openai/gpt-5.5", "variant": "high" {"}"},
 
-    // Prometheus inherits sisyphus model; add HPS-specific prompt
+    // Plan reviewer: GPT-5.5 xhigh, deterministic (temp 0.1)
+    "momus":     {"{"} "model": "openai/gpt-5.5", "variant": "xhigh" {"}"},
+
+    // Prometheus inherits Opus 4.7; add HPS-specific prompt
     "prometheus": {"{"}
-      "prompt_append": "Always use Engram mem_search before proposing — HPS has 235+ observations of prior decisions.",
+      "prompt_append": "Always use Engram mem_search before proposing — HPS has 280+ observations of prior decisions.",
     {"}"},
   {"}"},
 
   "categories": {"{"}
-    "quick":              {"{"} "model": "opencode/gpt-5-nano" {"}"},
+    "quick":              {"{"} "model": "openai/gpt-5.4-mini" {"}"},
     "unspecified-low":    {"{"} "model": "anthropic/claude-sonnet-4-6" {"}"},
     "unspecified-high":   {"{"} "model": "anthropic/claude-opus-4-7", "variant": "max" {"}"},
     "writing":            {"{"} "model": "google/gemini-3-flash" {"}"},
     "visual-engineering": {"{"} "model": "google/gemini-3.1-pro", "variant": "high" {"}"},
+    "artistry":           {"{"} "model": "google/gemini-3.1-pro", "variant": "high" {"}"},
+    "deep":               {"{"} "model": "openai/gpt-5.5", "variant": "medium" {"}"},
+    "ultrabrain":         {"{"} "model": "openai/gpt-5.5", "variant": "xhigh" {"}"},
 
     // HPS custom category for git operations
     "git": {"{"}
-      "model": "opencode/gpt-5-nano",
+      "model": "openai/gpt-5.4-mini",
       "description": "All git operations",
       "prompt_append": "Atomic commits, conventional commit style, safe operations only.",
     {"}"},
@@ -308,11 +338,13 @@ No silent wrong-file edits. No silent stale-context edits.</pre>
     "providerConcurrency": {"{"}
       "anthropic": 3,
       "openai": 3,
-      "opencode": 10,
+      "google": 5,
+      "minimax": 10,
     {"}"},
     "modelConcurrency": {"{"}
       "anthropic/claude-opus-4-7": 2,
-      "opencode/gpt-5-nano": 20,
+      "openai/gpt-5.5": 3,
+      "openai/gpt-5.4-mini-fast": 20,
     {"}"},
   {"}"},
 
