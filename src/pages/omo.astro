@@ -358,6 +358,62 @@ No silent wrong-file edits. No silent stale-context edits.</pre>
           runaway when Ralph Loop is active — 2 concurrent Opus calls is the
           safety valve.
         </p>
+
+        <h3 class="subsection-title">Fallback chains — what's underneath the defaults</h3>
+
+        <p class="prose">
+          Each category resolves to a single default model in the config above,
+          but OmO ships a multi-step <strong>fallback chain</strong> per category
+          (see <code>src/shared/model-requirements.ts</code> on the <code>dev</code>
+          branch). When the head fails — quota, rate-limit, provider outage, or
+          an <code>insufficient balance</code> error — OmO walks down the chain
+          automatically. You don't configure this directly; it's the harness's
+          built-in resilience layer.
+        </p>
+
+        <p class="prose">
+          Example for the <code>unspecified-low</code> category (the default
+          bucket for moderate work):
+        </p>
+
+        <pre class="diagram" data-animate="fade-up">unspecified-low fallback chain:
+  1. anthropic/claude-sonnet-4-6           ← default head
+  2. openai/gpt-5.3-codex (variant: medium)  ← LEGACY (see callout below)
+  3. opencode-go/kimi-k2.5
+  4. google/gemini-3-flash
+  5. opencode-go/minimax-m2.7</pre>
+
+        <div class="callout callout-warning" data-animate="fade-up">
+          <strong>Auto-migration in effect:</strong> if your config explicitly
+          pins <code>openai/gpt-5.3-codex</code> or <code>openai/gpt-5.4</code>,
+          OmO's migration map (<code>src/shared/migration/model-versions.ts</code>)
+          rewrites those to <code>openai/gpt-5.5</code> on next load. The
+          <code>gpt-5.3-codex</code> entry remains in some category fallback
+          chains for legacy-config compatibility, but the upstream provider has
+          made that ID effectively non-loadable (issue
+          <a class="inline-link" href="https://github.com/code-yeongyu/oh-my-openagent/issues/3777" target="_blank" rel="noopener">#3777</a>).
+          The mini-tier IDs <code>gpt-5.4-mini</code>,
+          <code>gpt-5.4-mini-fast</code>, <code>gpt-5.4-nano</code> are
+          deliberately <strong>not</strong> auto-upgraded — they're cost-tier
+          picks for fast read paths and the <code>quick</code> category.
+        </div>
+
+        <p class="prose">
+          Want to override a chain explicitly? Use <code>fallback_models</code>
+          on an agent (an array of plain model strings or per-fallback objects):
+        </p>
+
+        <pre class="diagram" data-animate="fade-up">"agents": {"{"}
+  "sisyphus": {"{"}
+    "model": "anthropic/claude-opus-4-7",
+    "variant": "max",
+    "fallback_models": [
+      "openai/gpt-5.5",
+      "opencode-go/kimi-k2.5",
+      "z-ai/glm-5",
+    ],
+  {"}"},
+{"}"}</pre>
       </div>
     </section>
 
