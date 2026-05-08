@@ -31,7 +31,9 @@ diagramAscii: |
     sdd-interview     → Prometheus (Opus 4.7) — clarification before propose
     sdd-gap-analyze   → Metis (Opus 4.7)      — scope creep, AI-slop, gaps
     sdd-plan-review   → Momus (GPT-5.5 xhigh) — [OKAY]/[REJECT] gate
-                       (or Hyperplan v3.18+ for INITIATIVE — 5-agent council)
+                       (or Hyperplan v4.0.0+ for INITIATIVE — opt in
+                        `team_mode.enabled: true`, 5-agent council,
+                        12 `team_*` MCP tools register on enable)
 
     EXECUTION (OmO — category routing):
     /sdd-apply → Atlas (Sonnet 4.6) reads tasks → delegates by category:
@@ -55,5 +57,7 @@ diagramAscii: |
 Every feature, fix, and exploration runs through one pipeline. SDD handles planning — explore, propose, spec, design, tasks — persisted to Engram so nothing is lost across sessions. OmO handles execution — Atlas reads the task list, delegates by category to the optimal model.
 
 For LARGE and INITIATIVE-tier changes, three optional enhanced phases activate: `sdd-interview` (Prometheus), `sdd-gap-analyze` (Metis), and `sdd-plan-review` (Momus or Hyperplan council). These are pipeline gates, not pipeline replacements — canonical SDD remains the spine.
+
+**Hyperplan ships in OmO v4.0.0** but stays off until you set `team_mode.enabled: true`. Enabling it registers 12 `team_*` MCP tools (`team_create`, `team_send_message`, `team_task_create`, `team_status`, etc.). HPS recommends keeping Hyperplan opt-in per change rather than globally on — the 5-agent council costs ~6× a single Momus review.
 
 Four execution modes: Ralph Loop for persistent execution (max 100 iterations), ULTRAWORK for unplanned autonomous work (max 500 iterations with Oracle verification gate), `/session-X` for domain presets, `/compose` for multi-domain sessions.

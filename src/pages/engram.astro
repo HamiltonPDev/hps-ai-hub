@@ -10,10 +10,10 @@ import FeatureGrid from '../components/organisms/FeatureGrid.astro';
 import CTASection from '../components/organisms/CTASection.astro';
 
 const stats = [
-  { label: 'GitHub Stars', value: '2,749' },
+  { label: 'GitHub Stars', value: '3,333' },
   { label: 'Binary', value: 'Single Go' },
   { label: 'Storage', value: 'SQLite + FTS5' },
-  { label: 'MCP Tools', value: '15' },
+  { label: 'MCP Tools', value: '17' },
 ];
 
 const features = [
@@ -54,6 +54,7 @@ const tools = [
   { category: 'Search & Retrieve',  items: ['mem_search', 'mem_context', 'mem_timeline', 'mem_get_observation'] },
   { category: 'Session Lifecycle',  items: ['mem_session_start', 'mem_session_end', 'mem_session_summary'] },
   { category: 'Utilities',          items: ['mem_save_prompt', 'mem_stats', 'mem_capture_passive', 'mem_merge_projects'] },
+  { category: 'Diagnostics (v1.15.10+)', items: ['mem_compare', 'mem_doctor'] },
 ];
 ---
 
@@ -114,11 +115,35 @@ const tools = [
 
     <section class="tools-section">
       <div class="tools-inner">
-        <h2 class="section-title" data-animate="fade-up">15 MCP tools, grouped.</h2>
+        <h2 class="section-title" data-animate="fade-up">17 MCP tools, grouped.</h2>
         <p class="section-lede" data-animate="fade-up">
           Every tool an agent reaches for — save, search, recover, summarize — exposed
           as a structured MCP call. No custom protocols, no SDKs to wrap.
         </p>
+
+        <div class="callout-row">
+          <div class="engram-callout">
+            <strong>v1.15.10 — recovery_token + capture_prompt</strong>
+            <p>
+              When <code>mem_save</code> hits an ambiguous-project error, Engram
+              returns a 5-minute in-memory <code>recovery_token</code>. Retry with
+              <code>project + project_choice_reason: "user_selected_after_ambiguous_project"
+              + recovery_token</code> instead of guessing.
+              <code>capture_prompt</code> on <code>mem_save</code> best-effort
+              attaches the originating prompt — automated SDD artifacts pass
+              <code>capture_prompt: false</code> so the prompt history stays clean.
+            </p>
+          </div>
+          <div class="engram-callout">
+            <strong>Pin Engram <code>&gt;= 1.15.10</code></strong>
+            <p>
+              Earlier versions silently drop ambiguous-project saves with no
+              recovery path. <code>mem_compare</code> and <code>mem_doctor</code>
+              also land in 1.15.x — diagnose stale or contradictory observations
+              before they surface as wrong-direction context.
+            </p>
+          </div>
+        </div>
 
         <div class="tools-grid">
           {tools.map((group) => (
@@ -240,5 +265,48 @@ const tools = [
     padding: var(--space-1) var(--space-2);
     border-radius: var(--radius-sm);
     display: block;
+  }
+
+  .callout-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin: 0 0 var(--space-12);
+  }
+
+  @media (min-width: 768px) {
+    .callout-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .engram-callout {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    padding: var(--space-5) var(--space-6);
+  }
+
+  .engram-callout strong {
+    display: block;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-2);
+  }
+
+  .engram-callout p {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .engram-callout code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    background: var(--color-surface-raised);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-sm);
   }
 </style>

@@ -9,7 +9,7 @@ import CTASection from '../components/organisms/CTASection.astro';
 
 <BaseLayout
   title="OmO — HPS AI Hub"
-  description="OmO (oh-my-openagent, 49.5K★) is the OpenCode plugin that adds category routing, 3-layer orchestration, hash-anchored editing, and Ralph Loop execution. This page is the single-page reference — /workflow and /agents cover behavioral and architectural detail."
+  description="OmO (oh-my-openagent, 56.6K★) is the OpenCode plugin that adds category routing, 3-layer orchestration, hash-anchored editing, and Ralph Loop execution. This page is the single-page reference — /workflow and /agents cover behavioral and architectural detail."
 >
   <Nav />
 
@@ -20,7 +20,7 @@ import CTASection from '../components/organisms/CTASection.astro';
         OmO. <span class="accent">Orchestration brain</span>.
       </Fragment>
       <Fragment slot="lede">
-        <strong>OmO</strong> (<code>oh-my-openagent</code>, 49.5K★) is the
+        <strong>OmO</strong> (<code>oh-my-openagent</code>, 56.6K★) is the
         OpenCode plugin that packs three layers
         of orchestration, semantic category routing, hash-anchored editing, and
         persistent execution loops into one install. This page is the single-page
@@ -160,6 +160,15 @@ import CTASection from '../components/organisms/CTASection.astro';
           categories you would grep the entire codebase to find every
           <code>model: claude-sonnet-4-5</code> hardcode.
         </div>
+
+        <div class="callout callout-warning" data-animate="fade-up">
+          <strong>Breaking change (OmO v4.0.0):</strong> the <code>delegate_task</code>
+          tool with <code>category: deep</code> now <strong>requires one goal per
+          call</strong> (commit <code>102b5f96</code>). Any HPS plugin that bundled
+          multiple goals into a single delegate must split into parallel calls —
+          one call per goal — or the dispatch is rejected. <code>sdd-omo-bridge.ts</code>
+          handles this split at delegation time so SDD-driven calls stay safe.
+        </div>
       </div>
     </section>
 
@@ -205,9 +214,9 @@ import CTASection from '../components/organisms/CTASection.astro';
                 <td>Reads <code>boulder.json</code> state, picks up mid-flow</td>
               </tr>
               <tr>
-                <td><code>hyperplan</code> <span class="callout-tag">v3.18+</span></td>
-                <td><code>/hyperplan</code> on INITIATIVE-tier work</td>
-                <td>5-agent adversarial council (skeptic/Sonnet, validator/Opus 4.7, researcher/GPT-5.5, architect/GPT-5.5 xhigh, creative/Gemini 3.1 Pro), 3 debate rounds, mandatory handoff to <code>plan</code> agent</td>
+                <td><code>hyperplan</code> <span class="callout-tag">v4.0.0</span></td>
+                <td><code>/hyperplan</code> on INITIATIVE-tier work · opt in <code>team_mode.enabled: true</code></td>
+                <td>5-agent adversarial council (skeptic/Sonnet, validator/Opus 4.7, researcher/GPT-5.5, architect/GPT-5.5 xhigh, creative/Gemini 3.1 Pro), 3 debate rounds, mandatory handoff to <code>plan</code> agent. Registers 12 <code>team_*</code> MCP tools.</td>
               </tr>
             </tbody>
           </table>
@@ -286,6 +295,15 @@ No silent wrong-file edits. No silent stale-context edits.</pre>
           project config at <code>.opencode/oh-my-openagent.jsonc</code> overrides.
           JSONC supports comments and trailing commas.
         </p>
+
+        <div class="callout callout-info" data-animate="fade-up">
+          <strong>Walk-up config discovery (v4.0.0+):</strong> OmO walks UP the
+          directory tree from cwd looking for
+          <code>.opencode/oh-my-openagent.json[c]</code>. Ancestor configs merge,
+          closest wins. If hps-ai-os deploys configs at workspace, project, and
+          git-root levels, the workspace config takes effect — but inherited keys
+          from project / git-root still apply unless explicitly overridden.
+        </div>
 
         <h3 class="subsection-title">HPS recommended starter config</h3>
 
@@ -376,12 +394,12 @@ No silent wrong-file edits. No silent stale-context edits.</pre>
           bucket for moderate work):
         </p>
 
-        <pre class="diagram" data-animate="fade-up">unspecified-low fallback chain:
-  1. anthropic/claude-sonnet-4-6           ← default head
-  2. openai/gpt-5.3-codex (variant: medium)  ← LEGACY (see callout below)
-  3. opencode-go/kimi-k2.5
+        <pre class="diagram" data-animate="fade-up">unspecified-low fallback chain (OmO v4.0.0):
+  1. anthropic/claude-sonnet-4-6              ← default head
+  2. openai/gpt-5.3-codex (variant: medium)   ← LEGACY (see callout below)
+  3. opencode-go/kimi-k2.6                    ← bumped from k2.5 in v4.0.0
   4. google/gemini-3-flash
-  5. opencode-go/minimax-m2.7</pre>
+  5. opencode-go/qwen3.5-plus                 ← replaced minimax-m2.7-highspeed in v4.0.0</pre>
 
         <div class="callout callout-warning" data-animate="fade-up">
           <strong>Auto-migration in effect:</strong> if your config explicitly
@@ -409,8 +427,8 @@ No silent wrong-file edits. No silent stale-context edits.</pre>
     "variant": "max",
     "fallback_models": [
       "openai/gpt-5.5",
-      "opencode-go/kimi-k2.5",
-      "z-ai/glm-5",
+      "opencode-go/kimi-k2.6",
+      "z-ai/glm-5.1",
     ],
   {"}"},
 {"}"}</pre>
@@ -470,6 +488,17 @@ bunx oh-my-openagent install
           <a class="inline-link" href="https://github.com/code-yeongyu/oh-my-openagent" target="_blank" rel="noopener">github.com/code-yeongyu/oh-my-openagent</a>.
           Config files at <code>~/.config/opencode/oh-my-openagent.jsonc</code> (user)
           and <code>.opencode/oh-my-openagent.jsonc</code> (project override).
+        </div>
+
+        <div class="callout callout-info" data-animate="fade-up">
+          <strong>HPS pin recommendations (May 2026):</strong>
+          <ul>
+            <li><code>oh-my-openagent ^4.0.0</code> (NPM package still named <code>oh-my-opencode</code>, dual-published)</li>
+            <li><code>opencode &gt;= 1.14.41</code> (warp + VCS endpoints)</li>
+            <li><code>engram &gt;= 1.15.10</code> (recovery_token + capture_prompt)</li>
+            <li><code>gentle-ai &gt;= 1.26.5</code> (LLM-first skills + picker filter + persona regen on sync)</li>
+          </ul>
+          <strong>Important:</strong> pin OmO to exact <code>^4.0.0</code>, NOT <code>^X.0.0</code>. Major bumps in OmO carry 2-3 weeks of bug tail before patches stabilize.
         </div>
       </div>
     </section>
@@ -732,4 +761,7 @@ bunx oh-my-openagent install
     border-left: 3px solid var(--color-accent);
     background: var(--color-accent-muted);
   }
+
+  .callout ul { margin: var(--space-2) 0 var(--space-2) var(--space-4); padding: 0; }
+  .callout li { margin-bottom: var(--space-1); line-height: 1.6; }
 </style>
