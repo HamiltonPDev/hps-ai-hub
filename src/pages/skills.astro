@@ -71,7 +71,7 @@ const priorityLabels: Record<string, string> = {
 
 <BaseLayout
   title="Skill Library — HPS AI Hub"
-  description="72+ Claude Code skills installed — 12 HPS-native domain skills + 60+ community skills (SDD phases, frameworks, UI/UX, security, testing). Skills 2.0 taxonomy: Capability Uplift vs Workflow/Preference."
+  description="48 Claude Code skills installed — 12 HPS-native domain skills + 36 community skills (SDD phases, frameworks, UI/UX, security, testing). Skills 2.0 taxonomy: Capability Uplift vs Workflow/Preference."
 >
   <Nav />
 
@@ -79,12 +79,12 @@ const priorityLabels: Record<string, string> = {
 
     <Hero eyebrow="10 — Skill Files" eyebrowIcon="lucide:brain">
       <Fragment slot="title">
-        72+ skills, <span class="accent">12 HPS-native</span>.
+        48 skills, <span class="accent">12 HPS-native</span>.
       </Fragment>
       <Fragment slot="lede">
         Claude Code skills are context-loaded at session start — each one packs
         a domain's conventions, models, MCPs, and gotchas into one file. HPS
-        runs with 12 native skills (domain-specific) plus 60+ community skills
+        runs with 12 native skills (domain-specific) plus 36 community skills
         (SDD phases, frameworks, UI/UX, security, testing).
       </Fragment>
     </Hero>
@@ -140,10 +140,85 @@ const priorityLabels: Record<string, string> = {
       </div>
     </section>
 
+    <!-- ── §1b LLM-First Skill Format ──────────────────────────────── -->
+    <section class="taxonomy-section">
+      <div class="taxonomy-inner">
+        <h2 class="section-title" data-animate="fade-up">LLM-First Skill Format (gentle-ai v1.26.4+)</h2>
+        <p class="section-lede" data-animate="fade-up">
+          When HPS publishes its own skills, they MUST follow the LLM-first contract
+          template introduced in gentle-ai v1.26.4. The contract enforces ≤100 lines
+          per skill and a strict structure that machines parse cleanly.
+        </p>
+
+        <div class="taxonomy-grid">
+          <div class="taxonomy-card" data-animate="fade-up">
+            <h3 class="taxonomy-type">Activation Contract</h3>
+            <p class="taxonomy-desc">
+              When this skill triggers — the exact phrases, file patterns, or task
+              contexts that cause the skill to load at session start.
+            </p>
+          </div>
+          <div class="taxonomy-card" data-animate="fade-up">
+            <h3 class="taxonomy-type">Hard Rules</h3>
+            <p class="taxonomy-desc">
+              Non-negotiable constraints the LLM must obey regardless of user
+              instruction — the invariants that define the skill's safe envelope.
+            </p>
+          </div>
+          <div class="taxonomy-card" data-animate="fade-up">
+            <h3 class="taxonomy-type">Decision Gates</h3>
+            <p class="taxonomy-desc">
+              Branching logic the LLM must obey — explicit if/then conditions that
+              determine which execution path to follow.
+            </p>
+          </div>
+          <div class="taxonomy-card" data-animate="fade-up">
+            <h3 class="taxonomy-type">Execution Steps</h3>
+            <p class="taxonomy-desc">
+              Ordered, mechanical steps the LLM executes in sequence. No ambiguity —
+              each step is a concrete, verifiable action.
+            </p>
+          </div>
+          <div class="taxonomy-card" data-animate="fade-up">
+            <h3 class="taxonomy-type">Output Contract</h3>
+            <p class="taxonomy-desc">
+              The exact shape of the deliverable — format, required fields, and
+              acceptance criteria the caller can verify against.
+            </p>
+          </div>
+          <div class="taxonomy-card" data-animate="fade-up">
+            <h3 class="taxonomy-type">References</h3>
+            <p class="taxonomy-desc">
+              Links to deeper docs, related skills, or upstream specs. Kept short —
+              one link per concept.
+            </p>
+          </div>
+        </div>
+
+        <div class="taxonomy-callout callout-info" data-animate="fade-up">
+          <strong>Picker filter (gentle-ai v1.26.5+):</strong> HPS skills that are
+          orchestrator-internal (not user-invocable) MUST set
+          <code>disable-model-invocation: true</code> and <code>user-invocable: false</code>
+          in frontmatter — otherwise they appear as duplicate entries in the Claude Code
+          skill picker.
+        </div>
+
+        <div class="taxonomy-callout callout-warning" data-animate="fade-up">
+          <strong>Marker discipline:</strong> when HPS injects content into shared files
+          (gentle-ai persona files, OpenCode AGENTS.md, etc.), HPS writes ONLY between
+          its own markers like <code>&lt;!-- hps-ai-os:layer --&gt;</code>. NEVER write
+          inside <code>&lt;!-- gentle-ai:persona --&gt;</code> markers — those are owned
+          by gentle-ai and get regenerated on <code>gentle-ai sync</code>, wiping HPS
+          content. Use <code>filemerge.InjectMarkdownSection</code> (or its TS
+          equivalent) to manage HPS-owned markers.
+        </div>
+      </div>
+    </section>
+
     <!-- ── §2 Community Library ──────────────────────────────────────── -->
     <section class="community-section">
       <div class="community-inner">
-        <h2 class="section-title" data-animate="fade-up">Community Library (60+ skills)</h2>
+        <h2 class="section-title" data-animate="fade-up">Community Library (36 skills)</h2>
         <p class="section-lede" data-animate="fade-up">
           Installed globally at <code>~/.claude/skills/</code>. Auto-triggered by
           keyword or file extension when Claude reads a matching context.
@@ -385,7 +460,7 @@ const priorityLabels: Record<string, string> = {
 
     <CTASection
       title="Skills compose into agents. Agents route to models."
-      lede="See how the 72 skills wire into the 20-agent roster — and how each agent picks a model tier."
+      lede="See how the 48 skills wire into the 20-agent roster — and how each agent picks a model tier."
     >
       <Fragment slot="cta">
         <Button href="/agents" variant="primary" icon="lucide:arrow-right" iconPosition="end">Agent Roster</Button>
@@ -670,6 +745,21 @@ const priorityLabels: Record<string, string> = {
   }
 
   .taxonomy-callout strong {
+    color: var(--color-text);
+  }
+
+  .taxonomy-callout.callout-warning {
+    border-left: 3px solid var(--color-accent);
+    background: var(--color-accent-muted);
+  }
+
+  .taxonomy-callout code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-1);
     color: var(--color-text);
   }
 

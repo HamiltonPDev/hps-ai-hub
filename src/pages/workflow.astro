@@ -85,7 +85,7 @@ IntentGate (Phase 0 — see §1)
   ├─ /session-{"'{domain}'"}        ← Domain preset (skills + models + MCPs)
   │
   ├─ TRIVIAL ("fix typo")    → Direct execution (category: quick)
-  │                              Model: GPT-5.5 Mini or Qwen 3 Coder (FREE)
+  │                              Model: GPT-5.4 Mini or Qwen 3 Coder (FREE)
   │
   ├─ MEDIUM ("add button")   → SDD-lite: explore → apply → verify
   │                              Model: Sonnet for all phases
@@ -100,7 +100,7 @@ IntentGate (Phase 0 — see §1)
   │   │   ├── API task        → Sonnet / Qwen 3 Coder (FREE)
   │   │   ├── Architecture    → GPT-5.5 (ultrabrain)
   │   │   ├── Docs task       → Gemini Flash (writing)
-  │   │   └── Trivial task    → GPT-5.5 Mini (quick)
+  │   │   └── Trivial task    → GPT-5.4 Mini (quick)
   │   │   + Hash-anchored edits (68.3% success)
   │   │   + Wisdom accumulation (learnings pass forward)
   │   │   + Ralph Loop: refuses to stop until 100% done
@@ -320,7 +320,7 @@ apply → verify → archive</pre>
                 <td><code>sdd-interview</code></td>
                 <td>Interactive clarification before propose. Identifies ambiguities, edge cases, implicit constraints. READ-ONLY.</td>
                 <td>Prometheus</td>
-                <td>Opus / Kimi K2.5</td>
+                <td>Opus / Kimi K2.6</td>
                 <td><code>{"sdd/{change}/interview-transcript"}</code></td>
               </tr>
               <tr>
@@ -422,19 +422,24 @@ apply → verify → archive</pre>
       </div>
     </section>
 
-    <!-- ── §4b Hyperplan — adversarial council (OmO v3.18+) ──────────── -->
+    <!-- ── §4b Hyperplan — adversarial council (OmO v4.0.0+) ──────────── -->
     <section class="content-section" id="hyperplan">
       <div class="section-inner">
-        <h2 class="section-title" data-animate="fade-up">Hyperplan — Adversarial Council (OmO v3.18+)</h2>
+        <h2 class="section-title" data-animate="fade-up">Hyperplan — Adversarial Council (OmO v4.0.0+, opt-in)</h2>
 
         <p class="prose">
-          Hyperplan is an OmO-native adversarial planning council that ships in
-          v3.18 (currently in <code>feat/team-mode</code>, +25k LOC, most active
-          branch in the repo). HPS treats Hyperplan as <strong>a tool invoked
-          inside a phase</strong>, not as a workflow replacement — specifically
-          for <code>sdd-plan-review</code> on INITIATIVE-tier work, where the
-          council's 5-perspective debate catches more class of bugs than a
-          single-shot Momus review.
+          Hyperplan SHIPPED in OmO v4.0.0 (PR #3493 merged via commit
+          <code>cedcd2d8</code>, ~5000 LOC under <code>src/features/team-mode/</code>).
+          It is <strong>off by default</strong> — opt in by setting
+          <code>team_mode.enabled: true</code> in
+          <code>oh-my-openagent.jsonc</code>. Enabling Team Mode registers 12
+          <code>team_*</code> MCP tools (<code>team_create</code>,
+          <code>team_send_message</code>, <code>team_task_create</code>,
+          <code>team_status</code>, <code>team_list</code>, etc.). HPS treats
+          Hyperplan as <strong>a tool invoked inside a phase</strong>, not as a
+          workflow replacement — specifically for <code>sdd-plan-review</code>
+          on INITIATIVE-tier work, where the council's 5-perspective debate
+          catches more class of bugs than a single-shot Momus review.
         </p>
 
         <h3 class="subsection-title">SDD vs Hyperplan — the difference</h3>
@@ -445,7 +450,7 @@ apply → verify → archive</pre>
               <tr>
                 <th>Dimension</th>
                 <th>SDD canonical (gentle-ai)</th>
-                <th>Hyperplan (OmO v3.18+)</th>
+                <th>Hyperplan (OmO v4.0.0+, opt-in)</th>
               </tr>
             </thead>
             <tbody>
@@ -490,9 +495,9 @@ apply → verify → archive</pre>
 
         <pre class="diagram" data-animate="fade-up">sdd-plan-review.md (HPS skill):
   if change.tier == "INITIATIVE":
-      delegate to Hyperplan (5-agent council, 3 rounds)  # OmO v3.18+
+      delegate to Hyperplan (5-agent council, 3 rounds)  # OmO v4.0.0+
   else:  # LARGE
-      delegate to Momus (single-shot review)             # OmO ≤3.17.x</pre>
+      delegate to Momus (single-shot review)             # all OmO versions</pre>
 
         <div class="callout callout-info" data-animate="fade-up">
           <strong>Default state:</strong> Hyperplan is OFF by default
@@ -502,6 +507,29 @@ apply → verify → archive</pre>
           ~6× the tokens — but catches a different class of bugs (perspective
           gaps, hidden assumptions, disagreements on scope) that single-reviewer
           gates miss.
+        </div>
+
+        <div class="callout callout-warning" data-animate="fade-up">
+          <strong>HPS plugin count locked at 6:</strong> after analyzing OmO
+          v4.0.0, hps-ai-os ships 6 plugins, not 7 — <code>boulder.ts</code> was
+          dropped because OmO already owns the <code>boulder.json</code>
+          checkpoint artifact (written by <code>/start-work</code>, includes
+          <code>worktree_path</code> + the full <code>git worktree</code>
+          add/remove/merge flow). The 6 are: <code>intent-gate.ts</code>,
+          <code>sdd-omo-bridge.ts</code>, <code>engram-observer.ts</code>,
+          <code>hps-yolo.ts</code>, <code>dippy.ts</code>, and
+          <code>wisdom-notepad.ts</code>.
+        </div>
+
+        <div class="callout callout-info" data-animate="fade-up">
+          <strong>Session warp + worktree (OpenCode v1.14.34–v1.14.41):</strong>
+          OpenCode shipped <code>/warp</code> in v1.14.37 and VCS carry-over in
+          v1.14.41 — sessions move between workspaces without losing context.
+          The repo also moved: <code>sst/opencode</code> now redirects to
+          <code>anomalyco/opencode</code>, default branch <code>dev</code>.
+          Pin <code>opencode &gt;= 1.14.41</code> in hps-ai-os to get the warp +
+          VCS endpoints <code>sdd-omo-bridge.ts</code> uses for programmatic
+          worktree create/remove (PR #24371).
         </div>
       </div>
     </section>
